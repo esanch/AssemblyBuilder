@@ -21,8 +21,8 @@ namespace InvoiceAdd
         private DataGridView dataGridView1;
         public int CurrentRow = 0;
 
-        DataTable secondLevelItems = new DataTable();
-        DataTable topLevelItems = new DataTable();
+        DataTable dt = new DataTable();
+        DataTable dtTemp2 = new DataTable();
         string fileName = string.Empty;
         private CheckBox checkBox1;
         private CheckBox checkBox2;
@@ -392,14 +392,14 @@ namespace InvoiceAdd
         {
             Dispose();
         }
-        
+
         private double QBFCLatestVersion(QBSessionManager SessionManager)
         {
             // Use oldest version to ensure that this application work with any QuickBooks (US)
             IMsgSetRequest msgset = SessionManager.CreateMsgSetRequest("US", 1, 0);
             msgset.AppendHostQueryRq();
             IMsgSetResponse QueryResponse = SessionManager.DoRequests(msgset);
-            
+
             // The response list contains only one response, which corresponds to our single HostQuery request
             IResponse response = QueryResponse.ResponseList.GetAt(0);
 
@@ -468,7 +468,7 @@ namespace InvoiceAdd
             IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", qbXMLMajorVer, qbXMLMinorVer);
             return requestMsgSet;
         }
-        
+
         void SaveXML(string xmlstring)
         {
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
@@ -509,8 +509,8 @@ namespace InvoiceAdd
 
         private void startErrorChecking(object sender, EventArgs e)
         {
-            secondLevelItems = new DataTable();
-            topLevelItems = new DataTable();
+            dt = new DataTable();
+            dtTemp2 = new DataTable();
             XDocument doc = XDocument.Load(fileName);
             string matchFirst = @"^[1-2][0-9][0-9][0-9][0-9][0-9]00";
             foreach (XElement bom in doc.Descendants("bom"))
@@ -528,59 +528,59 @@ namespace InvoiceAdd
                 int dtTempCount = dtTemp.Rows.Count;
                 DataSet DataSet1 = new DataSet();
                 DataView DataView1 = new DataView();
-                //DataTable topLevelItems = new DataTable();
+                //DataTable dtTemp2 = new DataTable();
                 dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
                     " FROM[dat8121].[dbo].[I_ItemCode]" +
                     " where TRY_CAST(ItemCode as nvarchar) = '" + input +
                     "' OR TRY_CAST(ItemCode as nvarchar) = '" + cut + "'", connectionString);
-                dataAdapter.Fill(topLevelItems);
-                dtReturnValue = topLevelItems.Clone();
+                dataAdapter.Fill(dtTemp2);
+                dtReturnValue = dtTemp2.Clone();
 
-                bool isTrue = topLevelItems.Rows.Count > 0;
+                bool isTrue = dtTemp2.Rows.Count > 0;
                 if (isTrue == true)
                 {
-                    string fromData = topLevelItems.Rows[0][0].ToString();
+                    string fromData = dtTemp2.Rows[0][0].ToString();
                     if (input.Equals(cut) == true)
                     {
                         if (input.Equals(fromData) == true)
                         {
-                            textBox1.Text = (topLevelItems.Rows[0][0].ToString() + "\r\n" + topLevelItems.Rows[0][1].ToString());
+                            textBox1.Text = (dtTemp2.Rows[0][0].ToString() + "\r\n" + dtTemp2.Rows[0][1].ToString());
                             checkBox1.Checked = true;
-                            columnCorrectOrder(sender, e, topLevelItems);
+                            columnCorrectOrder(sender, e, dtTemp2);
                         }
                     }
                     else if (String.Equals(input, cut) == false)
                     {
                         ifError = true;
-                        columnCorrectOrder(sender, e, ifError, input, cut, topLevelItems);
+                        columnCorrectOrder(sender, e, ifError, input, cut, dtTemp2);
                     }
                 }
                 else
                 {
                     ifError = true;
-                    columnCorrectOrder(sender, e, ifError, input, cut, topLevelItems);
+                    columnCorrectOrder(sender, e, ifError, input, cut, dtTemp2);
                 }
             }
         }
 
-        private void columnCorrectOrder(object sender, EventArgs e, bool ifError, string input, string cut, DataTable topLevelItems)
+        private void columnCorrectOrder(object sender, EventArgs e, bool ifError, string input, string cut, DataTable dtTemp2)
         {
             if (ifError == true)
             {
                 if (String.Equals(input, cut) == false)
                 {
                     checkBox2.Checked = true;
-                    columnCorrectOrder(sender, e, topLevelItems);
+                    columnCorrectOrder(sender, e, dtTemp2);
                 }
                 else
                 {
                     checkBox3.Checked = true;
-                    columnCorrectOrder(sender, e, topLevelItems);
+                    columnCorrectOrder(sender, e, dtTemp2);
                 }
             }
         }
 
-        private void columnCorrectOrder(object sender, EventArgs e, DataTable topLevelItems)
+        private void columnCorrectOrder(object sender, EventArgs e, DataTable dtTemp2)
         {
             XDocument doc = XDocument.Load(fileName);
             Dictionary<int, string> openWith = new Dictionary<int, string>();
@@ -603,66 +603,66 @@ namespace InvoiceAdd
             {
                 itemNoCol = openWith.Keys.ElementAt(0);
                 checkBox4.Checked = true;
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == itemNoCol).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == itemNoCol).FirstOrDefault() == null ?
                       null : "ITEM NO.");
             }
             else
             {
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 0).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 0).FirstOrDefault() == null ?
                      null : "ITEM NO.");
             }
             if (Regex.IsMatch(openWith[1], itemCodeMatching))
             {
                 itemCodeCol = openWith.Keys.ElementAt(1);
                 checkBox5.Checked = true;
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == itemCodeCol).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == itemCodeCol).FirstOrDefault() == null ?
                       null : "ITEMCODE");
             }
             else
             {
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 1).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 1).FirstOrDefault() == null ?
                      null : "ITEMCODE");
             }
             if (Regex.IsMatch(openWith[2], partNoMatching))
             {
                 partNumberCol = openWith.Keys.ElementAt(2);
                 checkBox6.Checked = true;
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == partNumberCol).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == partNumberCol).FirstOrDefault() == null ?
                       null : "PART NUMBER");
             }
             else
             {
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 2).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 2).FirstOrDefault() == null ?
                      null : "PART NUMBER");
             }
             if (Regex.IsMatch(openWith[3], descriptionMatching))
             {
                 descriptionCol = openWith.Keys.ElementAt(3);
                 checkBox7.Checked = true;
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == descriptionCol).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == descriptionCol).FirstOrDefault() == null ?
                       null : "DESCRIPTION");
             }
             else
             {
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 3).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 3).FirstOrDefault() == null ?
                      null : "DESCRIPTION");
             }
             if (Regex.IsMatch(openWith[4], qtyMatching))
             {
                 qtyCol = openWith.Keys.ElementAt(4);
                 checkBox8.Checked = true;
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == qtyCol).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == qtyCol).FirstOrDefault() == null ?
                       null : "QTY.");
             }
             else
             {
-                secondLevelItems.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 4).FirstOrDefault() == null ?
+                dt.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 4).FirstOrDefault() == null ?
                      null : "QTY.");
             }
-            addRows(secondLevelItems, doc, openWith, topLevelItems);
+            addRows(dt, doc, openWith, dtTemp2);
         }
 
-        private void addRows(DataTable secondLevelItems, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelItems)
+        private void addRows(DataTable dt, XDocument doc, Dictionary<int, string> openWith, DataTable dtTemp2)
         {
             bool error = false;
             foreach (XElement bomrow in doc.Descendants("bomrow"))
@@ -701,19 +701,19 @@ namespace InvoiceAdd
 
             if (error == false)
             {
-                createATable(secondLevelItems, doc, openWith, topLevelItems);
+                createATable(dt, doc, openWith, dtTemp2);
             }
             else
             {
-                createATableWithErrors(secondLevelItems, doc, openWith, topLevelItems);
+                createATableWithErrors(dt, doc, openWith, dtTemp2);
             }
         }
 
-        private void createATableWithErrors(DataTable secondLevelItems, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelItems)
+        private void createATableWithErrors(DataTable dt, XDocument doc, Dictionary<int, string> openWith, DataTable dtTemp2)
         {
             foreach (XElement bomrow in doc.Descendants("bomrow"))
             {
-                secondLevelItems.Rows.Add(
+                dt.Rows.Add(
                 bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
                     y => y.Value.ToUpper().Contains("ITEM NO")).Key
                     ).FirstOrDefault() == null ?
@@ -750,19 +750,19 @@ namespace InvoiceAdd
                         ).FirstOrDefault().Attribute("value") ?? null
                 );
             }
-            string[] firstRow = secondLevelItems.AsEnumerable().Select(r => r.Field<string>("ITEM NO.")).ToArray();
+            string[] firstRow = dt.AsEnumerable().Select(r => r.Field<string>("ITEM NO.")).ToArray();
             string has = String.Join(",", firstRow);
             int starting = 1;
             IEnumerable<int> totalColumns = Enumerable.Range(starting, Int32.Parse(firstRow.Last()));
             string shouldBe = String.Join(",", totalColumns);
-            showTableErrors(secondLevelItems, has, shouldBe, topLevelItems);
+            showTableErrors(dt, has, shouldBe, dtTemp2);
         }
 
-        private void createATable(DataTable secondLevelItems, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelItems)
+        private void createATable(DataTable dt, XDocument doc, Dictionary<int, string> openWith, DataTable dtTemp2)
         {
             foreach (XElement bomrow in doc.Descendants("bomrow"))
             {
-                secondLevelItems.Rows.Add(
+                dt.Rows.Add(
                 bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
                     y => y.Value.ToUpper().Contains("ITEM NO")).Key
                     ).FirstOrDefault() == null ?
@@ -800,43 +800,43 @@ namespace InvoiceAdd
                 );
             }
             checkBox9.Checked = true;
-            string[] firstRow = secondLevelItems.AsEnumerable().Select(r => r.Field<string>("ITEM NO.")).ToArray();
+            string[] firstRow = dt.AsEnumerable().Select(r => r.Field<string>("ITEM NO.")).ToArray();
             string has = String.Join(",", firstRow);
             int starting = 1;
             IEnumerable<int> totalColumns = Enumerable.Range(starting, Int32.Parse(firstRow.Last()));
             string shouldBe = String.Join(",", totalColumns);
-            showTableErrors(secondLevelItems, has, shouldBe, topLevelItems);
+            showTableErrors(dt, has, shouldBe, dtTemp2);
         }
 
-        private void showTableErrors(DataTable secondLevelItems, string has, string shouldBe, DataTable topLevelItems)
+        private void showTableErrors(DataTable dt, string has, string shouldBe, DataTable dtTemp2)
         {
             if (has == shouldBe)
             {
                 checkBox11.Checked = true;
-                ending(secondLevelItems, topLevelItems);
+                ending(dt, dtTemp2);
             }
             else
             {
                 checkBox12.Checked = true;
-                ending(secondLevelItems, topLevelItems);
+                ending(dt, dtTemp2);
             }
 
         }
 
-        private void ending(DataTable secondLevelItems, DataTable topLevelItems)
+        private void ending(DataTable dt, DataTable dtTemp2)
         {
-            dataGridView1.DataSource = secondLevelItems;
+            dataGridView1.DataSource = dt;
             if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
             {
-                dataGridView1.DataSource = secondLevelItems;
+                dataGridView1.DataSource = dt;
             }
             else
             {
                 tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
             }
         }
-       
-        private void QBFC_QueryTopLevel()
+
+         private void QBFC_AddInvoice()
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -850,14 +850,13 @@ namespace InvoiceAdd
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-                queryTopLevel_ItemInventoryAssembly(requestMsgSet, secondLevelItems, topLevelItems);
+                getValuesForQB(requestMsgSet, dt, dtTemp2);
                 //Connect to QuickBooks and begin a session
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
                 //Send the request and get the response from QuickBooks
-                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
                 //End the session and close the connection to QuickBooks
                 sessionManager.EndSession();
@@ -880,57 +879,36 @@ namespace InvoiceAdd
             }
         }
 
-        //private void queryTopLevel_ItemInventoryAssembly(IMsgSetRequest requestMsgSet)
-        //private void queryTopLevel_ItemInventoryAssembly(out IMsgSetRequest requestMsgSet, DataTable secondLevelItems, DataTable topLevelItems)
-        void queryTopLevel_ItemInventoryAssembly(IMsgSetRequest requestMsgSet, DataTable secondLevelItems, DataTable topLevelItems)
+        //private void getValuesForQB(IMsgSetRequest requestMsgSet)
+        //private void getValuesForQB(out IMsgSetRequest requestMsgSet, DataTable dt, DataTable dtTemp2)
+        void getValuesForQB(IMsgSetRequest requestMsgSet, DataTable dt, DataTable dtTemp2)
         {
-            //MessageBox.Show(topLevelItems.Rows[0][0].ToString());//itemcode full bom
-            //MessageBox.Show(topLevelItems.Rows[0][1].ToString());//desc full bom
-            //MessageBox.Show(secondLevelItems.Rows[0][0].ToString());//itemno for assembly
-            //MessageBox.Show(secondLevelItems.Rows[0][1].ToString());//itemcode for assembly
-            //MessageBox.Show(secondLevelItems.Rows[0][4].ToString());//qty for assembly
-            IItemInventoryAssemblyQuery ItemInventoryAssemblyQueryRq;
-            IListWithClassFilter listWithClassFilter;
-            List<string> itemCodes = secondLevelItems.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
-            foreach (string itemCode in itemCodes)
-            {
-                ItemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
-                listWithClassFilter = ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
-                //Set field value for MatchCriterion
-                listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
-
-                ItemInventoryAssemblyQueryRq.IncludeRetElementList.Add("Name");
-                ItemInventoryAssemblyQueryRq.IncludeRetElementList.Add("SalesDesc");
-                ItemInventoryAssemblyQueryRq.IncludeRetElementList.Add("SalesDesc");
-                ItemInventoryAssemblyQueryRq.IncludeRetElementList.Add("EditSequence");
-                //Set field value for Name
-                ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
-            }
-            //IItemInventoryAssemblyQuery ItemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
-            //IListWithClassFilter listWithClassFilter = ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
-            ////Set field value for MatchCriterion
-            //listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
-            ////Set field value for Name
-            //ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelItems.Rows[0][0].ToString());
-            ////Set field value for Name with > 1 result
+            //MessageBox.Show(dtTemp2.Rows[0][0].ToString());//itemcode full bom
+            //MessageBox.Show(dtTemp2.Rows[0][1].ToString());//desc full bom
+            //MessageBox.Show(dt.Rows[0][0].ToString());//itemno for assembly
+            //MessageBox.Show(dt.Rows[0][1].ToString());//itemcode for assembly
+            //MessageBox.Show(dt.Rows[0][4].ToString());//qty for assembly
+            IItemInventoryAssemblyQuery ItemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
+            IListWithClassFilter listWithClassFilter = ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
+            //Set field value for MatchCriterion
+            listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
+            //Set field value for Name
+            ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(dtTemp2.Rows[0][0].ToString());
+            //Set field value for Name with > 1 result
             //ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue("2000");
-            //listWithClassFilter = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
-            //ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(secondLevelItems.Rows[0][0].ToString());
-            
-
 
             //IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
             //ItemInventoryAssemblyModRq.ListID.SetValue("80013E9B-1527005428");
             //ItemInventoryAssemblyModRq.EditSequence.SetValue("1543594308");
             //ItemInventoryAssemblyModRq.SalesDesc.SetValue("Assy, Yoke Arm End Lifting");
-            //ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelItems.Rows[0][1].ToString());
+            //ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(dtTemp2.Rows[0][1].ToString());
 
-            //for (int i = 0; i < secondLevelItems.Rows.Count; i++)
+            //for (int i = 0; i < dt.Rows.Count; i++)
             //{
             //    IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
             //    ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue("80000A97-1511318515");
-            //    ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelItems.Rows[i][1].ToString());
-            //    ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelItems.Rows[i][4]));
+            //    ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(dt.Rows[i][1].ToString());
+            //    ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(dt.Rows[i][4]));
             //}
         }
 
@@ -950,6 +928,7 @@ namespace InvoiceAdd
                 {
                     if (response.StatusCode == 1)
                     {
+                        
                             tbProgramLog.AppendText(Environment.NewLine + "Call add method");
                             //addItem(requestMsgSet);
                     }
@@ -972,7 +951,40 @@ namespace InvoiceAdd
             }
         }
 
-       
+        void modifyItem(IMsgSetRequest requestMsgSet)
+        {
+            IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
+            ItemInventoryAssemblyModRq.ListID.SetValue(dtTemp2.Rows[0][0].ToString());
+            ItemInventoryAssemblyModRq.EditSequence.SetValue("1535167356");
+            ItemInventoryAssemblyModRq.SalesDesc.SetValue("Assy, Yoke Arm End Lifting");
+            ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(dtTemp2.Rows[0][1].ToString());
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
+                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue("");
+                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(dt.Rows[i][1].ToString());
+                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(dt.Rows[i][4]));
+            }
+            tbProgramLog.AppendText(Environment.NewLine + "HELLO WORLD");
+        }
+
+        void addItem(IMsgSetRequest requestMsgSet)
+        {
+            IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
+            ItemInventoryAssemblyAddRq.Name.SetValue(dtTemp2.Rows[0][0].ToString());
+            ItemInventoryAssemblyAddRq.SalesDesc.SetValue("Assy, Yoke Arm End Lifting");
+            ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(dtTemp2.Rows[0][1].ToString());
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyAddRq.ItemInventoryAssemblyLineList.Append();
+                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(dt.Rows[i][0].ToString());
+                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(dt.Rows[i][1].ToString());
+                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(dt.Rows[i][4]));
+            }
+            
+        }
 
         void getEditSequence(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
         {
@@ -986,27 +998,147 @@ namespace InvoiceAdd
                 IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
                 string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
                 string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-                string name = (string)ItemInventoryAssemblyRet.Name.GetValue();
-                string desc = (string)ItemInventoryAssemblyRet.SalesDesc.GetValue() ?? (string)ItemInventoryAssemblyRet.PurchaseDesc.GetValue();
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-                tbProgramLog.AppendText(Environment.NewLine + "Name: " + name + Environment.NewLine + "Desc: " + desc);
             }
            // modifyItem(requestMsgSet);
-            //string icode = topLevelItems.Rows[0][0].ToString();
+            //string icode = dtTemp2.Rows[0][0].ToString();
             //tbProgramLog.AppendText(Environment.NewLine + "No. of matches to " + icode +": "+ ItemInventoryAssemblyRetList.Count.ToString());
         }
+
+
+        //private void QBFC_QuerySecondLevel()
+        //{
+        //    bool sessionBegun = false;
+        //    bool connectionOpen = false;
+        //    QBSessionManager sessionManager = null;
+
+        //    try
+        //    {
+        //        //Create the session Manager object
+        //        sessionManager = new QBSessionManager();
+        //        //Create the message set request object to hold our request
+        //        IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+        //        requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+        //        querySecondLevel_AllItems(requestMsgSet, dt, dtTemp2);
+
+        //        //Connect to QuickBooks and begin a session
+        //        sessionManager.OpenConnection("", "Sample Code from OSR");
+        //        connectionOpen = true;
+        //        sessionManager.BeginSession("", ENOpenMode.omDontCare);
+        //        sessionBegun = true;
+        //        //Send the request and get the response from QuickBooks
+        //        tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+        //        IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+        //        //End the session and close the connection to QuickBooks
+        //        sessionManager.EndSession();
+        //        sessionBegun = false;
+        //        sessionManager.CloseConnection();
+        //        connectionOpen = false;
+
+        //        WalkAllItemsQueryRs(responseMsgSet);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        tbProgramLog.AppendText(e.Message);
+        //        if (sessionBegun)
+        //        {
+        //            sessionManager.EndSession();
+        //        }
+        //        if (connectionOpen)
+        //        {
+        //            sessionManager.CloseConnection();
+        //        }
+        //    }
+        //}
+
+        //private void querySecondLevel_AllItems(IMsgSetRequest requestMsgSet, DataTable dt, DataTable dtTemp2)
+        //{
+        //    IItemQuery ItemQueryRq;
+        //    List<string> itemCodes = dt.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
+        //    foreach (string itemCode in itemCodes)
+        //    {
+        //        ItemQueryRq = requestMsgSet.AppendItemQueryRq();
+        //        ItemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+
+        //        ItemQueryRq.IncludeRetElementList.Add("Name");
+        //        ItemQueryRq.IncludeRetElementList.Add("SalesDesc");
+        //        ItemQueryRq.IncludeRetElementList.Add("SalesDesc");
+        //        ItemQueryRq.IncludeRetElementList.Add("EditSequence");
+        //        //Set field value for Name
+        //        ItemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameRangeFilter.FromName.SetValue(itemCode);
+        //    }
+        //}
+
+        //private void WalkAllItemsQueryRs(IMsgSetResponse responseMsgSet)
+        //{
+        //    if (responseMsgSet == null) return;
+        //    IResponseList responseList = responseMsgSet.ResponseList;
+        //    if (responseList == null) return;
+        //    //if we sent only one request, there is only one response, we'll walk the list for this sample
+        //    for (int i = 0; i < responseList.Count; i++)
+        //    {
+        //        IResponse response = responseList.GetAt(i);
+        //        //MessageBox.Show(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString(), "Error code");
+        //        tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
+        //        //check the status code of the response, 0=ok, >0 is warning
+        //        if (response.StatusCode >= 0)
+        //        {
+        //            if (response.StatusCode == 1)
+        //            {
+        //                tbProgramLog.AppendText(Environment.NewLine + "Call add method");
+        //                //addItem(requestMsgSet);
+        //            }
+        //            else if (response.StatusCode == 0)
+        //            {
+        //                //the request-specific response is in the details, make sure we have some
+        //                if (response.Detail != null)
+        //                {
+        //                    //make sure the response is the type we're expecting
+        //                    ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+        //                    if (responseType == ENResponseType.rtItemQueryRs)
+        //                    {
+        //                        //upcast to more specific type here, this is safe because we checked with response.Type check above
+        //                        IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
+        //                        WalkAllItemsQueryRet(ItemRetList);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void WalkAllItemsQueryRet(IORItemRetList ItemRetList)
+        //{
+
+        //    if (ItemRetList == null) return;
+        //    for (int x = 0; x < ItemRetList.Count; x++)
+        //    {
+        //        IORItemRet ItemRet = ItemRetList.GetAt(x);
+        //        string itemServiceSequence = (string)ItemRet.ItemServiceRet.EditSequence.GetValue();
+        //        string itemServiceListID = (string)ItemRet.ItemServiceRet.ListID.GetValue();
+        //        string itemServiceName = (string)ItemRet.ItemServiceRet.Name.GetValue();
+        //        //string itemServiceDesc = (string)ItemRet.ItemServiceRet.SalesDesc.GetValue() ?? (string)ItemRet.ItemServiceRet.PurchaseDesc.GetValue();
+        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemServiceSequence + Environment.NewLine + "List ID: " + itemServiceListID);
+        //        tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemServiceName);
+        //            //+ Environment.NewLine + "Desc: " + itemServiceDesc);
+        //    }
+        //    // modifyItem(requestMsgSet);
+        //    //string icode = dtTemp2.Rows[0][0].ToString();
+        //    //tbProgramLog.AppendText(Environment.NewLine + "No. of matches to " + icode +": "+ ItemInventoryAssemblyRetList.Count.ToString());
+        //}
 
         private void btn1_Send_Click_1(object sender, EventArgs e)
         {
             if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
             {
-                QBFC_QueryTopLevel();
+                QBFC_AddInvoice();
             }
             else
             {
                 tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
             }
-        } 
+        }
     }
 }
 
@@ -1016,17 +1148,17 @@ namespace InvoiceAdd
  /*void modifyItem(IMsgSetRequest requestMsgSet)
         {
             IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
-            ItemInventoryAssemblyModRq.ListID.SetValue(topLevelItems.Rows[0][0].ToString());
+            ItemInventoryAssemblyModRq.ListID.SetValue(dtTemp2.Rows[0][0].ToString());
             ItemInventoryAssemblyModRq.EditSequence.SetValue("1535167356");
             ItemInventoryAssemblyModRq.SalesDesc.SetValue("Assy, Yoke Arm End Lifting");
-            ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelItems.Rows[0][1].ToString());
+            ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(dtTemp2.Rows[0][1].ToString());
 
-            for (int i = 0; i < secondLevelItems.Rows.Count; i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
                 ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue("");
-                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelItems.Rows[i][1].ToString());
-                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelItems.Rows[i][4]));
+                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(dt.Rows[i][1].ToString());
+                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(dt.Rows[i][4]));
             }
             tbProgramLog.AppendText(Environment.NewLine + "HELLO WORLD");
         }
@@ -1034,16 +1166,16 @@ namespace InvoiceAdd
         void addItem(IMsgSetRequest requestMsgSet)
         {
             IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
-            ItemInventoryAssemblyAddRq.Name.SetValue(topLevelItems.Rows[0][0].ToString());
+            ItemInventoryAssemblyAddRq.Name.SetValue(dtTemp2.Rows[0][0].ToString());
             ItemInventoryAssemblyAddRq.SalesDesc.SetValue("Assy, Yoke Arm End Lifting");
-            ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(topLevelItems.Rows[0][1].ToString());
+            ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(dtTemp2.Rows[0][1].ToString());
 
-            for (int i = 0; i < secondLevelItems.Rows.Count; i++)
+            for (int i = 0; i < dt.Rows.Count; i++)
             {
                 IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyAddRq.ItemInventoryAssemblyLineList.Append();
-                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(secondLevelItems.Rows[i][0].ToString());
-                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelItems.Rows[i][1].ToString());
-                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelItems.Rows[i][4]));
+                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(dt.Rows[i][0].ToString());
+                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(dt.Rows[i][1].ToString());
+                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(dt.Rows[i][4]));
             }
             
         }
