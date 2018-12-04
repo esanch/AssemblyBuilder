@@ -99,7 +99,7 @@ namespace InvoiceAdd
             // 
             this.btn1_Send.BackColor = System.Drawing.SystemColors.Control;
             this.btn1_Send.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.btn1_Send.Location = new System.Drawing.Point(482, 575);
+            this.btn1_Send.Location = new System.Drawing.Point(397, 578);
             this.btn1_Send.Name = "btn1_Send";
             this.btn1_Send.Size = new System.Drawing.Size(80, 32);
             this.btn1_Send.TabIndex = 57;
@@ -111,7 +111,7 @@ namespace InvoiceAdd
             // 
             this.btn2_Exit.BackColor = System.Drawing.SystemColors.Control;
             this.btn2_Exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn2_Exit.Location = new System.Drawing.Point(570, 575);
+            this.btn2_Exit.Location = new System.Drawing.Point(485, 578);
             this.btn2_Exit.Name = "btn2_Exit";
             this.btn2_Exit.Size = new System.Drawing.Size(75, 32);
             this.btn2_Exit.TabIndex = 58;
@@ -123,7 +123,7 @@ namespace InvoiceAdd
             // 
             this.btnOpenFile_Reset.BackColor = System.Drawing.SystemColors.Control;
             this.btnOpenFile_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenFile_Reset.Location = new System.Drawing.Point(529, 534);
+            this.btnOpenFile_Reset.Location = new System.Drawing.Point(444, 537);
             this.btnOpenFile_Reset.Name = "btnOpenFile_Reset";
             this.btnOpenFile_Reset.Size = new System.Drawing.Size(80, 32);
             this.btnOpenFile_Reset.TabIndex = 63;
@@ -160,7 +160,7 @@ namespace InvoiceAdd
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView1.Size = new System.Drawing.Size(637, 400);
+            this.dataGridView1.Size = new System.Drawing.Size(563, 400);
             this.dataGridView1.TabIndex = 64;
             // 
             // checkBox1
@@ -324,32 +324,29 @@ namespace InvoiceAdd
             this.textBox1.Location = new System.Drawing.Point(7, 40);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(637, 36);
+            this.textBox1.Size = new System.Drawing.Size(563, 36);
             this.textBox1.TabIndex = 83;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(242, 9);
+            this.label5.Location = new System.Drawing.Point(0, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(130, 25);
-            this.label5.TabIndex = 84;
-            this.label5.Text = "BOM INFO.";
+            this.label5.Size = new System.Drawing.Size(100, 23);
+            this.label5.TabIndex = 86;
             // 
             // tbProgramLog
             // 
-            this.tbProgramLog.Location = new System.Drawing.Point(675, 40);
+            this.tbProgramLog.Location = new System.Drawing.Point(587, 40);
             this.tbProgramLog.Multiline = true;
             this.tbProgramLog.Name = "tbProgramLog";
-            this.tbProgramLog.Size = new System.Drawing.Size(288, 442);
+            this.tbProgramLog.Size = new System.Drawing.Size(483, 567);
             this.tbProgramLog.TabIndex = 85;
             // 
             // frm1_InvoiceAdd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ClientSize = new System.Drawing.Size(976, 617);
+            this.ClientSize = new System.Drawing.Size(1086, 617);
             this.Controls.Add(this.tbProgramLog);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox1);
@@ -958,21 +955,23 @@ namespace InvoiceAdd
         void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
         {
             if (ItemInventoryAssemblyRetList == null) return;
+            string sequence = string.Empty;
+            string listID = string.Empty; ;
             for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
             {
                 IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
-                string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-                string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+                sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+                listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
             }
-            QBFC_ItemQuery();
-            //QBFC_ItemModify();
+            QBFC_ItemQuery(sequence, listID);
+            
             // modifyItem(requestMsgSet);
             //string icode = topLevelTbl.Rows[0][0].ToString();
             //tbProgramLog.AppendText(Environment.NewLine + "No. of matches to " + icode +": "+ ItemInventoryAssemblyRetList.Count.ToString());
         }
         
-        private void QBFC_ItemQuery()
+        private void QBFC_ItemQuery(string sequence, string listID)
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -986,7 +985,7 @@ namespace InvoiceAdd
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-                queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl);
+                queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
 
                 //Connect to QuickBooks and begin a session
                 sessionManager.OpenConnection("", "Sample Code from OSR");
@@ -1002,7 +1001,7 @@ namespace InvoiceAdd
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                WalkAllItemsQueryRs(responseMsgSet);
+                WalkAllItemsQueryRs(responseMsgSet, sequence, listID);
             }
             catch (Exception e)
             {
@@ -1018,7 +1017,7 @@ namespace InvoiceAdd
             }
         }
 
-        private void queryAllItems(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl)
+        private void queryAllItems(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID)
         {
             IItemQuery ItemQueryRq;
             List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
@@ -1036,7 +1035,7 @@ namespace InvoiceAdd
             }
         }
 
-        private void WalkAllItemsQueryRs(IMsgSetResponse responseMsgSet)
+        private void WalkAllItemsQueryRs(IMsgSetResponse responseMsgSet, string sequence, string listID)
         {
             if (responseMsgSet == null) return;
             IResponseList responseList = responseMsgSet.ResponseList;
@@ -1059,101 +1058,155 @@ namespace InvoiceAdd
                          {
                              //upcast to more specific type here, this is safe because we checked with response.Type check above
                              IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
-                             WalkAllItemsQueryRet(ItemRetList);
+                             WalkAllItemsQueryRet(ItemRetList, sequence, listID);
                          }
                     }
                 }
             }
         }
 
-        private void WalkAllItemsQueryRet(IORItemRetList ItemRetList)
+        private void WalkAllItemsQueryRet(IORItemRetList ItemRetList, string sequence, string listID)
         {
 
-            
+
             //    string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
             //    string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
             //    tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
             //}
+            // List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
+            //foreach (string itemCode in itemCodes)
+            //{
+            //List<string> itemListID = new List<string>();
+            string itemListID = string.Empty;
+            string itemName = string.Empty;
             if (ItemRetList == null) return;
             for (int y = 0; y < ItemRetList.Count; y++)
             {
                 IORItemRet ItemRet = ItemRetList.GetAt(y);
+                itemListID = ItemRet.ItemInventoryRet.ListID.GetValue();
+                //itemListID.Add(iListID);
                 string itemSequence = (string)ItemRet.ItemInventoryRet.EditSequence.GetValue();
-                string itemListID = (string)ItemRet.ItemInventoryRet.ListID.GetValue();
-                string itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
+                //itemListID = (string)ItemRet.ItemInventoryRet.ListID.GetValue();
+                itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
                 //string itemServiceDesc = (string)ItemRet.ItemServiceRet.SalesDesc.GetValue() ?? (string)ItemRet.ItemServiceRet.PurchaseDesc.GetValue();
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
+
+                tbProgramLog.AppendText(Environment.NewLine + "List: " + itemListID);
                 //+ Environment.NewLine + "Desc: " + itemServiceDesc);
             }
+            QBFC_ItemModify(sequence, listID, itemListID, itemName);
             // modifyItem(requestMsgSet);
             //string icode = topLevelTbl.Rows[0][0].ToString();
             //tbProgramLog.AppendText(Environment.NewLine + "No. of matches to " + icode +": "+ ItemInventoryAssemblyRetList.Count.ToString());
         }
 
-        //private void QBFC_ItemModify()
-        //{
-        //    bool sessionBegun = false;
-        //    bool connectionOpen = false;
-        //    QBSessionManager sessionManager = null;
+        private void QBFC_ItemModify(string sequence, string listID, /*List<*/string/*>*/ itemListID, string itemName)
+        {
+            bool sessionBegun = false;
+            bool connectionOpen = false;
+            QBSessionManager sessionManager = null;
 
-        //    try
-        //    {
-        //        Create the session Manager object
-        //        sessionManager = new QBSessionManager();
-        //        Create the message set request object to hold our request
-        //        IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
-        //        requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+            try
+            {
+                //Create the session Manager object
+                sessionManager = new QBSessionManager();
+                //Create the message set request object to hold our request
+                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-        //       modifyItem(requestMsgSet, secondLevelTbl, topLevelTbl);
+                modifyItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID, itemListID);
 
-        //        Connect to QuickBooks and begin a session
-        //        sessionManager.OpenConnection("", "Sample Code from OSR");
-        //        connectionOpen = true;
-        //        sessionManager.BeginSession("", ENOpenMode.omDontCare);
-        //        sessionBegun = true;
-        //        Send the request and get the response from QuickBooks
-        //        tbProgramLog.AppendText(requestMsgSet.ToXMLString());
-        //        IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-        //        End the session and close the connection to QuickBooks
-        //        sessionManager.EndSession();
-        //        sessionBegun = false;
-        //        sessionManager.CloseConnection();
-        //        connectionOpen = false;
+                //Connect to QuickBooks and begin a session
+                sessionManager.OpenConnection("", "Sample Code from OSR");
+                connectionOpen = true;
+                sessionManager.BeginSession("", ENOpenMode.omDontCare);
+                sessionBegun = true;
+                //Send the request and get the response from QuickBooks
+                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+                //End the session and close the connection to QuickBooks
+                sessionManager.EndSession();
+                sessionBegun = false;
+                sessionManager.CloseConnection();
+                connectionOpen = false;
 
-        //        WalkItemsModifyRs(responseMsgSet);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        tbProgramLog.AppendText(e.Message);
-        //        if (sessionBegun)
-        //        {
-        //            sessionManager.EndSession();
-        //        }
-        //        if (connectionOpen)
-        //        {
-        //            sessionManager.CloseConnection();
-        //        }
-        //    }
-        //}
+                WalkItemsModifyRs(responseMsgSet);
+            }
+            catch (Exception e)
+            {
+                tbProgramLog.AppendText(e.Message);
+                if (sessionBegun)
+                {
+                    sessionManager.EndSession();
+                }
+                if (connectionOpen)
+                {
+                    sessionManager.CloseConnection();
+                }
+            }
+        }
 
-        //private void modifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl)
-        //{
-        //    IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
-        //    ItemInventoryAssemblyModRq.ListID.SetValue(topLevelTbl.Rows[0][0].ToString());
-        //    ItemInventoryAssemblyModRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
-        //    ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
-        //    ItemInventoryAssemblyModRq.EditSequence.SetValue();
+        private void modifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, /*List<*/string/*>*/ itemListID)
+        {
+            IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
+            ItemInventoryAssemblyModRq.ListID.SetValue(listID);
+            ItemInventoryAssemblyModRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
+            ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
+            ItemInventoryAssemblyModRq.EditSequence.SetValue(sequence);
+            IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
 
-        //    for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
-        //    {
-        //        IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
-        //        ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue();
-        //        ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
-        //        ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
-        //    }
-        //    tbProgramLog.AppendText(Environment.NewLine + "HELLO WORLD");
-        //}
+            //foreach (string itemCode in itemListID)
+            //{
+            //    ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(itemCode);
+            //}
+            //List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
+
+            for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
+            {
+
+                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(itemListID);
+                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
+                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
+            }
+            
+        }
+
+
+        private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet)
+        {
+            if (responseMsgSet == null) return;
+            IResponseList responseList = responseMsgSet.ResponseList;
+            if (responseList == null) return;
+            //if we sent only one request, there is only one response, we'll walk the list for this sample
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+                //check the status code of the response, 0=ok, >0 is warning
+                if (response.StatusCode >= 0)
+                {
+                    //the request-specific response is in the details, make sure we have some
+                    if (response.Detail != null)
+                    {
+                        //make sure the response is the type we're expecting
+                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                        if (responseType == ENResponseType.rtItemInventoryAssemblyModRs)
+                        {
+                            //upcast to more specific type here, this is safe because we checked with response.Type check above
+                            IItemInventoryAssemblyRet ItemModifyRet = (IItemInventoryAssemblyRet)response.Detail;
+                            WalkItemModifyRet(ItemModifyRet);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void WalkItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet)
+        {
+            if (ItemModifyRet == null) return;
+            tbProgramLog.AppendText(Environment.NewLine + "HELLO WORLD");
+
+        }
 
         private void btn1_Send_Click_1(object sender, EventArgs e)
         {
@@ -1166,6 +1219,7 @@ namespace InvoiceAdd
                 tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
             }
         }
+     
     }
 }
 
