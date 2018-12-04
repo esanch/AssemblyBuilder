@@ -1076,10 +1076,11 @@ namespace InvoiceAdd
             // List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
             //foreach (string itemCode in itemCodes)
             //{
-            //List<string> itemListID = new List<string>();
+            //List<string> itemList = new List<string>();
             string itemListID = string.Empty;
             string itemName = string.Empty;
             if (ItemRetList == null) return;
+
             for (int y = 0; y < ItemRetList.Count; y++)
             {
                 IORItemRet ItemRet = ItemRetList.GetAt(y);
@@ -1089,12 +1090,14 @@ namespace InvoiceAdd
                 //itemListID = (string)ItemRet.ItemInventoryRet.ListID.GetValue();
                 itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
                 //string itemServiceDesc = (string)ItemRet.ItemServiceRet.SalesDesc.GetValue() ?? (string)ItemRet.ItemServiceRet.PurchaseDesc.GetValue();
+                //itemList.Add(itemListID);
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
 
-                tbProgramLog.AppendText(Environment.NewLine + "List: " + itemListID);
+                
                 //+ Environment.NewLine + "Desc: " + itemServiceDesc);
             }
+           // tbProgramLog.AppendText(Environment.NewLine + "List: " + itemList);
             QBFC_ItemModify(sequence, listID, itemListID, itemName);
             // modifyItem(requestMsgSet);
             //string icode = topLevelTbl.Rows[0][0].ToString();
@@ -1131,7 +1134,7 @@ namespace InvoiceAdd
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                WalkItemsModifyRs(responseMsgSet);
+                WalkItemsModifyRs(responseMsgSet, itemListID);
             }
             catch (Exception e)
             {
@@ -1154,7 +1157,6 @@ namespace InvoiceAdd
             ItemInventoryAssemblyModRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
             ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
             ItemInventoryAssemblyModRq.EditSequence.SetValue(sequence);
-            IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
 
             //foreach (string itemCode in itemListID)
             //{
@@ -1162,9 +1164,15 @@ namespace InvoiceAdd
             //}
             //List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
 
+            //foreach (DataRow item in secondLevelTbl.Rows)
+            //{
+            //    ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(itemListID);
+
+            //}
+
             for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
             {
-
+                IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
                 ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(itemListID);
                 ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
                 ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
@@ -1173,7 +1181,7 @@ namespace InvoiceAdd
         }
 
 
-        private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet)
+        private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet, string itemListID)
         {
             if (responseMsgSet == null) return;
             IResponseList responseList = responseMsgSet.ResponseList;
@@ -1194,17 +1202,31 @@ namespace InvoiceAdd
                         {
                             //upcast to more specific type here, this is safe because we checked with response.Type check above
                             IItemInventoryAssemblyRet ItemModifyRet = (IItemInventoryAssemblyRet)response.Detail;
-                            WalkItemModifyRet(ItemModifyRet);
+                            WalkItemModifyRet(ItemModifyRet, itemListID);
                         }
                     }
                 }
             }
         }
 
-        private void WalkItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet)
+        private void WalkItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet, string itemListID)
         {
             if (ItemModifyRet == null) return;
-            tbProgramLog.AppendText(Environment.NewLine + "HELLO WORLD");
+            //List<char> itemCodes = itemListID.ToList();
+            //foreach (char itemCode in itemCodes)
+            //{
+            //    tbProgramLog.AppendText(Environment.NewLine + "test: " + itemCodes);
+
+            //}
+            //for (int i = 0; i < itemListID.ToList().Count; i++)
+            //{
+            //    string EditSequence = (string)ItemModifyRet.EditSequence.GetValue();
+            //    string ListID = (string)ItemModifyRet.ListID.GetValue();
+            //}
+
+
+            //+ Environment.NewLine + "Desc: " + itemServiceDesc);
+
 
         }
 
