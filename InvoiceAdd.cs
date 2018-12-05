@@ -1137,7 +1137,7 @@ namespace InvoiceAdd
                         if (responseType == ENResponseType.rtItemInventoryAssemblyModRs)
                         {
                             //upcast to more specific type here, this is safe because we checked with response.Type check above
-                            IItemInventoryAssemblyRet ItemModifyRet = (IItemInventoryAssemblyRet)response.Detail;
+                            IItemInventoryAssemblyRetList ItemModifyRet = (IItemInventoryAssemblyRetList)response.Detail;
                             WalkItemModifyRet(ItemModifyRet, itemListID);
                         }
                     }
@@ -1145,9 +1145,17 @@ namespace InvoiceAdd
             }
         }
 
-        private void WalkItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet, string itemListID)
+        private void WalkItemModifyRet(IItemInventoryAssemblyRetList ItemModifyRet, string itemListID)
         {
             if (ItemModifyRet == null) return;
+            for (int x = 0; x < ItemModifyRet.Count; x++)
+            {
+                IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemModifyRet.GetAt(x);
+                string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+                string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+            }
+            
         }
 
         private void btn1_Send_Click_1(object sender, EventArgs e)
