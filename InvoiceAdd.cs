@@ -1036,6 +1036,7 @@ namespace InvoiceAdd
         private void WalkAllItemsQueryRet(IORItemRetList ItemRetList, string sequence, string listID)
         {
             string itemListID = string.Empty;
+            //List<string> itemListID = new List<string>();
             string itemName = string.Empty;
             if (ItemRetList == null) return;
 
@@ -1108,12 +1109,13 @@ namespace InvoiceAdd
 
             for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
             {
+
                 IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
-                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(itemListID);
+                //ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(itemListID);
                 ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
                 ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
-
             }
+            tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
         }
 
 
@@ -1137,27 +1139,43 @@ namespace InvoiceAdd
                         if (responseType == ENResponseType.rtItemInventoryAssemblyModRs)
                         {
                             //upcast to more specific type here, this is safe because we checked with response.Type check above
-                            IItemInventoryAssemblyRetList ItemModifyRet = (IItemInventoryAssemblyRetList)response.Detail;
+                            IItemInventoryAssemblyRet ItemModifyRet = (IItemInventoryAssemblyRet)response.Detail;
                             WalkItemModifyRet(ItemModifyRet, itemListID);
+                            //IItemInventoryAssemblyRetList ItemModifyRet = (IItemInventoryAssemblyRetList)response.Detail;
+                            //IItemInventoryAssemblyRet IIAR = (IItemInventoryAssemblyRet)response.Detail;
+                            //WalkItemModifyRet(ItemModifyRet, itemListID);
                         }
                     }
                 }
             }
         }
 
-        private void WalkItemModifyRet(IItemInventoryAssemblyRetList ItemModifyRet, string itemListID)
+        private void WalkItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet, string itemListID)
         {
             if (ItemModifyRet == null) return;
-            for (int x = 0; x < ItemModifyRet.Count; x++)
-            {
-                IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemModifyRet.GetAt(x);
-                string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-                string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-            }
+            //for (int x = 0; x < ItemModifyRet.Count; x++)
+            //{
+            //    IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemModifyRet.GetAt(x);
+                //string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+                //string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+                //itemListID = ItemInventoryAssemblyRet.ListID.GetValue();
+                //tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+                /*tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListID);*/
+                processItemModifyRet(ItemModifyRet, itemListID);
+           // }
             
+            
+
         }
 
+        private void processItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet, string itemListID)
+        {
+            string sequence = (string)ItemModifyRet.EditSequence.GetValue();
+            string listID = (string)ItemModifyRet.ListID.GetValue();
+            itemListID = ItemModifyRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+            tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListID);
+        }
         private void btn1_Send_Click_1(object sender, EventArgs e)
         {
             if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
