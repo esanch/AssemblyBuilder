@@ -902,28 +902,32 @@ namespace InvoiceAdd
                 {
                     if (response.StatusCode == 1)
                     {
-                        tbProgramLog.AppendText(Environment.NewLine + "Call add method");
-                        //addItem(requestMsgSet);
+                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                        if (responseType == ENResponseType.rtItemInventoryAssemblyQueryRs)
+                        {
+                            tbProgramLog.AppendText(Environment.NewLine + "Call add method");
+                            checkTheResponseStatus(responseMsgSet);//addItem(requestMsgSet);
+                        }
                     }
                     else if (response.StatusCode == 0)
                     {
-                        //the request-specific response is in the details, make sure we have some
                         if (response.Detail != null)
                         {
-                            //make sure the response is the type we're expecting
                             ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                             if (responseType == ENResponseType.rtItemInventoryAssemblyQueryRs)
                             {
-                                //upcast to more specific type here, this is safe because we checked with response.Type check above
-                                IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList = (IItemInventoryAssemblyRetList)response.Detail;
-                                WalkItemInventoryAssemblyRet(ItemInventoryAssemblyRetList);
+                                checkTheResponseStatus(responseMsgSet);//addItem(requestMsgSet);
+
+                                //IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList = (IItemInventoryAssemblyRetList)response.Detail;
+                                //WalkItemInventoryAssemblyRet(ItemInventoryAssemblyRetList);
+
                             }
                         }
                     }
                 }
             }
         }
-        
+
         void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
         {
             if (ItemInventoryAssemblyRetList == null) return;
@@ -1049,10 +1053,35 @@ namespace InvoiceAdd
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
+            //checkTheResponseStatus(responseMsgSet);
+            
             QBFC_ItemModify(sequence, listID, itemListID, itemName);
         }
 
-        private void QBFC_ItemModify(string sequence, string listID, /*List<*/string/*>*/ itemListID, string itemName)
+        private void checkTheResponseStatus(IMsgSetResponse responseMsgSet)
+        {
+            IResponseList responseList = responseMsgSet.ResponseList;
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+                
+                if (response.StatusCode >= 0)
+                {
+                    if (response.StatusCode == 1)
+                    {
+                        //QBFC_ItemAdd();
+                        tbProgramLog.AppendText(Environment.NewLine + "code correctly ran");
+                    }
+                    if (response.StatusCode == 0)
+                    {
+                       // QBFC_ItemModify();
+                        tbProgramLog.AppendText(Environment.NewLine + "Modified");
+                    }
+                }
+            }
+        }
+
+        private void QBFC_ItemModify(string sequence, string listID, string itemListID, string itemName)
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -1098,7 +1127,7 @@ namespace InvoiceAdd
             }
         }
 
-        private void modifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, /*List<*/string/*>*/ itemListID)
+        private void modifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, string itemListID)
         {
             IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
             ItemInventoryAssemblyModRq.ListID.SetValue(listID);
