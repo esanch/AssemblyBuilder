@@ -1304,27 +1304,23 @@ namespace InvoiceAdd
             tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
-            
-            //if we sent only one request, there is only one response, we'll walk the list for this sample
+
+            //code goes wrong here...
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
-                //check the status code of the response, 0=ok, >0 is warning
+
                 if (response.StatusCode >= 0)
                 {
-                    //the request-specific response is in the details, make sure we have some
-                    //if (response.Detail != null)
-                    //{
-                    tbProgramLog.AppendText(Environment.NewLine + "Edit");
-                        //make sure the response is the type we're expecting
+                    if (response.Detail != null)
+                    {
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
                         {
-                            //upcast to more specific type here, this is safe because we checked with response.Type check above
                             IItemInventoryAssemblyRet ItemInventoryAssemblyRet = (IItemInventoryAssemblyRet)response.Detail;
                             WalkItemInventoryAssemblyRet(ItemInventoryAssemblyRet);
                         }
-                   // }
+                    }
                 }
             }
         }
@@ -1334,6 +1330,7 @@ namespace InvoiceAdd
             tbProgramLog.AppendText(Environment.NewLine + "Before error");
             if (ItemInventoryAssemblyRet == null) return;
             tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
+            //string statusCode = (string)ItemInventoryAssemblyRet.stat
             string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
             string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
             
