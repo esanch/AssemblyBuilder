@@ -492,7 +492,7 @@ namespace InvoiceAdd
             checkBox12.Checked = false;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = @"C:\Users\Elizabeth.Earl\source\repos\ConsoleApp2\ConsoleApp2\";
+                //openFileDialog.InitialDirectory = @"C:\Users\Elizabeth.Earl\source\repos\ConsoleApp2\ConsoleApp2\";
                 openFileDialog.Filter = "xml files (*.xml)|*.xml";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
@@ -530,6 +530,10 @@ namespace InvoiceAdd
                     " FROM[dat8121].[dbo].[I_ItemCode]" +
                     " where TRY_CAST(ItemCode as nvarchar) = '" + input +
                     "' OR TRY_CAST(ItemCode as nvarchar) = '" + cut + "'", connectionString);
+                /*select a.ItemCode,a.Description,b.itemcode as QBName from v_ItemCode_qb b
+right join i_itemcode a on a.itemcode=b.ItemCode
+where a.itemcode =25000000*/
+
                 dataAdapter.Fill(topLevelTbl);
                 dtReturnValue = topLevelTbl.Clone();
 
@@ -781,19 +785,20 @@ namespace InvoiceAdd
                         y => y.Value.ToUpper().Contains("PART")).Key
                         ).FirstOrDefault().Attribute("value") ?? "N/A",
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("DES")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("DES")).Key
-                        ).FirstOrDefault().Attribute("value") ?? "N/A",
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("DES")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("DES")).Key).Attribute("value") ?? "N/A",
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("Q")).Key
-                    ).FirstOrDefault() == null ?
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("Q")).Key) == null ?
                     null : (int?)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
                         y => y.Value.ToUpper().Contains("Q")).Key
-                        ).FirstOrDefault().Attribute("value") ?? null
+                        ).FirstOrDefault()
+                               ?.Attribute("value") ?? null
                 );
             }
             checkBox9.Checked = true;
@@ -843,6 +848,7 @@ namespace InvoiceAdd
             {
                 tbProgramLog.AppendText(Environment.NewLine + "Add Item Method");
                 QBFC_ItemAdd();
+               QBFC_InventoryAssemblyQuery();
             }
             else
             {
@@ -863,7 +869,7 @@ namespace InvoiceAdd
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-                queryItemAssembly(requestMsgSet, secondLevelTbl, topLevelTbl);
+                queryItemAssembly(requestMsgSet, topLevelTbl);
 
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
@@ -892,7 +898,7 @@ namespace InvoiceAdd
             }
         }
 
-        void queryItemAssembly(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl)
+        void queryItemAssembly(IMsgSetRequest requestMsgSet, DataTable topLevelTbl)
         {
 
             IItemInventoryAssemblyQuery ItemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
@@ -904,8 +910,7 @@ namespace InvoiceAdd
 
         void WalkItemInventoryAssemblyQueryRs(IMsgSetResponse responseMsgSet)
         {
-            if (responseMsgSet == null) return;
-            IResponseList responseList = responseMsgSet.ResponseList;
+            IResponseList responseList = responseMsgSet?.ResponseList;
             if (responseList == null) return;
 
             for (int i = 0; i < responseList.Count; i++)
@@ -1340,17 +1345,20 @@ namespace InvoiceAdd
 
         private void BuildItemInventoryAssemblyAddRq(IMsgSetRequest requestMsgSet)
         {
+            string AssetAccountRef = "800001A9-1511318480";
+            string COGSAccountRefListID = "800001E1-1537737142";
+            string IncomeAccountRefListID = "570000-1136323777";
             IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
-            ItemInventoryAssemblyAddRq.Name.SetValue("14000000");//topLevelTbl.Rows[0][0].ToString());
-            ItemInventoryAssemblyAddRq.SalesDesc.SetValue("TEST ITEM");
-            ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue("TEST ITEM");
-            for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
-            {
-                IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyAddRq.ItemInventoryAssemblyLineList.Append();
-                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(secondLevelTbl.Rows[i][0].ToString());
-                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
-                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
-            }
+            DataRow row = topLevelTbl.Rows[0];
+            ItemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
+            ItemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
+            ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
+            ItemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(AssetAccountRef);
+            ItemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccountRefListID);
+            ItemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccountRefListID);
+
+
+
         }
 
         //private void addItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, string itemListID)
