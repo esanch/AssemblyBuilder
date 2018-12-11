@@ -1142,6 +1142,10 @@ where a.itemcode =25000000*/
 
                 if (response.StatusCode >= 0)
                 {
+                    if (response.StatusCode == 1)
+                    {
+                        QBFC_ItemAdd();
+                    }
                     if (response.Detail != null)
                     {
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
@@ -1150,12 +1154,6 @@ where a.itemcode =25000000*/
                             IORItemRetList itemRetList = (IORItemRetList)response.Detail;
                             WalkAllItemsQueryRet(itemRetList, sequence, listId);
                         }
-                        //else if (responseType == ENResponseType.rtItemInventoryAssemblyQueryRs)
-                        //{
-                        //    //upcast to more specific type here, this is safe because we checked with response.Type check above
-                        //    IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList = (IItemInventoryAssemblyRetList)response.Detail;
-                        //    WalkAllItemsQueryRet(ItemInventoryAssemblyRetList, sequence, listID);
-                        //}
                     }
                 }
             }
@@ -1167,32 +1165,77 @@ where a.itemcode =25000000*/
             string itemName = string.Empty;
             string itemSequence = string.Empty;
             if (itemRetList == null) return;
-            
+           
             for (int y = 0; y < itemRetList.Count; y++)
             {
                 IORItemRet itemRet = itemRetList.GetAt(y);
                 if (itemRet.ItemInventoryAssemblyRet != null)
                 {
-                    tbProgramLog.AppendText("Error is fixed");
                     itemListId = itemRet.ItemInventoryAssemblyRet.ListID.GetValue();
                     itemSequence = (string)itemRet.ItemInventoryAssemblyRet.EditSequence.GetValue();
                     itemName = (string)itemRet.ItemInventoryAssemblyRet.Name.GetValue();
                 }
                 else if (itemRet.ItemInventoryRet != null)
                 { 
-                itemListId = itemRet.ItemInventoryRet.ListID.GetValue();
-                itemSequence = (string)itemRet.ItemInventoryRet.EditSequence.GetValue();
-                itemName = (string)itemRet.ItemInventoryRet.Name.GetValue();
+                    itemListId = itemRet.ItemInventoryRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemInventoryRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemInventoryRet.Name.GetValue();
+                }
+                else if (itemRet.ItemNonInventoryRet != null)
+                {
+                    itemListId = itemRet.ItemNonInventoryRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemNonInventoryRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemNonInventoryRet.Name.GetValue();
+                }
+                else if (itemRet.ItemSubtotalRet != null)
+                {
+                    itemListId = itemRet.ItemSubtotalRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemSubtotalRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemSubtotalRet.Name.GetValue();
+                }
+                else if (itemRet.ItemDiscountRet != null)
+                {
+                    itemListId = itemRet.ItemDiscountRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemDiscountRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemDiscountRet.Name.GetValue();
+                }
+                else if (itemRet.ItemPaymentRet != null)
+                {
+                    itemListId = itemRet.ItemPaymentRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemPaymentRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemPaymentRet.Name.GetValue();
+                }
+                else if (itemRet.ItemSalesTaxRet != null)
+                {
+                    itemListId = itemRet.ItemSalesTaxRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemSalesTaxRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemSalesTaxRet.Name.GetValue();
+                }
+                else if (itemRet.ItemSalesTaxGroupRet != null)
+                {
+                    itemListId = itemRet.ItemSalesTaxGroupRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemSalesTaxGroupRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemSalesTaxGroupRet.Name.GetValue();
+                }
+                else if (itemRet.ItemGroupRet != null)
+                {
+                    itemListId = itemRet.ItemGroupRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemGroupRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemGroupRet.Name.GetValue();
+                }
+                else if ((itemRet.ItemGroupRet == null) || (itemRet.ItemSalesTaxGroupRet == null) || (itemRet.ItemSalesTaxRet == null) || (itemRet.ItemPaymentRet == null)
+                         || (itemRet.ItemDiscountRet == null) || (itemRet.ItemInventoryAssemblyRet != null) || (itemRet.ItemInventoryRet != null)
+                         || (itemRet.ItemNonInventoryRet != null) || (itemRet.ItemSubtotalRet != null))
+                {
+                    tbProgramLog.AppendText("This is where the error is generated");
+                    QBFC_ItemAdd();
                 }
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
-
-            
-
                 QBFC_ItemModify(sequence, listId, itemListId, itemName);
         }
-        
+
         private void QBFC_ItemModify(string sequence, string listID, string itemListID, string itemName)
         {
             bool sessionBegun = false;
