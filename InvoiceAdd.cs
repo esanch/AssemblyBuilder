@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace InvoiceAdd
 {
-    public class frm1_InvoiceAdd : System.Windows.Forms.Form
+    public class Frm1InvoiceAdd : System.Windows.Forms.Form
     {
         private System.ComponentModel.Container components = null;
         private System.Windows.Forms.Button btn1_Send;
@@ -45,7 +45,7 @@ namespace InvoiceAdd
         private TextBox tbProgramLog;
         bool ifError = false;
 
-        public frm1_InvoiceAdd()
+        public Frm1InvoiceAdd()
         {
             InitializeComponent();
         }
@@ -99,7 +99,7 @@ namespace InvoiceAdd
             // 
             this.btn1_Send.BackColor = System.Drawing.SystemColors.Control;
             this.btn1_Send.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.btn1_Send.Location = new System.Drawing.Point(397, 578);
+            this.btn1_Send.Location = new System.Drawing.Point(394, 717);
             this.btn1_Send.Name = "btn1_Send";
             this.btn1_Send.Size = new System.Drawing.Size(80, 32);
             this.btn1_Send.TabIndex = 57;
@@ -111,7 +111,7 @@ namespace InvoiceAdd
             // 
             this.btn2_Exit.BackColor = System.Drawing.SystemColors.Control;
             this.btn2_Exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn2_Exit.Location = new System.Drawing.Point(485, 578);
+            this.btn2_Exit.Location = new System.Drawing.Point(482, 717);
             this.btn2_Exit.Name = "btn2_Exit";
             this.btn2_Exit.Size = new System.Drawing.Size(75, 32);
             this.btn2_Exit.TabIndex = 58;
@@ -123,7 +123,7 @@ namespace InvoiceAdd
             // 
             this.btnOpenFile_Reset.BackColor = System.Drawing.SystemColors.Control;
             this.btnOpenFile_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenFile_Reset.Location = new System.Drawing.Point(444, 537);
+            this.btnOpenFile_Reset.Location = new System.Drawing.Point(441, 676);
             this.btnOpenFile_Reset.Name = "btnOpenFile_Reset";
             this.btnOpenFile_Reset.Size = new System.Drawing.Size(80, 32);
             this.btnOpenFile_Reset.TabIndex = 63;
@@ -150,7 +150,7 @@ namespace InvoiceAdd
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.Location = new System.Drawing.Point(7, 82);
+            this.dataGridView1.Location = new System.Drawing.Point(7, 124);
             this.dataGridView1.Name = "dataGridView1";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
@@ -160,13 +160,13 @@ namespace InvoiceAdd
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView1.Size = new System.Drawing.Size(563, 400);
+            this.dataGridView1.Size = new System.Drawing.Size(563, 483);
             this.dataGridView1.TabIndex = 64;
             // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(138, 488);
+            this.checkBox1.Location = new System.Drawing.Point(135, 627);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(44, 17);
             this.checkBox1.TabIndex = 65;
@@ -176,7 +176,7 @@ namespace InvoiceAdd
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(247, 488);
+            this.checkBox2.Location = new System.Drawing.Point(244, 627);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(40, 17);
             this.checkBox2.TabIndex = 66;
@@ -186,7 +186,7 @@ namespace InvoiceAdd
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(333, 488);
+            this.checkBox3.Location = new System.Drawing.Point(330, 627);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(119, 17);
             this.checkBox3.TabIndex = 67;
@@ -196,7 +196,7 @@ namespace InvoiceAdd
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(138, 511);
+            this.checkBox4.Location = new System.Drawing.Point(135, 650);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(86, 17);
             this.checkBox4.TabIndex = 68;
@@ -206,7 +206,7 @@ namespace InvoiceAdd
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(247, 511);
+            this.checkBox5.Location = new System.Drawing.Point(244, 650);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(71, 17);
             this.checkBox5.TabIndex = 69;
@@ -216,7 +216,7 @@ namespace InvoiceAdd
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(333, 511);
+            this.checkBox6.Location = new System.Drawing.Point(330, 650);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(85, 17);
             this.checkBox6.TabIndex = 70;
@@ -226,7 +226,7 @@ namespace InvoiceAdd
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(419, 511);
+            this.checkBox7.Location = new System.Drawing.Point(416, 650);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(79, 17);
             this.checkBox7.TabIndex = 71;
@@ -236,7 +236,7 @@ namespace InvoiceAdd
             // checkBox9
             // 
             this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(138, 534);
+            this.checkBox9.Location = new System.Drawing.Point(135, 673);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(44, 17);
             this.checkBox9.TabIndex = 73;
@@ -246,7 +246,7 @@ namespace InvoiceAdd
             // checkBox10
             // 
             this.checkBox10.AutoSize = true;
-            this.checkBox10.Location = new System.Drawing.Point(247, 534);
+            this.checkBox10.Location = new System.Drawing.Point(244, 673);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(40, 17);
             this.checkBox10.TabIndex = 74;
@@ -256,7 +256,7 @@ namespace InvoiceAdd
             // checkBox11
             // 
             this.checkBox11.AutoSize = true;
-            this.checkBox11.Location = new System.Drawing.Point(138, 559);
+            this.checkBox11.Location = new System.Drawing.Point(135, 698);
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(44, 17);
             this.checkBox11.TabIndex = 75;
@@ -266,7 +266,7 @@ namespace InvoiceAdd
             // checkBox12
             // 
             this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(247, 559);
+            this.checkBox12.Location = new System.Drawing.Point(244, 698);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(40, 17);
             this.checkBox12.TabIndex = 76;
@@ -276,7 +276,7 @@ namespace InvoiceAdd
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(505, 511);
+            this.checkBox8.Location = new System.Drawing.Point(502, 650);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(65, 17);
             this.checkBox8.TabIndex = 72;
@@ -286,7 +286,7 @@ namespace InvoiceAdd
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 492);
+            this.label1.Location = new System.Drawing.Point(4, 631);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 13);
             this.label1.TabIndex = 77;
@@ -295,7 +295,7 @@ namespace InvoiceAdd
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 515);
+            this.label2.Location = new System.Drawing.Point(4, 654);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(124, 13);
             this.label2.TabIndex = 78;
@@ -304,7 +304,7 @@ namespace InvoiceAdd
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 537);
+            this.label3.Location = new System.Drawing.Point(4, 676);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 13);
             this.label3.TabIndex = 79;
@@ -313,7 +313,7 @@ namespace InvoiceAdd
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 562);
+            this.label4.Location = new System.Drawing.Point(4, 701);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(98, 13);
             this.label4.TabIndex = 80;
@@ -324,7 +324,7 @@ namespace InvoiceAdd
             this.textBox1.Location = new System.Drawing.Point(7, 40);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(563, 36);
+            this.textBox1.Size = new System.Drawing.Size(563, 78);
             this.textBox1.TabIndex = 83;
             // 
             // label5
@@ -339,14 +339,14 @@ namespace InvoiceAdd
             this.tbProgramLog.Location = new System.Drawing.Point(587, 40);
             this.tbProgramLog.Multiline = true;
             this.tbProgramLog.Name = "tbProgramLog";
-            this.tbProgramLog.Size = new System.Drawing.Size(483, 567);
+            this.tbProgramLog.Size = new System.Drawing.Size(483, 709);
             this.tbProgramLog.TabIndex = 85;
             // 
-            // frm1_InvoiceAdd
+            // Frm1InvoiceAdd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.ClientSize = new System.Drawing.Size(1086, 617);
+            this.ClientSize = new System.Drawing.Size(1082, 755);
             this.Controls.Add(this.tbProgramLog);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox1);
@@ -370,7 +370,7 @@ namespace InvoiceAdd
             this.Controls.Add(this.btnOpenFile_Reset);
             this.Controls.Add(this.btn2_Exit);
             this.Controls.Add(this.btn1_Send);
-            this.Name = "frm1_InvoiceAdd";
+            this.Name = "Frm1InvoiceAdd";
             this.Text = "Add an Item Inventory to QuickBooks";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -382,7 +382,7 @@ namespace InvoiceAdd
         [STAThread]
         static void Main()
         {
-            Application.Run(new frm1_InvoiceAdd());
+            Application.Run(new Frm1InvoiceAdd());
         }
 
         private void btn2_Exit_Click(object sender, System.EventArgs e)
@@ -526,12 +526,21 @@ namespace InvoiceAdd
                 DataSet DataSet1 = new DataSet();
                 DataView DataView1 = new DataView();
                 //DataTable topLevelTbl = new DataTable();
-               SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
-                    " FROM[dat8121].[dbo].[I_ItemCode]" +
-                    " where TRY_CAST(ItemCode as nvarchar) = '" + input +
-                    "' OR TRY_CAST(ItemCode as nvarchar) = '" + cut + "'", connectionString);
-                /*select a.ItemCode,a.Description,b.itemcode as QBName from v_ItemCode_qb b
-right join i_itemcode a on a.itemcode=b.ItemCode
+                SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.ItemCode, a.Description, c.[IncomeAccountRefListID], c.[COGSAccountRefListID], c.[AssetAccountRefListID]" +
+                " FROM [dat8121].[dbo].[v_ItemCode_QB] b"+
+                " RIGHT JOIN [dat8121].[dbo].[I_ItemCode] a ON a.itemcode = b.ItemCode" +
+                " RIGHT JOIN [QODBC].[dbo].[Tbl_Item] c ON a.ItemCode = TRY_CAST(c.fullname AS int) AND b.ItemCode = TRY_CAST(c.fullname AS int)" +
+                " WHERE a.itemcode = '" + input +
+                "' OR a.itemcode = '" + cut +"'"
+                    /*
+                    "SELECT  [ItemCode], [Description]" +
+                     " FROM[dat8121].[dbo].[I_ItemCode]" +
+                     " where TRY_CAST(ItemCode as nvarchar) = '" + input +
+                     "' OR TRY_CAST(ItemCode as nvarchar) = '" + cut + "'"
+                     */
+                    , connectionString);
+                /*select a.itemcode,a.description,b.itemcode as qbname from v_itemcode_qb b
+right join i_itemcode a on a.itemcode=b.itemcode
 where a.itemcode =25000000*/
 
                 dataAdapter.Fill(topLevelTbl);
@@ -545,7 +554,9 @@ where a.itemcode =25000000*/
                     {
                         if (input.Equals(fromData) == true)
                         {
-                            textBox1.Text = (topLevelTbl.Rows[0][0].ToString() + "\r\n" + topLevelTbl.Rows[0][1].ToString());
+                            textBox1.Text = (topLevelTbl.Rows[0][0].ToString() + "\r\n" + topLevelTbl.Rows[0][1].ToString() + "\r\n" + 
+                                             topLevelTbl.Rows[0][2].ToString() + "\r\n" + topLevelTbl.Rows[0][3].ToString() + "\r\n" +
+                                             topLevelTbl.Rows[0][4].ToString());
                             checkBox1.Checked = true;
                             ColumnCorrectOrder(sender, e, topLevelTbl);
                         }
@@ -854,18 +865,120 @@ where a.itemcode =25000000*/
         {
             if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
             {
-                QBFC_InventoryAssemblyQuery();
-            }
-            else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
-            {
-                tbProgramLog.AppendText(Environment.NewLine + "Add Item Method");
-                QBFC_ItemAdd();
-                QBFC_InventoryAssemblyQuery();
+            //    QBFC_InventoryAssemblyQuery();
+            //}
+            //else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
+            //{
+                /*ADD regardless if ItemCode exists or not*/
+                tbProgramLog.AppendText(Environment.NewLine + "Add then Modify the Item");
+                AddThenModify();
             }
             else
             {
                 tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
             }
+        }
+
+        private void AddThenModify()
+        {
+            QBFC_ItemAdd();
+            QBFC_InventoryAssemblyQuery();
+        }
+
+        private void QBFC_ItemAdd()
+        {
+            bool sessionBegun = false;
+            bool connectionOpen = false;
+            QBSessionManager sessionManager = null;
+
+            try
+            {
+                sessionManager = new QBSessionManager();
+
+                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+                BuildItemInventoryAssemblyAddRq(requestMsgSet);
+                //addItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID, itemListID);
+
+                sessionManager.OpenConnection("", "Sample Code from OSR");
+                connectionOpen = true;
+                sessionManager.BeginSession("", ENOpenMode.omDontCare);
+                sessionBegun = true;
+                
+                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+                //print xml string
+                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+                sessionManager.EndSession();
+                sessionBegun = false;
+                sessionManager.CloseConnection();
+                connectionOpen = false;
+
+                tbProgramLog.AppendText(Environment.NewLine + "Before WalkItemInventoryAssemblyAddRs");
+                WalkItemInventoryAssemblyAddRs(responseMsgSet);
+                tbProgramLog.AppendText(Environment.NewLine + "After WalkItemInventoryAssemblyAddRs");
+            }
+            catch (Exception e)
+            {
+                tbProgramLog.AppendText(e.Message);
+                if (sessionBegun)
+                {
+                    sessionManager.EndSession();
+                }
+                if (connectionOpen)
+                {
+                    sessionManager.CloseConnection();
+                }
+            }
+        }
+
+        private void BuildItemInventoryAssemblyAddRq(IMsgSetRequest requestMsgSet)
+        {
+            IItemInventoryAssemblyAdd itemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
+            DataRow row = topLevelTbl.Rows[0];
+            itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
+            itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
+            itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
+            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[2].ToString());
+            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[3].ToString());
+            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[4].ToString());
+        }
+
+        private void WalkItemInventoryAssemblyAddRs(IMsgSetResponse responseMsgSet)
+        {
+            if (responseMsgSet == null) return;
+            tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
+            IResponseList responseList = responseMsgSet.ResponseList;
+            if (responseList == null) return;
+
+            //code goes wrong here...
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+
+                if (response.StatusCode >= 0)
+                {
+                    if (response.Detail != null)
+                    {
+                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                        if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
+                        {
+                            IItemInventoryAssemblyRet itemInventoryAssemblyRet = (IItemInventoryAssemblyRet)response.Detail;
+                            WalkItemInventoryAssemblyRet(itemInventoryAssemblyRet);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
+        {
+            tbProgramLog.AppendText(Environment.NewLine + "Before error");
+            if (itemInventoryAssemblyRet == null) return;
+            tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
+            string sequence = (string)itemInventoryAssemblyRet.EditSequence.GetValue();
+            string listId = (string)itemInventoryAssemblyRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
         }
 
         private void QBFC_InventoryAssemblyQuery()
@@ -912,10 +1025,8 @@ where a.itemcode =25000000*/
 
         void QueryItemAssembly(IMsgSetRequest requestMsgSet, DataTable topLevelTbl)
         {
-
             IItemInventoryAssemblyQuery itemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
             IListWithClassFilter listWithClassFilter = itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
-
             listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
             itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
         }
@@ -962,23 +1073,7 @@ where a.itemcode =25000000*/
             }
             QBFC_ItemQuery(sequence, listId);
         }
-
-        //void WalkItemInventoryAssemblyRetWITHADD(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
-        //{
-        //    if (ItemInventoryAssemblyRetList != null) return;
-        //    string sequence = string.Empty;
-        //    string listID = string.Empty; ;
-        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
-        //    {
-        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
-        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-        //    }
-        //    QBFC_ItemQueryWITHADD(sequence, listID);
-        //    tbProgramLog.AppendText(Environment.NewLine + "Call add method");
-        //}
-
+        
         private void QBFC_ItemQuery(string sequence, string listId)
         {
             bool sessionBegun = false;
@@ -1022,57 +1117,13 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
-        //private void QBFC_ItemQueryWITHADD(string sequence, string listID)
-        //{
-        //    bool sessionBegun = false;
-        //    bool connectionOpen = false;
-        //    QBSessionManager sessionManager = null;
-
-        //    try
-        //    {
-        //        sessionManager = new QBSessionManager();
-
-        //        IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
-        //        requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
-
-        //        queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
-
-        //        sessionManager.OpenConnection("", "Sample Code from OSR");
-        //        connectionOpen = true;
-        //        sessionManager.BeginSession("", ENOpenMode.omDontCare);
-        //        sessionBegun = true;
-
-        //        tbProgramLog.AppendText(requestMsgSet.ToXMLString());
-        //        IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-
-        //        sessionManager.EndSession();
-        //        sessionBegun = false;
-        //        sessionManager.CloseConnection();
-        //        connectionOpen = false;
-
-        //        WalkAllItemsQueryRsWITHADD(responseMsgSet, sequence, listID);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        tbProgramLog.AppendText(e.Message);
-        //        if (sessionBegun)
-        //        {
-        //            sessionManager.EndSession();
-        //        }
-        //        if (connectionOpen)
-        //        {
-        //            sessionManager.CloseConnection();
-        //        }
-        //    }
-        //}
-
+        
         private void QueryAllItems(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl)
         {
             List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
             foreach (string itemCode in itemCodes)
             {
-                var itemQueryRq = requestMsgSet.AppendItemQueryRq();
+                IItemQuery itemQueryRq = requestMsgSet.AppendItemQueryRq();
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
             }
@@ -1109,86 +1160,39 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
-        //private void WalkAllItemsQueryRet(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList, string sequence, string listID)
-        //{
-        //    if (ItemInventoryAssemblyRetList == null) return;
-        //    sequence = string.Empty;
-        //    string itemListID = string.Empty;
-        //    string itemName = string.Empty;
-        //    listID = string.Empty; ;
-        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
-        //    {
-        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
-        //        itemListID = ItemInventoryAssemblyRet.ListID.GetValue();
-        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-        //        itemName = (string) ItemInventoryAssemblyRet.Name.GetValue();
-        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-        //    }
-        //    QBFC_ItemModify(sequence, listID, itemListID, itemName);
-        //}
-        //private void WalkAllItemsQueryRsWITHADD(IMsgSetResponse responseMsgSet, string sequence, string listID)
-            //{
-            //    if (responseMsgSet == null) return;
-            //    IResponseList responseList = responseMsgSet.ResponseList;
-            //    if (responseList == null) return;
-            //    for (int i = 0; i < responseList.Count; i++)
-            //    {
-            //        IResponse response = responseList.GetAt(i);
-            //        tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
-
-            //        if (response.StatusCode >= 0)
-            //        {
-            //            if (response.Detail != null)
-            //            {
-            //                ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-            //                if (responseType == ENResponseType.rtItemQueryRs)
-            //                {
-            //                    IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
-            //                    WalkAllItemsQueryRetWITHADD(ItemRetList, sequence, listID);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-            private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
+        
+        private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
             string itemListId = string.Empty;
             string itemName = string.Empty;
+            string itemSequence = string.Empty;
             if (itemRetList == null) return;
-
+            
             for (int y = 0; y < itemRetList.Count; y++)
             {
                 IORItemRet itemRet = itemRetList.GetAt(y);
+                if (itemRet.ItemInventoryAssemblyRet != null)
+                {
+                    tbProgramLog.AppendText("Error is fixed");
+                    itemListId = itemRet.ItemInventoryAssemblyRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemInventoryAssemblyRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemInventoryAssemblyRet.Name.GetValue();
+                }
+                else if (itemRet.ItemInventoryRet != null)
+                { 
                 itemListId = itemRet.ItemInventoryRet.ListID.GetValue();
-                string itemSequence = (string)itemRet.ItemInventoryRet.EditSequence.GetValue();
+                itemSequence = (string)itemRet.ItemInventoryRet.EditSequence.GetValue();
                 itemName = (string)itemRet.ItemInventoryRet.Name.GetValue();
+                }
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
-            QBFC_ItemModify(sequence, listId, itemListId, itemName);
+
+            
+
+                QBFC_ItemModify(sequence, listId, itemListId, itemName);
         }
-
-        //private void WalkAllItemsQueryRetWITHADD(IORItemRetList ItemRetList, string sequence, string listID)
-        //{
-        //    string itemListID = string.Empty;
-        //    string itemName = string.Empty;
-        //    if (ItemRetList == null) return;
-
-        //    for (int y = 0; y < ItemRetList.Count; y++)
-        //    {
-        //        IORItemRet ItemRet = ItemRetList.GetAt(y);
-        //        itemListID = ItemRet.ItemInventoryRet.ListID.GetValue();
-        //        string itemSequence = (string)ItemRet.ItemInventoryRet.EditSequence.GetValue();
-        //        itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
-        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
-        //        tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
-        //    }
-        //   // QBFC_ItemAdd(sequence, listID, itemListID, itemName);
-        //}
-
+        
         private void QBFC_ItemModify(string sequence, string listID, string itemListID, string itemName)
         {
             bool sessionBegun = false;
@@ -1247,7 +1251,7 @@ where a.itemcode =25000000*/
                 itemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
                 itemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
             }
-           // tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
+            // tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
         }
 
         private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet, string itemListId)
@@ -1280,121 +1284,11 @@ where a.itemcode =25000000*/
             if (itemModifyRet == null) return;
             string sequence = (string)itemModifyRet.EditSequence.GetValue();
             string listId = (string)itemModifyRet.ListID.GetValue();
-           // itemListId = itemModifyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
-           // tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListId);
         }
 
         //private void QBFC_ItemAdd(string sequence, string listID, string itemListID, string itemName)
-        private void QBFC_ItemAdd()
-        {
-            bool sessionBegun = false;
-            bool connectionOpen = false;
-            QBSessionManager sessionManager = null;
-
-            try
-            {
-                sessionManager = new QBSessionManager();
-
-                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
-                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
-
-                BuildItemInventoryAssemblyAddRq(requestMsgSet);
-                //addItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID, itemListID);
-
-                sessionManager.OpenConnection("", "Sample Code from OSR");
-                connectionOpen = true;
-                sessionManager.BeginSession("", ENOpenMode.omDontCare);
-                sessionBegun = true;
-                
-                //print xml string
-                
-                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
-                sessionManager.EndSession();
-                sessionBegun = false;
-                sessionManager.CloseConnection();
-                connectionOpen = false;
-
-                tbProgramLog.AppendText(Environment.NewLine + "Before WalkItemInventoryAssemblyAddRs");
-
-                WalkItemInventoryAssemblyAddRs(responseMsgSet);
-                tbProgramLog.AppendText(Environment.NewLine + "After WalkItemInventoryAssemblyAddRs");
-                //QBFC_InventoryAssemblyQuery();
-                //WalkItemsAddRs(responseMsgSet, itemListID);
-            }
-            catch (Exception e)
-            {
-                tbProgramLog.AppendText(e.Message);
-                if (sessionBegun)
-                {
-                    sessionManager.EndSession();
-                }
-                if (connectionOpen)
-                {
-                    sessionManager.CloseConnection();
-                }
-            }
-
-        }
-
-        private void WalkItemInventoryAssemblyAddRs(IMsgSetResponse responseMsgSet)
-        {
-            if (responseMsgSet == null) return;
-            tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
-            IResponseList responseList = responseMsgSet.ResponseList;
-            if (responseList == null) return;
-
-            //code goes wrong here...
-            for (int i = 0; i < responseList.Count; i++)
-            {
-                IResponse response = responseList.GetAt(i);
-
-                if (response.StatusCode >= 0)
-                {
-                    if (response.Detail != null)
-                    {
-                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-                        if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
-                        {
-                            IItemInventoryAssemblyRet itemInventoryAssemblyRet = (IItemInventoryAssemblyRet)response.Detail;
-                            WalkItemInventoryAssemblyRet(itemInventoryAssemblyRet);
-                        }
-                    }
-                }
-            }
-        }
-
-        private void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
-        {
-            tbProgramLog.AppendText(Environment.NewLine + "Before error");
-            if (itemInventoryAssemblyRet == null) return;
-            tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
-            string sequence = (string)itemInventoryAssemblyRet.EditSequence.GetValue();
-            string listId = (string)itemInventoryAssemblyRet.ListID.GetValue();
-            
-            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
-           
-        }
-
-        private void BuildItemInventoryAssemblyAddRq(IMsgSetRequest requestMsgSet)
-        {
-            string AssetAccountRef = "800001A9-1511318480";
-            string COGSAccountRefListID = "800001E1-1537737142";
-            string IncomeAccountRefListID = "570000-1136323777";
-            IItemInventoryAssemblyAdd itemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
-            DataRow row = topLevelTbl.Rows[0];
-            itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
-            itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
-            itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
-            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(AssetAccountRef);
-            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccountRefListID);
-            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccountRefListID);
-
-
-
-        }
-
+        
         //private void addItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, string itemListID)
         //{
         //    IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
@@ -1441,5 +1335,128 @@ where a.itemcode =25000000*/
         //    tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
         //    tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListID);
         //}
+
+
+        //void WalkItemInventoryAssemblyRetWITHADD(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
+        //{
+        //    if (ItemInventoryAssemblyRetList != null) return;
+        //    string sequence = string.Empty;
+        //    string listID = string.Empty; ;
+        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
+        //    {
+        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
+        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+        //    }
+        //    QBFC_ItemQueryWITHADD(sequence, listID);
+        //    tbProgramLog.AppendText(Environment.NewLine + "Call add method");
+        //}
+
+        //private void QBFC_ItemQueryWITHADD(string sequence, string listID)
+        //{
+        //    bool sessionBegun = false;
+        //    bool connectionOpen = false;
+        //    QBSessionManager sessionManager = null;
+
+        //    try
+        //    {
+        //        sessionManager = new QBSessionManager();
+
+        //        IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+        //        requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+        //        queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
+
+        //        sessionManager.OpenConnection("", "Sample Code from OSR");
+        //        connectionOpen = true;
+        //        sessionManager.BeginSession("", ENOpenMode.omDontCare);
+        //        sessionBegun = true;
+
+        //        tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+        //        IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+
+        //        sessionManager.EndSession();
+        //        sessionBegun = false;
+        //        sessionManager.CloseConnection();
+        //        connectionOpen = false;
+
+        //        WalkAllItemsQueryRsWITHADD(responseMsgSet, sequence, listID);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        tbProgramLog.AppendText(e.Message);
+        //        if (sessionBegun)
+        //        {
+        //            sessionManager.EndSession();
+        //        }
+        //        if (connectionOpen)
+        //        {
+        //            sessionManager.CloseConnection();
+        //        }
+        //    }
+        //}
+
+        //private void WalkAllItemsQueryRet(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList, string sequence, string listID)
+        //{
+        //    if (ItemInventoryAssemblyRetList == null) return;
+        //    sequence = string.Empty;
+        //    string itemListID = string.Empty;
+        //    string itemName = string.Empty;
+        //    listID = string.Empty; ;
+        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
+        //    {
+        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
+        //        itemListID = ItemInventoryAssemblyRet.ListID.GetValue();
+        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+        //        itemName = (string) ItemInventoryAssemblyRet.Name.GetValue();
+        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+        //    }
+        //    QBFC_ItemModify(sequence, listID, itemListID, itemName);
+        //}
+        //private void WalkAllItemsQueryRsWITHADD(IMsgSetResponse responseMsgSet, string sequence, string listID)
+        //{
+        //    if (responseMsgSet == null) return;
+        //    IResponseList responseList = responseMsgSet.ResponseList;
+        //    if (responseList == null) return;
+        //    for (int i = 0; i < responseList.Count; i++)
+        //    {
+        //        IResponse response = responseList.GetAt(i);
+        //        tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
+
+        //        if (response.StatusCode >= 0)
+        //        {
+        //            if (response.Detail != null)
+        //            {
+        //                ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+        //                if (responseType == ENResponseType.rtItemQueryRs)
+        //                {
+        //                    IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
+        //                    WalkAllItemsQueryRetWITHADD(ItemRetList, sequence, listID);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void WalkAllItemsQueryRetWITHADD(IORItemRetList ItemRetList, string sequence, string listID)
+        //{
+        //    string itemListID = string.Empty;
+        //    string itemName = string.Empty;
+        //    if (ItemRetList == null) return;
+
+        //    for (int y = 0; y < ItemRetList.Count; y++)
+        //    {
+        //        IORItemRet ItemRet = ItemRetList.GetAt(y);
+        //        itemListID = ItemRet.ItemInventoryRet.ListID.GetValue();
+        //        string itemSequence = (string)ItemRet.ItemInventoryRet.EditSequence.GetValue();
+        //        itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
+        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
+        //        tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
+        //    }
+        //   // QBFC_ItemAdd(sequence, listID, itemListID, itemName);
+        //}
+
     }
 }
