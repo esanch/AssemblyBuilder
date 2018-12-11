@@ -105,7 +105,7 @@ namespace InvoiceAdd
             this.btn1_Send.TabIndex = 57;
             this.btn1_Send.Text = "Send";
             this.btn1_Send.UseVisualStyleBackColor = false;
-            this.btn1_Send.Click += new System.EventHandler(this.btn1_Send_Click_1);
+            this.btn1_Send.Click += new System.EventHandler(this.Btn1_Send_Click_1);
             // 
             // btn2_Exit
             // 
@@ -390,91 +390,91 @@ namespace InvoiceAdd
             Dispose();
         }
 
-        private double QBFCLatestVersion(QBSessionManager SessionManager)
-        {
-            // Use oldest version to ensure that this application work with any QuickBooks (US)
-            IMsgSetRequest msgset = SessionManager.CreateMsgSetRequest("US", 1, 0);
-            msgset.AppendHostQueryRq();
-            IMsgSetResponse QueryResponse = SessionManager.DoRequests(msgset);
+        //private double QBFCLatestVersion(QBSessionManager SessionManager)
+        //{
+        //    // Use oldest version to ensure that this application work with any QuickBooks (US)
+        //    IMsgSetRequest msgset = SessionManager.CreateMsgSetRequest("US", 1, 0);
+        //    msgset.AppendHostQueryRq();
+        //    IMsgSetResponse QueryResponse = SessionManager.DoRequests(msgset);
 
-            // The response list contains only one response, which corresponds to our single HostQuery request
-            IResponse response = QueryResponse.ResponseList.GetAt(0);
+        //    // The response list contains only one response, which corresponds to our single HostQuery request
+        //    IResponse response = QueryResponse.ResponseList.GetAt(0);
 
-            // Please refer to QBFC Developers Guide for details on why "as" clause was used to link this derrived class to its base class
-            IHostRet HostResponse = response.Detail as IHostRet;
-            IBSTRList supportedVersions = HostResponse.SupportedQBXMLVersionList as IBSTRList;
+        //    // Please refer to QBFC Developers Guide for details on why "as" clause was used to link this derrived class to its base class
+        //    IHostRet HostResponse = response.Detail as IHostRet;
+        //    IBSTRList supportedVersions = HostResponse.SupportedQBXMLVersionList as IBSTRList;
 
-            int i;
-            double vers;
-            double LastVers = 0;
-            string svers = null;
-            for (i = 0; i <= supportedVersions.Count - 1; i++)
-            {
-                svers = supportedVersions.GetAt(i);
-                vers = Convert.ToDouble(svers);
-                if (vers > LastVers)
-                {
-                    LastVers = vers;
-                }
-            }
-            return LastVers;
-        }
+        //    int i;
+        //    double vers;
+        //    double LastVers = 0;
+        //    string svers = null;
+        //    for (i = 0; i <= supportedVersions.Count - 1; i++)
+        //    {
+        //        svers = supportedVersions.GetAt(i);
+        //        vers = Convert.ToDouble(svers);
+        //        if (vers > LastVers)
+        //        {
+        //            LastVers = vers;
+        //        }
+        //    }
+        //    return LastVers;
+        //}
 
-        public IMsgSetRequest getLatestMsgSetRequest(QBSessionManager sessionManager)
-        {
-            double supportedVersion = QBFCLatestVersion(sessionManager);
-            short qbXMLMajorVer = 0;
-            short qbXMLMinorVer = 0;
+        //public IMsgSetRequest getLatestMsgSetRequest(QBSessionManager sessionManager)
+        //{
+        //    double supportedVersion = QBFCLatestVersion(sessionManager);
+        //    short qbXMLMajorVer = 0;
+        //    short qbXMLMinorVer = 0;
 
-            if (supportedVersion >= 6.0)
-            {
-                qbXMLMajorVer = 6;
-                qbXMLMinorVer = 0;
-            }
-            else if (supportedVersion >= 5.0)
-            {
-                qbXMLMajorVer = 5;
-                qbXMLMinorVer = 0;
-            }
-            else if (supportedVersion >= 4.0)
-            {
-                qbXMLMajorVer = 4;
-                qbXMLMinorVer = 0;
-            }
-            else if (supportedVersion >= 3.0)
-            {
-                qbXMLMajorVer = 3;
-                qbXMLMinorVer = 0;
-            }
-            else if (supportedVersion >= 2.0)
-            {
-                qbXMLMajorVer = 2;
-                qbXMLMinorVer = 0;
-            }
-            else if (supportedVersion >= 1.1)
-            {
-                qbXMLMajorVer = 1;
-                qbXMLMinorVer = 1;
-            }
-            else
-            {
-                qbXMLMajorVer = 1;
-                qbXMLMinorVer = 0;
-                tbProgramLog.AppendText(Environment.NewLine + "It seems that you are running QuickBooks 2002 Release 1. We strongly recommend that you use QuickBooks' online update feature to obtain the latest fixes and enhancements");
-            }
-            IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", qbXMLMajorVer, qbXMLMinorVer);
-            return requestMsgSet;
-        }
+        //    if (supportedVersion >= 6.0)
+        //    {
+        //        qbXMLMajorVer = 6;
+        //        qbXMLMinorVer = 0;
+        //    }
+        //    else if (supportedVersion >= 5.0)
+        //    {
+        //        qbXMLMajorVer = 5;
+        //        qbXMLMinorVer = 0;
+        //    }
+        //    else if (supportedVersion >= 4.0)
+        //    {
+        //        qbXMLMajorVer = 4;
+        //        qbXMLMinorVer = 0;
+        //    }
+        //    else if (supportedVersion >= 3.0)
+        //    {
+        //        qbXMLMajorVer = 3;
+        //        qbXMLMinorVer = 0;
+        //    }
+        //    else if (supportedVersion >= 2.0)
+        //    {
+        //        qbXMLMajorVer = 2;
+        //        qbXMLMinorVer = 0;
+        //    }
+        //    else if (supportedVersion >= 1.1)
+        //    {
+        //        qbXMLMajorVer = 1;
+        //        qbXMLMinorVer = 1;
+        //    }
+        //    else
+        //    {
+        //        qbXMLMajorVer = 1;
+        //        qbXMLMinorVer = 0;
+        //        tbProgramLog.AppendText(Environment.NewLine + "It seems that you are running QuickBooks 2002 Release 1. We strongly recommend that you use QuickBooks' online update feature to obtain the latest fixes and enhancements");
+        //    }
+        //    IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", qbXMLMajorVer, qbXMLMinorVer);
+        //    return requestMsgSet;
+        //}
 
-        void SaveXML(string xmlstring)
-        {
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                StreamWriter sr = new StreamWriter(saveFileDialog1.FileName);
-                sr.Write(xmlstring);
-                sr.Close();
-            }
-        }
+        //void SaveXML(string xmlstring)
+        //{
+        //    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+        //    {
+        //        StreamWriter sr = new StreamWriter(saveFileDialog1.FileName);
+        //        sr.Write(xmlstring);
+        //        sr.Close();
+        //    }
+        //}
 
         private void btnOpenFile_Reset_Click(object sender, System.EventArgs e)
         {
@@ -499,12 +499,12 @@ namespace InvoiceAdd
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     fileName = openFileDialog.FileName;
-                    startErrorChecking(sender, e);
+                    StartErrorChecking(sender, e);
                 }
             }
         }
 
-        private void startErrorChecking(object sender, EventArgs e)
+        private void StartErrorChecking(object sender, EventArgs e)
         {
             secondLevelTbl = new DataTable();
             topLevelTbl = new DataTable();
@@ -517,7 +517,7 @@ namespace InvoiceAdd
                 string input = System.Text.RegularExpressions.Regex.Match(nameData, matchFirst).Value;
                 string cut = docPath.Substring(Math.Max(0, docPath.Length - 15), 8);
 
-                SqlDataAdapter dataAdapter = new SqlDataAdapter();
+                //SqlDataAdapter dataAdapter = new SqlDataAdapter();
                 String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
                 DataTable dtReturnValue = new DataTable();
                 DataTable dtTemp = new DataTable();
@@ -526,7 +526,7 @@ namespace InvoiceAdd
                 DataSet DataSet1 = new DataSet();
                 DataView DataView1 = new DataView();
                 //DataTable topLevelTbl = new DataTable();
-                dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
+               SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
                     " FROM[dat8121].[dbo].[I_ItemCode]" +
                     " where TRY_CAST(ItemCode as nvarchar) = '" + input +
                     "' OR TRY_CAST(ItemCode as nvarchar) = '" + cut + "'", connectionString);
@@ -547,48 +547,48 @@ where a.itemcode =25000000*/
                         {
                             textBox1.Text = (topLevelTbl.Rows[0][0].ToString() + "\r\n" + topLevelTbl.Rows[0][1].ToString());
                             checkBox1.Checked = true;
-                            columnCorrectOrder(sender, e, topLevelTbl);
+                            ColumnCorrectOrder(sender, e, topLevelTbl);
                         }
                     }
                     else if (String.Equals(input, cut) == false)
                     {
                         ifError = true;
-                        columnCorrectOrder(sender, e, ifError, input, cut, topLevelTbl);
+                        ColumnCorrectOrder(sender, e, ifError, input, cut, topLevelTbl);
                     }
                 }
                 else
                 {
                     ifError = true;
-                    columnCorrectOrder(sender, e, ifError, input, cut, topLevelTbl);
+                    ColumnCorrectOrder(sender, e, ifError, input, cut, topLevelTbl);
                 }
             }
         }
 
-        private void columnCorrectOrder(object sender, EventArgs e, bool ifError, string input, string cut, DataTable topLevelTbl)
+        private void ColumnCorrectOrder(object sender, EventArgs e, bool ifError, string input, string cut, DataTable topLevelTbl)
         {
             if (ifError == true)
             {
                 if (String.Equals(input, cut) == false)
                 {
                     checkBox2.Checked = true;
-                    columnCorrectOrder(sender, e, topLevelTbl);
+                    ColumnCorrectOrder(sender, e, topLevelTbl);
                 }
                 else
                 {
                     checkBox3.Checked = true;
-                    columnCorrectOrder(sender, e, topLevelTbl);
+                    ColumnCorrectOrder(sender, e, topLevelTbl);
                 }
             }
         }
 
-        private void columnCorrectOrder(object sender, EventArgs e, DataTable topLevelTbl)
+        private void ColumnCorrectOrder(object sender, EventArgs e, DataTable topLevelTbl)
         {
             XDocument doc = XDocument.Load(fileName);
             Dictionary<int, string> openWith = new Dictionary<int, string>();
             foreach (XElement bom in doc.Descendants("bomcol"))
             {
-                int currentColumn = Int32.Parse(bom.Attribute("col_no").Value);
-                string colHeader = bom.Attribute("name").Value ?? "n/a";
+                int currentColumn = Int32.Parse(bom.Attribute("col_no")?.Value);
+                string colHeader = bom.Attribute("name")?.Value ?? "n/a";
                 openWith.Add(currentColumn, colHeader);
             }
 
@@ -604,66 +604,66 @@ where a.itemcode =25000000*/
             {
                 itemNoCol = openWith.Keys.ElementAt(0);
                 checkBox4.Checked = true;
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == itemNoCol).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == itemNoCol) == null ?
                       null : "ITEM NO.");
             }
             else
             {
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 0).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == 0) == null ?
                      null : "ITEM NO.");
             }
             if (Regex.IsMatch(openWith[1], itemCodeMatching))
             {
                 itemCodeCol = openWith.Keys.ElementAt(1);
                 checkBox5.Checked = true;
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == itemCodeCol).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == itemCodeCol) == null ?
                       null : "ITEMCODE");
             }
             else
             {
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 1).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == 1) == null ?
                      null : "ITEMCODE");
             }
             if (Regex.IsMatch(openWith[2], partNoMatching))
             {
                 partNumberCol = openWith.Keys.ElementAt(2);
                 checkBox6.Checked = true;
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == partNumberCol).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == partNumberCol) == null ?
                       null : "PART NUMBER");
             }
             else
             {
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 2).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == 2) == null ?
                      null : "PART NUMBER");
             }
             if (Regex.IsMatch(openWith[3], descriptionMatching))
             {
                 descriptionCol = openWith.Keys.ElementAt(3);
                 checkBox7.Checked = true;
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == descriptionCol).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == descriptionCol) == null ?
                       null : "DESCRIPTION");
             }
             else
             {
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 3).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == 3) == null ?
                      null : "DESCRIPTION");
             }
             if (Regex.IsMatch(openWith[4], qtyMatching))
             {
                 qtyCol = openWith.Keys.ElementAt(4);
                 checkBox8.Checked = true;
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == qtyCol).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == qtyCol) == null ?
                       null : "QTY.");
             }
             else
             {
-                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").Where(x => (int)x.Attribute("col_no") == 4).FirstOrDefault() == null ?
+                secondLevelTbl.Columns.Add(doc.Descendants("bomheader").Elements("bomcol").FirstOrDefault(x => (int)x.Attribute("col_no") == 4) == null ?
                      null : "QTY.");
             }
-            addRows(secondLevelTbl, doc, openWith, topLevelTbl);
+            AddRows(secondLevelTbl, doc, openWith, topLevelTbl);
         }
 
-        private void addRows(DataTable secondLevelTbl, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelTbl)
+        private void AddRows(DataTable secondLevelTbl, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelTbl)
         {
             bool error = false;
             foreach (XElement bomrow in doc.Descendants("bomrow"))
@@ -671,15 +671,18 @@ where a.itemcode =25000000*/
                 string itemNo = @"^\d+$";
                 string itemCode = @"^[1-2][0-9][0-9][0-9][0-9][0-9]00";
                 string qty = @"^\d+$";
-                string iNoGiven = (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                            y => y.Value.ToUpper().Contains("ITEM NO")).Key
-                            ).FirstOrDefault().Attribute("value");
-                string iCODEgiven = (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                            y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key
-                            ).FirstOrDefault().Attribute("value");
-                string qtyGiven = (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                            y => y.Value.ToUpper().Contains("Q")).Key
-                            ).FirstOrDefault().Attribute("value");
+                string iNoGiven = (string)bomrow.Elements("bomcell"
+                            ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                      y => y.Value.ToUpper().Contains("ITEM NO")).Key)
+                    ?.Attribute("value");
+                string iCODEgiven = (string)bomrow.Elements("bomcell"
+                            ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                      y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key)
+                    ?.Attribute("value");
+                string qtyGiven = (string)bomrow.Elements("bomcell"
+                            ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                      y => y.Value.ToUpper().Contains("Q")).Key)
+                    ?.Attribute("value");
                 bool numberTest = Regex.IsMatch(iNoGiven, itemNo);
                 bool codeTest = Regex.IsMatch(iCODEgiven, itemCode);
                 bool qtyTest = Regex.IsMatch(qtyGiven, qty);
@@ -702,53 +705,58 @@ where a.itemcode =25000000*/
 
             if (error == false)
             {
-                createATable(secondLevelTbl, doc, openWith, topLevelTbl);
+                CreateATable(secondLevelTbl, doc, openWith, topLevelTbl);
             }
             else
             {
-                createATableWithErrors(secondLevelTbl, doc, openWith, topLevelTbl);
+                CreateATableWithErrors(secondLevelTbl, doc, openWith, topLevelTbl);
             }
         }
 
-        private void createATableWithErrors(DataTable secondLevelTbl, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelTbl)
+        private void CreateATableWithErrors(DataTable secondLevelTbl, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelTbl)
         {
             foreach (XElement bomrow in doc.Descendants("bomrow"))
             {
                 secondLevelTbl.Rows.Add(
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("ITEM NO")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("ITEM NO")).Key
-                        ).FirstOrDefault().Attribute("value") ?? null,
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("ITEM NO")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("ITEM NO")).Key)
+                               ?.Attribute("value") ?? null,
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key
-                        ).FirstOrDefault().Attribute("value") ?? null,
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key)
+                               ?.Attribute("value") ?? null,
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("PART")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("PART")).Key
-                        ).FirstOrDefault().Attribute("value") ?? "N/A",
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("PART")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("PART")).Key)
+                               ?.Attribute("value") ?? "N/A",
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("DES")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("DES")).Key
-                        ).FirstOrDefault().Attribute("value") ?? "N/A",
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("DES")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("DES")).Key)
+                               ?.Attribute("value") ?? "N/A",
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("Q")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("Q")).Key
-                        ).FirstOrDefault().Attribute("value") ?? null
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("Q")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("Q")).Key)
+                               ?.Attribute("value") ?? null
                 );
             }
             string[] firstRow = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ITEM NO.")).ToArray();
@@ -756,48 +764,52 @@ where a.itemcode =25000000*/
             int starting = 1;
             IEnumerable<int> totalColumns = Enumerable.Range(starting, Int32.Parse(firstRow.Last()));
             string shouldBe = String.Join(",", totalColumns);
-            showTableErrors(secondLevelTbl, has, shouldBe, topLevelTbl);
+            ShowTableErrors(secondLevelTbl, has, shouldBe);
         }
 
-        private void createATable(DataTable secondLevelTbl, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelTbl)
+        private void CreateATable(DataTable secondLevelTbl, XDocument doc, Dictionary<int, string> openWith, DataTable topLevelTbl)
         {
             foreach (XElement bomrow in doc.Descendants("bomrow"))
             {
                 secondLevelTbl.Rows.Add(
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("ITEM NO")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (int?)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("ITEM NO")).Key
-                        ).FirstOrDefault().Attribute("value") ?? null,
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("ITEM NO")).Key) == null ?
+                    null : (int?)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("ITEM NO")).Key)
+                               ?.Attribute("value") ?? null,
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (int?)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key
-                        ).FirstOrDefault().Attribute("value") ?? null,
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key) == null ?
+                    null : (int?)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("CODE") || y.Value.ToUpper().Contains("CD")).Key)
+                               ?.Attribute("value") ?? null,
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("PART")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("PART")).Key
-                        ).FirstOrDefault().Attribute("value") ?? "N/A",
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("PART")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("PART")).Key)
+                               ?.Attribute("value") ?? "N/A",
 
                 bomrow.Elements("bomcell"
                     ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
                                               y => y.Value.ToUpper().Contains("DES")).Key) == null ?
                     null : (string)bomrow.Elements("bomcell"
                         ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                                                  y => y.Value.ToUpper().Contains("DES")).Key).Attribute("value") ?? "N/A",
+                                                  y => y.Value.ToUpper().Contains("DES")).Key)
+                               ?.Attribute("value") ?? "N/A",
 
                 bomrow.Elements("bomcell"
                     ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
                                               y => y.Value.ToUpper().Contains("Q")).Key) == null ?
-                    null : (int?)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("Q")).Key
-                        ).FirstOrDefault()
+                    null : (int?)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("Q")).Key)
                                ?.Attribute("value") ?? null
                 );
             }
@@ -807,25 +819,25 @@ where a.itemcode =25000000*/
             int starting = 1;
             IEnumerable<int> totalColumns = Enumerable.Range(starting, Int32.Parse(firstRow.Last()));
             string shouldBe = String.Join(",", totalColumns);
-            showTableErrors(secondLevelTbl, has, shouldBe, topLevelTbl);
+            ShowTableErrors(secondLevelTbl, has, shouldBe);
         }
 
-        private void showTableErrors(DataTable secondLevelTbl, string has, string shouldBe, DataTable topLevelTbl)
+        private void ShowTableErrors(DataTable secondLevelTbl, string has, string shouldBe)
         {
             if (has == shouldBe)
             {
                 checkBox11.Checked = true;
-                ending(secondLevelTbl, topLevelTbl);
+                Ending(secondLevelTbl);
             }
             else
             {
                 checkBox12.Checked = true;
-                ending(secondLevelTbl, topLevelTbl);
+                Ending(secondLevelTbl);
             }
 
         }
 
-        private void ending(DataTable secondLevelTbl, DataTable topLevelTbl)
+        private void Ending(DataTable secondLevelTbl)
         {
             dataGridView1.DataSource = secondLevelTbl;
             if ((checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true) || (checkBox1.Checked == false && checkBox9.Checked == true && checkBox11.Checked == true))
@@ -834,21 +846,21 @@ where a.itemcode =25000000*/
             }
             else
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
+                tbProgramLog.AppendText(Environment.NewLine + "Table contains errors!");
             }
         }
 
-        private void btn1_Send_Click_1(object sender, EventArgs e)
+        private void Btn1_Send_Click_1(object sender, EventArgs e)
         {
             if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
             {
                 QBFC_InventoryAssemblyQuery();
             }
-            if (checkBox1.Checked == false && checkBox9.Checked == true && checkBox11.Checked == true)
+            else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "Add Item Method");
                 QBFC_ItemAdd();
-               QBFC_InventoryAssemblyQuery();
+                QBFC_InventoryAssemblyQuery();
             }
             else
             {
@@ -869,7 +881,7 @@ where a.itemcode =25000000*/
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-                queryItemAssembly(requestMsgSet, topLevelTbl);
+                QueryItemAssembly(requestMsgSet, topLevelTbl);
 
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
@@ -898,14 +910,14 @@ where a.itemcode =25000000*/
             }
         }
 
-        void queryItemAssembly(IMsgSetRequest requestMsgSet, DataTable topLevelTbl)
+        void QueryItemAssembly(IMsgSetRequest requestMsgSet, DataTable topLevelTbl)
         {
 
-            IItemInventoryAssemblyQuery ItemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
-            IListWithClassFilter listWithClassFilter = ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
+            IItemInventoryAssemblyQuery itemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
+            IListWithClassFilter listWithClassFilter = itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
 
             listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
-            ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
+            itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
         }
 
         void WalkItemInventoryAssemblyQueryRs(IMsgSetResponse responseMsgSet)
@@ -927,8 +939,8 @@ where a.itemcode =25000000*/
                             ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                             if (responseType == ENResponseType.rtItemInventoryAssemblyQueryRs)
                             {
-                                IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList = (IItemInventoryAssemblyRetList)response.Detail;
-                                WalkItemInventoryAssemblyRetWITHMOD(ItemInventoryAssemblyRetList);
+                                IItemInventoryAssemblyRetList itemInventoryAssemblyRetList = (IItemInventoryAssemblyRetList)response.Detail;
+                                WalkItemInventoryAssemblyRet(itemInventoryAssemblyRetList);
                             }
                         }
                     }
@@ -936,19 +948,19 @@ where a.itemcode =25000000*/
             }
         }
 
-        void WalkItemInventoryAssemblyRetWITHMOD(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
+        void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRetList itemInventoryAssemblyRetList)
         {
-            if (ItemInventoryAssemblyRetList == null) return;
+            if (itemInventoryAssemblyRetList == null) return;
             string sequence = string.Empty;
-            string listID = string.Empty; ;
-            for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
+            string listId = string.Empty; ;
+            for (int x = 0; x < itemInventoryAssemblyRetList.Count; x++)
             {
-                IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
-                sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-                listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+                IItemInventoryAssemblyRet itemInventoryAssemblyRet = itemInventoryAssemblyRetList.GetAt(x);
+                sequence = (string)itemInventoryAssemblyRet.EditSequence.GetValue();
+                listId = (string)itemInventoryAssemblyRet.ListID.GetValue();
+                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
             }
-            QBFC_ItemQueryWITHMOD(sequence, listID);
+            QBFC_ItemQuery(sequence, listId);
         }
 
         //void WalkItemInventoryAssemblyRetWITHADD(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
@@ -967,7 +979,7 @@ where a.itemcode =25000000*/
         //    tbProgramLog.AppendText(Environment.NewLine + "Call add method");
         //}
 
-        private void QBFC_ItemQueryWITHMOD(string sequence, string listID)
+        private void QBFC_ItemQuery(string sequence, string listId)
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -980,7 +992,7 @@ where a.itemcode =25000000*/
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-                queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
+                QueryAllItems(requestMsgSet, secondLevelTbl);
 
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
@@ -995,7 +1007,7 @@ where a.itemcode =25000000*/
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                WalkAllItemsQueryRsWITHMOD(responseMsgSet, sequence, listID);
+                WalkAllItemsQueryRs(responseMsgSet, sequence, listId);
             }
             catch (Exception e)
             {
@@ -1055,19 +1067,18 @@ where a.itemcode =25000000*/
         //    }
         //}
 
-        private void queryAllItems(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID)
+        private void QueryAllItems(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl)
         {
-            IItemQuery ItemQueryRq;
             List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
             foreach (string itemCode in itemCodes)
             {
-                ItemQueryRq = requestMsgSet.AppendItemQueryRq();
-                ItemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
-                ItemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
+                var itemQueryRq = requestMsgSet.AppendItemQueryRq();
+                itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+                itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
             }
         }
 
-        private void WalkAllItemsQueryRsWITHMOD(IMsgSetResponse responseMsgSet, string sequence, string listID)
+        private void WalkAllItemsQueryRs(IMsgSetResponse responseMsgSet, string sequence, string listId)
         {
             if (responseMsgSet == null) return;
             IResponseList responseList = responseMsgSet.ResponseList;
@@ -1085,55 +1096,79 @@ where a.itemcode =25000000*/
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemQueryRs)
                         {
-                            IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
-                            WalkAllItemsQueryRetWITHMOD(ItemRetList, sequence, listID);
+                            IORItemRetList itemRetList = (IORItemRetList)response.Detail;
+                            WalkAllItemsQueryRet(itemRetList, sequence, listId);
                         }
+                        //else if (responseType == ENResponseType.rtItemInventoryAssemblyQueryRs)
+                        //{
+                        //    //upcast to more specific type here, this is safe because we checked with response.Type check above
+                        //    IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList = (IItemInventoryAssemblyRetList)response.Detail;
+                        //    WalkAllItemsQueryRet(ItemInventoryAssemblyRetList, sequence, listID);
+                        //}
                     }
                 }
             }
         }
 
-        //private void WalkAllItemsQueryRsWITHADD(IMsgSetResponse responseMsgSet, string sequence, string listID)
+        //private void WalkAllItemsQueryRet(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList, string sequence, string listID)
         //{
-        //    if (responseMsgSet == null) return;
-        //    IResponseList responseList = responseMsgSet.ResponseList;
-        //    if (responseList == null) return;
-        //    for (int i = 0; i < responseList.Count; i++)
+        //    if (ItemInventoryAssemblyRetList == null) return;
+        //    sequence = string.Empty;
+        //    string itemListID = string.Empty;
+        //    string itemName = string.Empty;
+        //    listID = string.Empty; ;
+        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
         //    {
-        //        IResponse response = responseList.GetAt(i);
-        //        tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
-
-        //        if (response.StatusCode >= 0)
-        //        {
-        //            if (response.Detail != null)
-        //            {
-        //                ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-        //                if (responseType == ENResponseType.rtItemQueryRs)
-        //                {
-        //                    IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
-        //                    WalkAllItemsQueryRetWITHADD(ItemRetList, sequence, listID);
-        //                }
-        //            }
-        //        }
+        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
+        //        itemListID = ItemInventoryAssemblyRet.ListID.GetValue();
+        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+        //        itemName = (string) ItemInventoryAssemblyRet.Name.GetValue();
+        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
         //    }
+        //    QBFC_ItemModify(sequence, listID, itemListID, itemName);
         //}
+        //private void WalkAllItemsQueryRsWITHADD(IMsgSetResponse responseMsgSet, string sequence, string listID)
+            //{
+            //    if (responseMsgSet == null) return;
+            //    IResponseList responseList = responseMsgSet.ResponseList;
+            //    if (responseList == null) return;
+            //    for (int i = 0; i < responseList.Count; i++)
+            //    {
+            //        IResponse response = responseList.GetAt(i);
+            //        tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
 
-        private void WalkAllItemsQueryRetWITHMOD(IORItemRetList ItemRetList, string sequence, string listID)
+            //        if (response.StatusCode >= 0)
+            //        {
+            //            if (response.Detail != null)
+            //            {
+            //                ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+            //                if (responseType == ENResponseType.rtItemQueryRs)
+            //                {
+            //                    IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
+            //                    WalkAllItemsQueryRetWITHADD(ItemRetList, sequence, listID);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
+
+            private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
-            string itemListID = string.Empty;
+            string itemListId = string.Empty;
             string itemName = string.Empty;
-            if (ItemRetList == null) return;
+            if (itemRetList == null) return;
 
-            for (int y = 0; y < ItemRetList.Count; y++)
+            for (int y = 0; y < itemRetList.Count; y++)
             {
-                IORItemRet ItemRet = ItemRetList.GetAt(y);
-                itemListID = ItemRet.ItemInventoryRet.ListID.GetValue();
-                string itemSequence = (string)ItemRet.ItemInventoryRet.EditSequence.GetValue();
-                itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
+                IORItemRet itemRet = itemRetList.GetAt(y);
+                itemListId = itemRet.ItemInventoryRet.ListID.GetValue();
+                string itemSequence = (string)itemRet.ItemInventoryRet.EditSequence.GetValue();
+                itemName = (string)itemRet.ItemInventoryRet.Name.GetValue();
+                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
-            QBFC_ItemModify(sequence, listID, itemListID, itemName);
+            QBFC_ItemModify(sequence, listId, itemListId, itemName);
         }
 
         //private void WalkAllItemsQueryRetWITHADD(IORItemRetList ItemRetList, string sequence, string listID)
@@ -1167,7 +1202,7 @@ where a.itemcode =25000000*/
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-                modifyItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID, itemListID);
+                ModifyItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
 
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
@@ -1198,24 +1233,24 @@ where a.itemcode =25000000*/
             }
         }
 
-        private void modifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, string itemListID)
+        private void ModifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listId)
         {
-            IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
-            ItemInventoryAssemblyModRq.ListID.SetValue(listID);
-            ItemInventoryAssemblyModRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
-            ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
-            ItemInventoryAssemblyModRq.EditSequence.SetValue(sequence);
+            IItemInventoryAssemblyMod itemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
+            itemInventoryAssemblyModRq.ListID.SetValue(listId);
+            itemInventoryAssemblyModRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
+            itemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
+            itemInventoryAssemblyModRq.EditSequence.SetValue(sequence);
 
             for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
             {
-                IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
-                ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
-                ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
+                IItemInventoryAssemblyLine itemInventoryAssemblyLine1 = itemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
+                itemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
+                itemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
             }
-            tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
+           // tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
         }
 
-        private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet, string itemListID)
+        private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet, string itemListId)
         {
             if (responseMsgSet == null) return;
             IResponseList responseList = responseMsgSet.ResponseList;
@@ -1232,22 +1267,22 @@ where a.itemcode =25000000*/
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemInventoryAssemblyModRs)
                         {
-                            IItemInventoryAssemblyRet ItemModifyRet = (IItemInventoryAssemblyRet)response.Detail;
-                            WalkItemModifyRet(ItemModifyRet, itemListID);
+                            IItemInventoryAssemblyRet itemModifyRet = (IItemInventoryAssemblyRet)response.Detail;
+                            WalkItemModifyRet(itemModifyRet);
                         }
                     }
                 }
             }
         }
 
-        private void WalkItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet, string itemListID)
+        private void WalkItemModifyRet(IItemInventoryAssemblyRet itemModifyRet)
         {
-            if (ItemModifyRet == null) return;
-            string sequence = (string)ItemModifyRet.EditSequence.GetValue();
-            string listID = (string)ItemModifyRet.ListID.GetValue();
-            itemListID = ItemModifyRet.ListID.GetValue();
-            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-            tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListID);
+            if (itemModifyRet == null) return;
+            string sequence = (string)itemModifyRet.EditSequence.GetValue();
+            string listId = (string)itemModifyRet.ListID.GetValue();
+           // itemListId = itemModifyRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
+           // tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListId);
         }
 
         //private void QBFC_ItemAdd(string sequence, string listID, string itemListID, string itemName)
@@ -1322,24 +1357,23 @@ where a.itemcode =25000000*/
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
                         {
-                            IItemInventoryAssemblyRet ItemInventoryAssemblyRet = (IItemInventoryAssemblyRet)response.Detail;
-                            WalkItemInventoryAssemblyRet(ItemInventoryAssemblyRet);
+                            IItemInventoryAssemblyRet itemInventoryAssemblyRet = (IItemInventoryAssemblyRet)response.Detail;
+                            WalkItemInventoryAssemblyRet(itemInventoryAssemblyRet);
                         }
                     }
                 }
             }
         }
 
-        private void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRet ItemInventoryAssemblyRet)
+        private void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
         {
             tbProgramLog.AppendText(Environment.NewLine + "Before error");
-            if (ItemInventoryAssemblyRet == null) return;
+            if (itemInventoryAssemblyRet == null) return;
             tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
-            //string statusCode = (string)ItemInventoryAssemblyRet.stat
-            string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-            string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+            string sequence = (string)itemInventoryAssemblyRet.EditSequence.GetValue();
+            string listId = (string)itemInventoryAssemblyRet.ListID.GetValue();
             
-            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
            
         }
 
@@ -1348,14 +1382,14 @@ where a.itemcode =25000000*/
             string AssetAccountRef = "800001A9-1511318480";
             string COGSAccountRefListID = "800001E1-1537737142";
             string IncomeAccountRefListID = "570000-1136323777";
-            IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
+            IItemInventoryAssemblyAdd itemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
             DataRow row = topLevelTbl.Rows[0];
-            ItemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
-            ItemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
-            ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
-            ItemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(AssetAccountRef);
-            ItemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccountRefListID);
-            ItemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccountRefListID);
+            itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
+            itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
+            itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
+            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(AssetAccountRef);
+            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccountRefListID);
+            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccountRefListID);
 
 
 
