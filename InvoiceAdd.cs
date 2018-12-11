@@ -1144,8 +1144,10 @@ where a.itemcode =25000000*/
                 {
                     if (response.StatusCode == 1)
                     {
-                        QBFC_ItemAdd();
+                        tbProgramLog.AppendText("Error is generated here");
+                        //AddTheItemThatIsNotFoundHere
                     }
+                    else if (response.StatusCode == 0) { 
                     if (response.Detail != null)
                     {
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
@@ -1154,6 +1156,7 @@ where a.itemcode =25000000*/
                             IORItemRetList itemRetList = (IORItemRetList)response.Detail;
                             WalkAllItemsQueryRet(itemRetList, sequence, listId);
                         }
+                    }
                     }
                 }
             }
@@ -1165,7 +1168,6 @@ where a.itemcode =25000000*/
             string itemName = string.Empty;
             string itemSequence = string.Empty;
             if (itemRetList == null) return;
-           
             for (int y = 0; y < itemRetList.Count; y++)
             {
                 IORItemRet itemRet = itemRetList.GetAt(y);
@@ -1223,20 +1225,25 @@ where a.itemcode =25000000*/
                     itemSequence = (string)itemRet.ItemGroupRet.EditSequence.GetValue();
                     itemName = (string)itemRet.ItemGroupRet.Name.GetValue();
                 }
-                else if ((itemRet.ItemGroupRet == null) || (itemRet.ItemSalesTaxGroupRet == null) || (itemRet.ItemSalesTaxRet == null) || (itemRet.ItemPaymentRet == null)
-                         || (itemRet.ItemDiscountRet == null) || (itemRet.ItemInventoryAssemblyRet != null) || (itemRet.ItemInventoryRet != null)
-                         || (itemRet.ItemNonInventoryRet != null) || (itemRet.ItemSubtotalRet != null))
+                else if (itemRet.ItemServiceRet != null)
                 {
-                    tbProgramLog.AppendText("This is where the error is generated");
-                    QBFC_ItemAdd();
+                    itemListId = itemRet.ItemServiceRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemServiceRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemServiceRet.Name.GetValue();
+                }
+                else if (itemRet.ItemOtherChargeRet != null)
+                {
+                    itemListId = itemRet.ItemOtherChargeRet.ListID.GetValue();
+                    itemSequence = (string)itemRet.ItemOtherChargeRet.EditSequence.GetValue();
+                    itemName = (string)itemRet.ItemOtherChargeRet.Name.GetValue();
                 }
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
-                QBFC_ItemModify(sequence, listId, itemListId, itemName);
+                QBFC_ItemModify(sequence, listId, itemListId);
         }
 
-        private void QBFC_ItemModify(string sequence, string listID, string itemListID, string itemName)
+        private void QBFC_ItemModify(string sequence, string listID, string itemListID)
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
