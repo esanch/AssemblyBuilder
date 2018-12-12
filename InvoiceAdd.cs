@@ -1140,8 +1140,10 @@ where a.itemcode =25000000*/
                 {
                     if (response.StatusCode == 1)
                     {
-                        throw new NotImplementedException();
+                        
                         //AddTheItemThatIsNotFoundHere
+                        tbProgramLog.AppendText("The ICode value is: " + responseMsgSet.ToXMLString());
+                        throw new NotImplementedException();
                     }
                     else { 
                         if (response.Detail != null)
