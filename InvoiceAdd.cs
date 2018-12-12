@@ -899,7 +899,6 @@ where a.itemcode =25000000*/
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
                 BuildItemInventoryAssemblyAddRq(requestMsgSet);
-                //addItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID, itemListID);
 
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
@@ -914,9 +913,7 @@ where a.itemcode =25000000*/
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                tbProgramLog.AppendText(Environment.NewLine + "Before WalkItemInventoryAssemblyAddRs");
                 WalkItemInventoryAssemblyAddRs(responseMsgSet);
-                tbProgramLog.AppendText(Environment.NewLine + "After WalkItemInventoryAssemblyAddRs");
             }
             catch (Exception e)
             {
@@ -950,8 +947,7 @@ where a.itemcode =25000000*/
             tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
-
-            //code goes wrong here...
+            
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
@@ -1144,24 +1140,24 @@ where a.itemcode =25000000*/
                 {
                     if (response.StatusCode == 1)
                     {
-                        tbProgramLog.AppendText("Error is generated here");
+                        throw new NotImplementedException();
                         //AddTheItemThatIsNotFoundHere
                     }
-                    else if (response.StatusCode == 0) { 
-                    if (response.Detail != null)
-                    {
-                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-                        if (responseType == ENResponseType.rtItemQueryRs)
+                    else { 
+                        if (response.Detail != null)
                         {
-                            IORItemRetList itemRetList = (IORItemRetList)response.Detail;
-                            WalkAllItemsQueryRet(itemRetList, sequence, listId);
+                            ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                            if (responseType == ENResponseType.rtItemQueryRs)
+                            {
+                                IORItemRetList itemRetList = (IORItemRetList)response.Detail;
+                                WalkAllItemsQueryRet(itemRetList, sequence, listId);
+                            }
                         }
-                    }
                     }
                 }
             }
         }
-        
+
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
             string itemListId = string.Empty;
@@ -1301,7 +1297,6 @@ where a.itemcode =25000000*/
                 itemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
                 itemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
             }
-            // tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
         }
 
         private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet, string itemListId)
@@ -1336,177 +1331,6 @@ where a.itemcode =25000000*/
             string listId = (string)itemModifyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
         }
-
-        //private void QBFC_ItemAdd(string sequence, string listID, string itemListID, string itemName)
         
-        //private void addItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, string itemListID)
-        //{
-        //    IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
-        //    ItemInventoryAssemblyAddRq.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
-        //    ItemInventoryAssemblyAddRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
-        //    ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
-
-        //    for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
-        //    {
-        //        IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyAddRq.ItemInventoryAssemblyLineList.Append();
-        //        ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(secondLevelTbl.Rows[i][0].ToString());
-        //        ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
-        //        ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
-        //    }
-        //    tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
-        //}
-
-        //private void WalkItemsAddRs(IMsgSetResponse responseMsgSet, string itemListID)
-        //{
-        //    if (responseMsgSet == null) return;
-        //    IResponseList responseList = responseMsgSet.ResponseList;
-        //    if (responseList == null) return;
-        //    for (int i = 0; i < responseList.Count; i++)
-        //    {
-        //        IResponse response = responseList.GetAt(i);
-        //        if (response.StatusCode >= 0)
-        //        {
-        //            ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-        //            if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
-        //            {
-        //                IItemInventoryAssemblyRet ItemAddRet = (IItemInventoryAssemblyRet)response.Detail;
-        //                WalkItemAddRet(ItemAddRet, itemListID);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void WalkItemAddRet(IItemInventoryAssemblyRet ItemAddRet, string itemListID)
-        //{
-        //    if (ItemAddRet == null) return;
-        //    string sequence = (string)ItemAddRet.EditSequence.GetValue();
-        //    string listID = (string)ItemAddRet.ListID.GetValue();
-        //    itemListID = ItemAddRet.ListID.GetValue();
-        //    tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-        //    tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListID);
-        //}
-
-
-        //void WalkItemInventoryAssemblyRetWITHADD(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
-        //{
-        //    if (ItemInventoryAssemblyRetList != null) return;
-        //    string sequence = string.Empty;
-        //    string listID = string.Empty; ;
-        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
-        //    {
-        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
-        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-        //    }
-        //    QBFC_ItemQueryWITHADD(sequence, listID);
-        //    tbProgramLog.AppendText(Environment.NewLine + "Call add method");
-        //}
-
-        //private void QBFC_ItemQueryWITHADD(string sequence, string listID)
-        //{
-        //    bool sessionBegun = false;
-        //    bool connectionOpen = false;
-        //    QBSessionManager sessionManager = null;
-
-        //    try
-        //    {
-        //        sessionManager = new QBSessionManager();
-
-        //        IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
-        //        requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
-
-        //        queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
-
-        //        sessionManager.OpenConnection("", "Sample Code from OSR");
-        //        connectionOpen = true;
-        //        sessionManager.BeginSession("", ENOpenMode.omDontCare);
-        //        sessionBegun = true;
-
-        //        tbProgramLog.AppendText(requestMsgSet.ToXMLString());
-        //        IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-
-        //        sessionManager.EndSession();
-        //        sessionBegun = false;
-        //        sessionManager.CloseConnection();
-        //        connectionOpen = false;
-
-        //        WalkAllItemsQueryRsWITHADD(responseMsgSet, sequence, listID);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        tbProgramLog.AppendText(e.Message);
-        //        if (sessionBegun)
-        //        {
-        //            sessionManager.EndSession();
-        //        }
-        //        if (connectionOpen)
-        //        {
-        //            sessionManager.CloseConnection();
-        //        }
-        //    }
-        //}
-
-        //private void WalkAllItemsQueryRet(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList, string sequence, string listID)
-        //{
-        //    if (ItemInventoryAssemblyRetList == null) return;
-        //    sequence = string.Empty;
-        //    string itemListID = string.Empty;
-        //    string itemName = string.Empty;
-        //    listID = string.Empty; ;
-        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
-        //    {
-        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
-        //        itemListID = ItemInventoryAssemblyRet.ListID.GetValue();
-        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-        //        itemName = (string) ItemInventoryAssemblyRet.Name.GetValue();
-        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-        //    }
-        //    QBFC_ItemModify(sequence, listID, itemListID, itemName);
-        //}
-        //private void WalkAllItemsQueryRsWITHADD(IMsgSetResponse responseMsgSet, string sequence, string listID)
-        //{
-        //    if (responseMsgSet == null) return;
-        //    IResponseList responseList = responseMsgSet.ResponseList;
-        //    if (responseList == null) return;
-        //    for (int i = 0; i < responseList.Count; i++)
-        //    {
-        //        IResponse response = responseList.GetAt(i);
-        //        tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
-
-        //        if (response.StatusCode >= 0)
-        //        {
-        //            if (response.Detail != null)
-        //            {
-        //                ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-        //                if (responseType == ENResponseType.rtItemQueryRs)
-        //                {
-        //                    IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
-        //                    WalkAllItemsQueryRetWITHADD(ItemRetList, sequence, listID);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void WalkAllItemsQueryRetWITHADD(IORItemRetList ItemRetList, string sequence, string listID)
-        //{
-        //    string itemListID = string.Empty;
-        //    string itemName = string.Empty;
-        //    if (ItemRetList == null) return;
-
-        //    for (int y = 0; y < ItemRetList.Count; y++)
-        //    {
-        //        IORItemRet ItemRet = ItemRetList.GetAt(y);
-        //        itemListID = ItemRet.ItemInventoryRet.ListID.GetValue();
-        //        string itemSequence = (string)ItemRet.ItemInventoryRet.EditSequence.GetValue();
-        //        itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
-        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
-        //        tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
-        //    }
-        //   // QBFC_ItemAdd(sequence, listID, itemListID, itemName);
-        //}
-
     }
 }
