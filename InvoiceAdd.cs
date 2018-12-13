@@ -527,11 +527,11 @@ namespace InvoiceAdd
                 DataView DataView1 = new DataView();
                 //DataTable topLevelTbl = new DataTable();
                 SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.ItemCode, a.Description, c.[IncomeAccountRefListID], c.[COGSAccountRefListID], c.[AssetAccountRefListID]" +
-                " FROM [dat8121].[dbo].[v_ItemCode_QB] b"+
+                " FROM [dat8121].[dbo].[v_ItemCode_QB] b" +
                 " RIGHT JOIN [dat8121].[dbo].[I_ItemCode] a ON a.itemcode = b.ItemCode" +
                 " RIGHT JOIN [QODBC].[dbo].[Tbl_Item] c ON a.ItemCode = TRY_CAST(c.fullname AS int) AND b.ItemCode = TRY_CAST(c.fullname AS int)" +
                 " WHERE a.itemcode = '" + input +
-                "' OR a.itemcode = '" + cut +"'"
+                "' OR a.itemcode = '" + cut + "'"
                     /*
                     "SELECT  [ItemCode], [Description]" +
                      " FROM[dat8121].[dbo].[I_ItemCode]" +
@@ -554,7 +554,7 @@ where a.itemcode =25000000*/
                     {
                         if (input.Equals(fromData) == true)
                         {
-                            textBox1.Text = (topLevelTbl.Rows[0][0].ToString() + "\r\n" + topLevelTbl.Rows[0][1].ToString() + "\r\n" + 
+                            textBox1.Text = (topLevelTbl.Rows[0][0].ToString() + "\r\n" + topLevelTbl.Rows[0][1].ToString() + "\r\n" +
                                              topLevelTbl.Rows[0][2].ToString() + "\r\n" + topLevelTbl.Rows[0][3].ToString() + "\r\n" +
                                              topLevelTbl.Rows[0][4].ToString());
                             checkBox1.Checked = true;
@@ -865,10 +865,10 @@ where a.itemcode =25000000*/
         {
             if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
             {
-            //    QBFC_InventoryAssemblyQuery();
-            //}
-            //else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
-            //{
+                //    QBFC_InventoryAssemblyQuery();
+                //}
+                //else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
+                //{
                 /*ADD regardless if ItemCode exists or not*/
                 tbProgramLog.AppendText(Environment.NewLine + "Add then Modify the Item");
                 AddThenModify();
@@ -904,10 +904,10 @@ where a.itemcode =25000000*/
                 connectionOpen = true;
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
-                
+
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
                 //print xml string
-                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+                tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
@@ -917,7 +917,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(e.Message);
+                tbProgramLog.AppendText(Environment.NewLine +e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -947,7 +947,7 @@ where a.itemcode =25000000*/
             tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
-            
+
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
@@ -956,10 +956,10 @@ where a.itemcode =25000000*/
                 {
                     if (response.Detail != null)
                     {
-                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                        ENResponseType responseType = (ENResponseType) response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
                         {
-                            IItemInventoryAssemblyRet itemInventoryAssemblyRet = (IItemInventoryAssemblyRet)response.Detail;
+                            IItemInventoryAssemblyRet itemInventoryAssemblyRet = (IItemInventoryAssemblyRet) response.Detail;
                             WalkItemInventoryAssemblyRet(itemInventoryAssemblyRet);
                         }
                     }
@@ -1007,7 +1007,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(e.Message);
+                tbProgramLog.AppendText(Environment.NewLine +e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -1035,7 +1035,7 @@ where a.itemcode =25000000*/
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
-                tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
+                tbProgramLog.AppendText(Environment.NewLine +response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
 
                 if (response.StatusCode >= 0)
                 {
@@ -1069,7 +1069,7 @@ where a.itemcode =25000000*/
             }
             QBFC_ItemQuery(sequence, listId);
         }
-        
+
         private void QBFC_ItemQuery(string sequence, string listId)
         {
             bool sessionBegun = false;
@@ -1090,7 +1090,7 @@ where a.itemcode =25000000*/
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
 
-                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+                tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 sessionManager.EndSession();
@@ -1102,7 +1102,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(e.Message);
+                tbProgramLog.AppendText(Environment.NewLine +e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -1113,7 +1113,7 @@ where a.itemcode =25000000*/
                 }
             }
         }
-        
+
         private void QueryAllItems(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl)
         {
             List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
@@ -1134,18 +1134,18 @@ where a.itemcode =25000000*/
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
-                tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
+                tbProgramLog.AppendText(Environment.NewLine +response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
 
                 if (response.StatusCode >= 0)
                 {
                     if (response.StatusCode == 1)
                     {
                         
-                        //AddTheItemThatIsNotFoundHere
-                        tbProgramLog.AppendText("The ICode value is: " + responseMsgSet.ToXMLString());
-                        throw new NotImplementedException();
+                        FindTheNeededValues();
+                       // throw new NotImplementedException();
                     }
-                    else { 
+                    else //if (response.StatusCode ==0)
+                    {
                         if (response.Detail != null)
                         {
                             ENResponseType responseType = (ENResponseType)response.Type.GetValue();
@@ -1160,12 +1160,50 @@ where a.itemcode =25000000*/
             }
         }
 
+        private void FindTheNeededValues()
+        {
+            string itemList = string.Empty;
+            //AddTheItemThatIsNotFoundHere
+            tbProgramLog.AppendText(Environment.NewLine + "The ICode value is: ");
+            List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
+            foreach (string itemCode in itemCodes)
+            {
+                itemList = itemCode;
+            }
+            topLevelTbl = new DataTable();
+            string subItem = itemList;
+            String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
+            SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
+                                                            " FROM[dat8121].[dbo].[I_ItemCode]" +
+                                                            " where TRY_CAST(ItemCode as nvarchar) = '" + subItem +
+                                                            "' OR TRY_CAST(ItemCode as nvarchar) = '" + subItem + "'"
+                , connectionString);
+            dataAdapter.Fill(topLevelTbl);
+            tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
+            DataRow row = topLevelTbl.Rows[0];
+            topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
+            topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
+            topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
+            row[2] = "570000-1136323777";
+            row[3] = "800001E1-1537737142";
+            row[4] = "800001A9-1511318480";
+            tbProgramLog.AppendText(Environment.NewLine +row[0] + "  " + row[1]);
+
+            tbProgramLog.AppendText(Environment.NewLine +itemList);
+            //QBFC_ItemAdd();
+            //throw new NotImplementedException();
+        }
+
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
             string itemListId = string.Empty;
             string itemName = string.Empty;
             string itemSequence = string.Empty;
-            if (itemRetList == null) return;
+            if (itemRetList == null)
+            //{
+            //    tbProgramLog.AppendText(Environment.NewLine + "No item exits " + listId);
+                return;
+            //}
             for (int y = 0; y < itemRetList.Count; y++)
             {
                 IORItemRet itemRet = itemRetList.GetAt(y);
@@ -1176,7 +1214,7 @@ where a.itemcode =25000000*/
                     itemName = (string)itemRet.ItemInventoryAssemblyRet.Name.GetValue();
                 }
                 else if (itemRet.ItemInventoryRet != null)
-                { 
+                {
                     itemListId = itemRet.ItemInventoryRet.ListID.GetValue();
                     itemSequence = (string)itemRet.ItemInventoryRet.EditSequence.GetValue();
                     itemName = (string)itemRet.ItemInventoryRet.Name.GetValue();
@@ -1235,10 +1273,11 @@ where a.itemcode =25000000*/
                     itemSequence = (string)itemRet.ItemOtherChargeRet.EditSequence.GetValue();
                     itemName = (string)itemRet.ItemOtherChargeRet.Name.GetValue();
                 }
+              
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
-                QBFC_ItemModify(sequence, listId, itemListId);
+            QBFC_ItemModify(sequence, listId, itemListId);
         }
 
         private void QBFC_ItemModify(string sequence, string listID, string itemListID)
@@ -1261,7 +1300,7 @@ where a.itemcode =25000000*/
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
 
-                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+                tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 sessionManager.EndSession();
@@ -1273,7 +1312,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(e.Message);
+                tbProgramLog.AppendText(Environment.NewLine +e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -1333,6 +1372,6 @@ where a.itemcode =25000000*/
             string listId = (string)itemModifyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
         }
-        
+
     }
 }
