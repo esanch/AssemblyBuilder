@@ -117,7 +117,7 @@ namespace InvoiceAdd
             this.btn2_Exit.TabIndex = 58;
             this.btn2_Exit.Text = "Exit";
             this.btn2_Exit.UseVisualStyleBackColor = false;
-            this.btn2_Exit.Click += new System.EventHandler(this.btn2_Exit_Click);
+            this.btn2_Exit.Click += new System.EventHandler(this.Btn2_Exit_Click);
             // 
             // btnOpenFile_Reset
             // 
@@ -129,7 +129,7 @@ namespace InvoiceAdd
             this.btnOpenFile_Reset.TabIndex = 63;
             this.btnOpenFile_Reset.Text = "Open File";
             this.btnOpenFile_Reset.UseVisualStyleBackColor = false;
-            this.btnOpenFile_Reset.Click += new System.EventHandler(this.btnOpenFile_Reset_Click);
+            this.btnOpenFile_Reset.Click += new System.EventHandler(this.BtnOpenFile_Reset_Click);
             // 
             // dataGridView1
             // 
@@ -385,7 +385,7 @@ namespace InvoiceAdd
             Application.Run(new Frm1InvoiceAdd());
         }
 
-        private void btn2_Exit_Click(object sender, System.EventArgs e)
+        private void Btn2_Exit_Click(object sender, System.EventArgs e)
         {
             Dispose();
         }
@@ -476,7 +476,7 @@ namespace InvoiceAdd
         //    }
         //}
 
-        private void btnOpenFile_Reset_Click(object sender, System.EventArgs e)
+        private void BtnOpenFile_Reset_Click(object sender, System.EventArgs e)
         {
             checkBox1.Checked = false;
             checkBox2.Checked = false;
@@ -518,13 +518,13 @@ namespace InvoiceAdd
                 string cut = docPath.Substring(Math.Max(0, docPath.Length - 15), 8);
 
                 //SqlDataAdapter dataAdapter = new SqlDataAdapter();
-                String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
+                string connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
                 DataTable dtReturnValue = new DataTable();
                 DataTable dtTemp = new DataTable();
                 int dtReturnValueCount = dtReturnValue.Rows.Count;
                 int dtTempCount = dtTemp.Rows.Count;
-                DataSet DataSet1 = new DataSet();
-                DataView DataView1 = new DataView();
+                //DataSet DataSet1 = new DataSet();
+                //DataView DataView1 = new DataView();
                 //DataTable topLevelTbl = new DataTable();
                 SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.ItemCode, a.Description, c.[IncomeAccountRefListID], c.[COGSAccountRefListID], c.[AssetAccountRefListID]" +
                 " FROM [dat8121].[dbo].[v_ItemCode_QB] b" +
@@ -1140,11 +1140,12 @@ where a.itemcode =25000000*/
                 {
                     if (response.StatusCode == 1)
                     {
-                        
-                        FindTheNeededValues();
+                        string itemNoError = response.RequestID;
+                       // tbProgramLog.AppendText(Environment.NewLine+"RequestID:  " + itemNoError);
+                        FindTheNeededValues(itemNoError);
                        // throw new NotImplementedException();
                     }
-                    else //if (response.StatusCode ==0)
+                    else if (response.StatusCode ==0)
                     {
                         if (response.Detail != null)
                         {
@@ -1160,50 +1161,51 @@ where a.itemcode =25000000*/
             }
         }
 
-        private void FindTheNeededValues()
+        private void FindTheNeededValues(string itemNoError)
         {
-            string itemList = string.Empty;
-            //AddTheItemThatIsNotFoundHere
-            tbProgramLog.AppendText(Environment.NewLine + "The ICode value is: ");
-            List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
-            foreach (string itemCode in itemCodes)
-            {
-                itemList = itemCode;
-            }
-            topLevelTbl = new DataTable();
-            string subItem = itemList;
-            String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
-            SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
-                                                            " FROM[dat8121].[dbo].[I_ItemCode]" +
-                                                            " where TRY_CAST(ItemCode as nvarchar) = '" + subItem +
-                                                            "' OR TRY_CAST(ItemCode as nvarchar) = '" + subItem + "'"
-                , connectionString);
-            dataAdapter.Fill(topLevelTbl);
-            tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
-            DataRow row = topLevelTbl.Rows[0];
-            topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
-            topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
-            topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
-            row[2] = "570000-1136323777";
-            row[3] = "800001E1-1537737142";
-            row[4] = "800001A9-1511318480";
-            tbProgramLog.AppendText(Environment.NewLine +row[0] + "  " + row[1]);
-
-            tbProgramLog.AppendText(Environment.NewLine +itemList);
+            tbProgramLog.AppendText(Environment.NewLine + "The item with no existing value has itemNo value of: " + itemNoError);
+            
+            //string itemList = string.Empty;
+            ////AddTheItemThatIsNotFoundHere
+            //List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
+            //foreach (string itemCode in itemCodes)
+            //{
+            //    itemList = itemCode;
+            //}
+            //topLevelTbl = new DataTable();
+            
+            //string subItem = itemList;
+            //String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
+            //SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
+            //                                                " FROM[dat8121].[dbo].[I_ItemCode]" +
+            //                                                " where TRY_CAST(ItemCode as nvarchar) = '" + subItem  +"'"
+            //    , connectionString);
+            //dataAdapter.Fill(topLevelTbl);
+            //tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
+            //DataRow row = topLevelTbl.Rows[0];
+            //topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
+            //topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
+            //topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
+            
+            ////row[2] = "570000-1136323777";
+            ////row[3] = "800001E1-1537737142";
+            ////row[4] = "800001A9-1511318480";
+            //tbProgramLog.AppendText(Environment.NewLine +row[0] + "  " + row[1]);
+            //tbProgramLog.AppendText(Environment.NewLine +itemList);
             //QBFC_ItemAdd();
             //throw new NotImplementedException();
         }
 
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
+            tbProgramLog.AppendText(Environment.NewLine + "WalkAllItemsQueryRet method was reached");
             string itemListId = string.Empty;
             string itemName = string.Empty;
             string itemSequence = string.Empty;
             if (itemRetList == null)
-            //{
-            //    tbProgramLog.AppendText(Environment.NewLine + "No item exits " + listId);
-                return;
-            //}
+            {
+                QBFC_ItemAdd();
+            }
             for (int y = 0; y < itemRetList.Count; y++)
             {
                 IORItemRet itemRet = itemRetList.GetAt(y);
@@ -1273,7 +1275,6 @@ where a.itemcode =25000000*/
                     itemSequence = (string)itemRet.ItemOtherChargeRet.EditSequence.GetValue();
                     itemName = (string)itemRet.ItemOtherChargeRet.Name.GetValue();
                 }
-              
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
@@ -1282,6 +1283,7 @@ where a.itemcode =25000000*/
 
         private void QBFC_ItemModify(string sequence, string listID, string itemListID)
         {
+            tbProgramLog.AppendText(Environment.NewLine + "QBFC_ItemModify method was reached");
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
