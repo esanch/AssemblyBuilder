@@ -1090,6 +1090,7 @@ where a.itemcode =25000000*/
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
 
+                //this is the xml that already has the 1/0 values
                 tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
@@ -1098,7 +1099,7 @@ where a.itemcode =25000000*/
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                WalkAllItemsQueryRs(responseMsgSet, sequence, listId);
+                //WalkAllItemsQueryRs(responseMsgSet, sequence, listId);
             }
             catch (Exception e)
             {
@@ -1140,10 +1141,13 @@ where a.itemcode =25000000*/
                 {
                     if (response.StatusCode == 1)
                     {
+                        throw new NotImplementedException();
                         string itemNoError = response.RequestID;
-                       // tbProgramLog.AppendText(Environment.NewLine+"RequestID:  " + itemNoError);
+                        List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("Item No.")).ToList();
+                        int col = Int32.Parse(itemNoError);
+                        tbProgramLog.AppendText(Environment.NewLine + secondLevelTbl.Rows[col+1][1]);
+                        // tbProgramLog.AppendText(Environment.NewLine+"RequestID:  " + itemNoError);
                         FindTheNeededValues(itemNoError);
-                       // throw new NotImplementedException();
                     }
                     else if (response.StatusCode ==0)
                     {
@@ -1173,7 +1177,7 @@ where a.itemcode =25000000*/
             //    itemList = itemCode;
             //}
             //topLevelTbl = new DataTable();
-            
+
             //string subItem = itemList;
             //String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
             //SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
@@ -1186,7 +1190,7 @@ where a.itemcode =25000000*/
             //topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
             //topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
             //topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
-            
+
             ////row[2] = "570000-1136323777";
             ////row[3] = "800001E1-1537737142";
             ////row[4] = "800001A9-1511318480";
