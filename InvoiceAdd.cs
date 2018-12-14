@@ -526,7 +526,7 @@ namespace InvoiceAdd
                 //DataSet DataSet1 = new DataSet();
                 //DataView DataView1 = new DataView();
                 //DataTable topLevelTbl = new DataTable();
-                SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.ItemCode, a.Description, c.[IncomeAccountRefListID], c.[COGSAccountRefListID], c.[AssetAccountRefListID]" +
+                SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.ItemCode, a.Description, ItemType, c.[IncomeAccountRefListID], c.[COGSAccountRefListID], c.[AssetAccountRefListID]" +
                 " FROM [dat8121].[dbo].[v_ItemCode_QB] b" +
                 " RIGHT JOIN [dat8121].[dbo].[I_ItemCode] a ON a.itemcode = b.ItemCode" +
                 " RIGHT JOIN [QODBC].[dbo].[Tbl_Item] c ON a.ItemCode = TRY_CAST(c.fullname AS int) AND b.ItemCode = TRY_CAST(c.fullname AS int)" +
@@ -555,8 +555,8 @@ where a.itemcode =25000000*/
                         if (input.Equals(fromData) == true)
                         {
                             textBox1.Text = (topLevelTbl.Rows[0][0].ToString() + "\r\n" + topLevelTbl.Rows[0][1].ToString() + "\r\n" +
-                                             topLevelTbl.Rows[0][2].ToString() + "\r\n" + topLevelTbl.Rows[0][3].ToString() + "\r\n" +
-                                             topLevelTbl.Rows[0][4].ToString());
+                                             topLevelTbl.Rows[0][3].ToString() + "\r\n" + topLevelTbl.Rows[0][4].ToString() + "\r\n" +
+                                             topLevelTbl.Rows[0][5].ToString());
                             checkBox1.Checked = true;
                             ColumnCorrectOrder(sender, e, topLevelTbl);
                         }
@@ -936,9 +936,9 @@ where a.itemcode =25000000*/
             itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
             itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
             itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
-            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[2].ToString());
-            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[3].ToString());
-            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[4].ToString());
+            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[3].ToString());
+            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[4].ToString());
+            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[5].ToString());
         }
 
         private void WalkItemInventoryAssemblyAddRs(IMsgSetResponse responseMsgSet)
@@ -1091,7 +1091,7 @@ where a.itemcode =25000000*/
                 sessionBegun = true;
 
                 //this is the xml that already has the 1/0 values
-                tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
+               // tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 sessionManager.EndSession();
@@ -1099,7 +1099,7 @@ where a.itemcode =25000000*/
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                //WalkAllItemsQueryRs(responseMsgSet, sequence, listId);
+                WalkAllItemsQueryRs(responseMsgSet, sequence, listId);
             }
             catch (Exception e)
             {
@@ -1141,12 +1141,7 @@ where a.itemcode =25000000*/
                 {
                     if (response.StatusCode == 1)
                     {
-                        throw new NotImplementedException();
                         string itemNoError = response.RequestID;
-                        List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("Item No.")).ToList();
-                        int col = Int32.Parse(itemNoError);
-                        tbProgramLog.AppendText(Environment.NewLine + secondLevelTbl.Rows[col+1][1]);
-                        // tbProgramLog.AppendText(Environment.NewLine+"RequestID:  " + itemNoError);
                         FindTheNeededValues(itemNoError);
                     }
                     else if (response.StatusCode ==0)
@@ -1167,37 +1162,47 @@ where a.itemcode =25000000*/
 
         private void FindTheNeededValues(string itemNoError)
         {
-            tbProgramLog.AppendText(Environment.NewLine + "The item with no existing value has itemNo value of: " + itemNoError);
-            
-            //string itemList = string.Empty;
-            ////AddTheItemThatIsNotFoundHere
-            //List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
-            //foreach (string itemCode in itemCodes)
-            //{
-            //    itemList = itemCode;
-            //}
-            //topLevelTbl = new DataTable();
-
-            //string subItem = itemList;
-            //String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
-            //SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT  [ItemCode], [Description]" +
-            //                                                " FROM[dat8121].[dbo].[I_ItemCode]" +
-            //                                                " where TRY_CAST(ItemCode as nvarchar) = '" + subItem  +"'"
-            //    , connectionString);
-            //dataAdapter.Fill(topLevelTbl);
-            //tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
-            //DataRow row = topLevelTbl.Rows[0];
-            //topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
-            //topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
-            //topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
-
-            ////row[2] = "570000-1136323777";
-            ////row[3] = "800001E1-1537737142";
-            ////row[4] = "800001A9-1511318480";
-            //tbProgramLog.AppendText(Environment.NewLine +row[0] + "  " + row[1]);
-            //tbProgramLog.AppendText(Environment.NewLine +itemList);
-            //QBFC_ItemAdd();
-            //throw new NotImplementedException();
+            int col = Int32.Parse(itemNoError);
+            //tbProgramLog.AppendText(Environment.NewLine + "ItemCode with error: " + secondLevelTbl.Rows[col][1]);
+            topLevelTbl = new DataTable();
+            string subItem = secondLevelTbl.Rows[col][1].ToString();
+            String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
+            SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.[ItemCode], b.[Description], a.[itemType]" +
+                                                            " FROM[PDMengineeringVault].[dbo].[v_Documents] a" +
+                                                            " RIGHT JOIN [PDMengineeringVault].[dbo].[v_BOMData] b" +
+                                                            " ON a.[Itemcode] = b.[ItemCode]" + 
+                                                            " WHERE (a.[ItemType] LIKE 'ass%' OR a.[ItemType] LIKE 'par%')" +
+                                                            " AND(a.[Itemcode] = '"+subItem+ "' OR b.[ItemCode] = '" +subItem+ "')"
+                , connectionString);
+            dataAdapter.Fill(topLevelTbl);
+            topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
+            topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
+            topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
+            tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
+            DataRow row = topLevelTbl.Rows[0];
+            tbProgramLog.AppendText(Environment.NewLine + "item in the query: " + subItem);
+            string A = "Assembly";
+            string P = "Part";
+            if (row[2].ToString() == A)
+            {
+                row[3] = "570000-1136323777";
+                row[4] = "800001E1-1537737142";
+                row[5] = "800001A9-1511318480";
+                //tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
+                QBFC_ItemAdd();
+            }
+            else if (row[2].ToString() == P)
+            {
+                row[3] = "570000-1136323777";
+                row[4] = "800001AA-1511318481";
+                row[5] = "800001A9-1511318480";
+                //tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
+                QBFC_ItemAdd();
+            }
+            else
+            {
+                tbProgramLog.AppendText("Check the itemType");
+            }
         }
 
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
@@ -1306,7 +1311,7 @@ where a.itemcode =25000000*/
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
 
-                tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
+               // tbProgramLog.AppendText(Environment.NewLine +requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 sessionManager.EndSession();
