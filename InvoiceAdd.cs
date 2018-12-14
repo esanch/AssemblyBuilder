@@ -11,6 +11,13 @@ using System.Text.RegularExpressions;
 
 namespace InvoiceAdd
 {
+    //public class QBAccounts
+    //{
+    //    static string const IncomeAccount = "570000-1136323777";
+    //    static string const COGSAccount = "800001E1-1537737142";
+    //    static string const InventoryAssetAccount ="800001A9-1511318480";
+    //}
+
     public class Frm1InvoiceAdd : System.Windows.Forms.Form
     {
         private System.ComponentModel.Container components = null;
@@ -21,6 +28,9 @@ namespace InvoiceAdd
         private DataGridView dataGridView1;
         public int CurrentRow = 0;
 
+        string IncomeAccount = "570000-1136323777";
+        string COGSAccount = "800001E1-1537737142";
+        string InventoryAssetAccount = "800001A9-1511318480";
         DataTable secondLevelTbl = new DataTable();
         DataTable topLevelTbl = new DataTable();
         string fileName = string.Empty;
@@ -881,11 +891,11 @@ where a.itemcode =25000000*/
 
         private void AddThenModify()
         {
-            QBFC_ItemAdd();
+            QBFC_ItemAddAssembly();
             QBFC_InventoryAssemblyQuery();
         }
 
-        private void QBFC_ItemAdd()
+        private void QBFC_ItemAddAssembly()
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -936,9 +946,12 @@ where a.itemcode =25000000*/
             itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
             itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
             itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
-            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[3].ToString());
-            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[4].ToString());
-            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[5].ToString());
+            //itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[3].ToString());
+            //itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[4].ToString());
+            //itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[5].ToString());
+            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccount);
+            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccount);
+            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
         }
 
         private void WalkItemInventoryAssemblyAddRs(IMsgSetResponse responseMsgSet)
@@ -1180,29 +1193,127 @@ where a.itemcode =25000000*/
             topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
             tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
             DataRow row = topLevelTbl.Rows[0];
+            row[3] = IncomeAccount;
+            row[4] = COGSAccount;
+            row[5] = InventoryAssetAccount;
             tbProgramLog.AppendText(Environment.NewLine + "item in the query: " + subItem);
             string A = "Assembly";
             string P = "Part";
             if (row[2].ToString() == A)
             {
-                row[3] = "570000-1136323777";
-                row[4] = "800001E1-1537737142";
-                row[5] = "800001A9-1511318480";
-                //tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                QBFC_ItemAdd();
+                tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
+                QBFC_ItemAddAssembly();
             }
             else if (row[2].ToString() == P)
             {
-                row[3] = "570000-1136323777";
-                row[4] = "800001AA-1511318481";
-                row[5] = "800001A9-1511318480";
-                //tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                QBFC_ItemAdd();
+                tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
+                QBFC_ItemAddPart();
             }
             else
             {
                 tbProgramLog.AppendText("Check the itemType");
             }
+        }
+
+        private void QBFC_ItemAddPart()
+        {
+            bool sessionBegun = false;
+            bool connectionOpen = false;
+            QBSessionManager sessionManager = null;
+
+            try
+            {
+                //Create the session Manager object
+                sessionManager = new QBSessionManager();
+
+                //Create the message set request object to hold our request
+                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+                BuildItemInventoryAddRq(requestMsgSet);
+
+                //Connect to QuickBooks and begin a session
+                sessionManager.OpenConnection("", "Sample Code from OSR");
+                connectionOpen = true;
+                sessionManager.BeginSession("", ENOpenMode.omDontCare);
+                sessionBegun = true;
+
+                //Send the request and get the response from QuickBooks
+                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+
+                //End the session and close the connection to QuickBooks
+                sessionManager.EndSession();
+                sessionBegun = false;
+                sessionManager.CloseConnection();
+                connectionOpen = false;
+
+                WalkItemInventoryAddRs(responseMsgSet);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Error");
+                if (sessionBegun)
+                {
+                    sessionManager.EndSession();
+                }
+                if (connectionOpen)
+                {
+                    sessionManager.CloseConnection();
+                }
+            }
+        }
+
+        private void WalkItemInventoryAddRs(IMsgSetResponse responseMsgSet)
+        {
+            if (responseMsgSet == null) return;
+            tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
+            IResponseList responseList = responseMsgSet.ResponseList;
+            if (responseList == null) return;
+
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+
+                if (response.StatusCode >= 0)
+                {
+                    if (response.Detail != null)
+                    {
+                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                        if (responseType == ENResponseType.rtItemInventoryAddRs)
+                        {
+                            //upcast to more specific type here, this is safe because we checked with response.Type check above
+                            IItemInventoryRet itemInventoryRet = (IItemInventoryRet)response.Detail;
+                            WalkItemInventoryRet(itemInventoryRet);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void WalkItemInventoryRet(IItemInventoryRet itemInventoryRet)
+        {
+            tbProgramLog.AppendText(Environment.NewLine + "Before error");
+            if (itemInventoryRet == null) return;
+            tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
+            string sequence = (string)itemInventoryRet.EditSequence.GetValue();
+            string listId = (string)itemInventoryRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
+        }
+
+        private void BuildItemInventoryAddRq(IMsgSetRequest requestMsgSet)
+        {
+            IItemInventoryAdd itemInventoryAddRq = requestMsgSet.AppendItemInventoryAddRq();
+            DataRow row = topLevelTbl.Rows[0];
+            itemInventoryAddRq.Name.SetValue(row[0].ToString());
+            itemInventoryAddRq.SalesDesc.SetValue(row[1].ToString());
+            itemInventoryAddRq.PurchaseDesc.SetValue(row[1].ToString());
+            //itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[3].ToString());
+            //itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[4].ToString());
+            //itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[5].ToString());
+            itemInventoryAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccount);
+            itemInventoryAddRq.COGSAccountRef.ListID.SetValue(COGSAccount);
+            itemInventoryAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
+
         }
 
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
@@ -1212,9 +1323,9 @@ where a.itemcode =25000000*/
             string itemName = string.Empty;
             string itemSequence = string.Empty;
             if (itemRetList == null)
-            {
-                QBFC_ItemAdd();
-            }
+                return;//{
+            //    QBFC_ItemAdd();
+            //}
             for (int y = 0; y < itemRetList.Count; y++)
             {
                 IORItemRet itemRet = itemRetList.GetAt(y);
