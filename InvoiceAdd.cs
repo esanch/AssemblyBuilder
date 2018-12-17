@@ -21,12 +21,11 @@ namespace InvoiceAdd
     public class Frm1InvoiceAdd : System.Windows.Forms.Form
     {
         private System.ComponentModel.Container components = null;
-        private System.Windows.Forms.Button btn1_Send;
-        private System.Windows.Forms.Button btn2_Exit;
-        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
-        private System.Windows.Forms.Button btnOpenFile_Reset;
+        private Button btn1_Send;
+        private Button btn2_Exit;
+        private SaveFileDialog saveFileDialog1;
+        private Button btnOpenFile_Reset;
         private DataGridView dataGridView1;
-        public int CurrentRow = 0;
 
         string IncomeAccount = "570000-1136323777";
         string COGSAccount = "800001E1-1537737142";
@@ -75,33 +74,33 @@ namespace InvoiceAdd
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.btn1_Send = new System.Windows.Forms.Button();
-            this.btn2_Exit = new System.Windows.Forms.Button();
-            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.btnOpenFile_Reset = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
-            this.checkBox10 = new System.Windows.Forms.CheckBox();
-            this.checkBox11 = new System.Windows.Forms.CheckBox();
-            this.checkBox12 = new System.Windows.Forms.CheckBox();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.tbProgramLog = new System.Windows.Forms.TextBox();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            this.btn1_Send = new Button();
+            this.btn2_Exit = new Button();
+            this.saveFileDialog1 = new SaveFileDialog();
+            this.btnOpenFile_Reset = new Button();
+            this.dataGridView1 = new DataGridView();
+            this.checkBox1 = new CheckBox();
+            this.checkBox2 = new CheckBox();
+            this.checkBox3 = new CheckBox();
+            this.checkBox4 = new CheckBox();
+            this.checkBox5 = new CheckBox();
+            this.checkBox6 = new CheckBox();
+            this.checkBox7 = new CheckBox();
+            this.checkBox9 = new CheckBox();
+            this.checkBox10 = new CheckBox();
+            this.checkBox11 = new CheckBox();
+            this.checkBox12 = new CheckBox();
+            this.checkBox8 = new CheckBox();
+            this.label1 = new Label();
+            this.label2 = new Label();
+            this.label3 = new Label();
+            this.label4 = new Label();
+            this.textBox1 = new TextBox();
+            this.label5 = new Label();
+            this.tbProgramLog = new TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -395,12 +394,12 @@ namespace InvoiceAdd
             Application.Run(new Frm1InvoiceAdd());
         }
 
-        private void Btn2_Exit_Click(object sender, System.EventArgs e)
+        private void Btn2_Exit_Click(object sender, EventArgs e)
         {
             Dispose();
         }
 
-        private void BtnOpenFile_Reset_Click(object sender, System.EventArgs e)
+        private void BtnOpenFile_Reset_Click(object sender, EventArgs e)
         {
             checkBox1.Checked = false;
             checkBox2.Checked = false;
@@ -416,19 +415,18 @@ namespace InvoiceAdd
             checkBox12.Checked = false;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                //openFileDialog.InitialDirectory = @"C:\Users\Elizabeth.Earl\source\repos\ConsoleApp2\ConsoleApp2\";
                 openFileDialog.Filter = "xml files (*.xml)|*.xml";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     fileName = openFileDialog.FileName;
-                    StartErrorChecking(sender, e);
+                    StartErrorChecking();
                 }
             }
         }
 
-        private void StartErrorChecking(object sender, EventArgs e)
+        private void StartErrorChecking()
         {
             secondLevelTbl = new DataTable();
             topLevelTbl = new DataTable();
@@ -438,18 +436,11 @@ namespace InvoiceAdd
             {
                 string nameData = bom.Attribute("name").Value;
                 string docPath = bom.Attribute("document_path").Value;
-                string input = System.Text.RegularExpressions.Regex.Match(nameData, matchFirst).Value;
+                string input = Regex.Match(nameData, matchFirst).Value;
                 string cut = docPath.Substring(Math.Max(0, docPath.Length - 15), 8);
 
                 //SqlDataAdapter dataAdapter = new SqlDataAdapter();
                 string connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
-                DataTable dtReturnValue = new DataTable();
-                DataTable dtTemp = new DataTable();
-                int dtReturnValueCount = dtReturnValue.Rows.Count;
-                int dtTempCount = dtTemp.Rows.Count;
-                //DataSet DataSet1 = new DataSet();
-                //DataView DataView1 = new DataView();
-                //DataTable topLevelTbl = new DataTable();
                 SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.ItemCode, a.Description, ItemType, c.[IncomeAccountRefListID], c.[COGSAccountRefListID], c.[AssetAccountRefListID]" +
                 " FROM [dat8121].[dbo].[v_ItemCode_QB] b" +
                 " RIGHT JOIN [dat8121].[dbo].[I_ItemCode] a ON a.itemcode = b.ItemCode" +
@@ -468,7 +459,6 @@ right join i_itemcode a on a.itemcode=b.itemcode
 where a.itemcode =25000000*/
 
                 dataAdapter.Fill(topLevelTbl);
-                dtReturnValue = topLevelTbl.Clone();
 
                 bool isTrue = topLevelTbl.Rows.Count > 0;
                 if (isTrue == true)
@@ -478,45 +468,45 @@ where a.itemcode =25000000*/
                     {
                         if (input.Equals(fromData) == true)
                         {
-                            textBox1.Text = (topLevelTbl.Rows[0][0].ToString() + "\r\n" + topLevelTbl.Rows[0][1].ToString() + "\r\n" +
-                                             topLevelTbl.Rows[0][3].ToString() + "\r\n" + topLevelTbl.Rows[0][4].ToString() + "\r\n" +
-                                             topLevelTbl.Rows[0][5].ToString());
+                            textBox1.Text = (topLevelTbl.Rows[0][0] + "\r\n" + topLevelTbl.Rows[0][1] + "\r\n" +
+                                             topLevelTbl.Rows[0][3] + "\r\n" + topLevelTbl.Rows[0][4] + "\r\n" +
+                                             topLevelTbl.Rows[0][5]);
                             checkBox1.Checked = true;
-                            ColumnCorrectOrder(sender, e, topLevelTbl);
+                            ColumnCorrectOrder();
                         }
                     }
                     else if (String.Equals(input, cut) == false)
                     {
                         ifError = true;
-                        ColumnCorrectOrder(sender, e, ifError, input, cut, topLevelTbl);
+                        ColumnCorrectOrder(ifError, input, cut);
                     }
                 }
                 else
                 {
                     ifError = true;
-                    ColumnCorrectOrder(sender, e, ifError, input, cut, topLevelTbl);
+                    ColumnCorrectOrder(ifError, input, cut);
                 }
             }
         }
 
-        private void ColumnCorrectOrder(object sender, EventArgs e, bool ifError, string input, string cut, DataTable topLevelTbl)
+        private void ColumnCorrectOrder(bool ifError, string input, string cut)
         {
             if (ifError == true)
             {
                 if (String.Equals(input, cut) == false)
                 {
                     checkBox2.Checked = true;
-                    ColumnCorrectOrder(sender, e, topLevelTbl);
+                    ColumnCorrectOrder();
                 }
                 else
                 {
                     checkBox3.Checked = true;
-                    ColumnCorrectOrder(sender, e, topLevelTbl);
+                    ColumnCorrectOrder();
                 }
             }
         }
 
-        private void ColumnCorrectOrder(object sender, EventArgs e, DataTable topLevelTbl)
+        private void ColumnCorrectOrder()
         {
             XDocument doc = XDocument.Load(fileName);
             Dictionary<int, string> openWith = new Dictionary<int, string>();
@@ -862,9 +852,6 @@ where a.itemcode =25000000*/
             itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
             itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
             itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
-            //itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[3].ToString());
-            //itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[4].ToString());
-            //itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[5].ToString());
             itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccount);
             itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccount);
             itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
@@ -1024,14 +1011,7 @@ where a.itemcode =25000000*/
                 //this is the xml that already has the 1/0 values
                 tbProgramLog.AppendText(Environment.NewLine + "ITEM QUERY: " + requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-
-                //tbProgramLog.AppendText(Environment.NewLine + "Response List " + responseMsgSet.ResponseList.Count);
-                //for (int i = 0; i < responseMsgSet.ResponseList.Count; i++)
-                //{
-                //    IResponse response = responseMsgSet.ResponseList.GetAt(i);
-                //    tbProgramLog.AppendText(Environment.NewLine + "RESPONSE: " + response.GetType().FullName);
-                //}
-
+                
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
@@ -1061,7 +1041,6 @@ where a.itemcode =25000000*/
                 IItemQuery itemQueryRq = requestMsgSet.AppendItemQueryRq();
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
-                //tbProgramLog.AppendText(Environment.NewLine + itemCode);
             }
         }
 
@@ -1074,16 +1053,11 @@ where a.itemcode =25000000*/
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
-                // tbProgramLog.AppendText(Environment.NewLine + response.StatusCode + ": " + response.StatusMessage);
-
                 if (response.StatusCode >= 0)
                 {
                     if (response.StatusCode == 1)
                     {
                         string itemNoError = response.RequestID;
-                        //tbProgramLog.AppendText(Environment.NewLine + " ITERATOR ID" + response.Type.GetValue());
-                        //tbProgramLog.AppendText(Environment.NewLine + itemNoError);
-
                         FindTheNeededValues(itemNoError);
                     }
                     else if (response.StatusCode == 0)
@@ -1094,7 +1068,7 @@ where a.itemcode =25000000*/
                             if (responseType == ENResponseType.rtItemQueryRs)
                             {
                                 IORItemRetList itemRetList = (IORItemRetList)response.Detail;
-                                // WalkAllItemsQueryRet(itemRetList, sequence, listId);
+                                WalkAllItemsQueryRet(itemRetList, sequence, listId);
                             }
                         }
                     }
@@ -1105,7 +1079,6 @@ where a.itemcode =25000000*/
         private void FindTheNeededValues(string itemNoError)
         {
             int col = Int32.Parse(itemNoError);
-            //tbProgramLog.AppendText(Environment.NewLine + "ItemCode with error: " + secondLevelTbl.Rows[col][1]);
             topLevelTbl = new DataTable();
             string subItem = secondLevelTbl.Rows[col][1].ToString();
             String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
@@ -1136,7 +1109,9 @@ where a.itemcode =25000000*/
             else if (row[2].ToString() == P)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                // QBFC_ItemAddPart();
+                QBFC_ItemAddPart();
+                //QBFC_InventoryAssemblyQuery();
+                // QBFC_ItemAddPart()
             }
             else
             {
@@ -1171,6 +1146,7 @@ where a.itemcode =25000000*/
                 sessionBegun = true;
 
                 //Send the request and get the response from QuickBooks
+                tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD PART: " + requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 //End the session and close the connection to QuickBooks
@@ -1183,7 +1159,6 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Error");
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -1193,6 +1168,19 @@ where a.itemcode =25000000*/
                     sessionManager.CloseConnection();
                 }
             }
+        }
+
+        private void BuildItemInventoryAddRq(IMsgSetRequest requestMsgSet)
+        {
+            IItemInventoryAdd itemInventoryAddRq = requestMsgSet.AppendItemInventoryAddRq();
+            DataRow row = topLevelTbl.Rows[0];
+            itemInventoryAddRq.Name.SetValue(row[0].ToString());
+            itemInventoryAddRq.SalesDesc.SetValue(row[1].ToString());
+            itemInventoryAddRq.PurchaseDesc.SetValue(row[1].ToString());
+            itemInventoryAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccount);
+            itemInventoryAddRq.COGSAccountRef.ListID.SetValue(COGSAccount);
+            itemInventoryAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
+
         }
 
         private void WalkItemInventoryAddRs(IMsgSetResponse responseMsgSet)
@@ -1230,23 +1218,10 @@ where a.itemcode =25000000*/
             string sequence = (string)itemInventoryRet.EditSequence.GetValue();
             string listId = (string)itemInventoryRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
+            QBFC_ItemQuery(sequence, listId);
         }
 
-        private void BuildItemInventoryAddRq(IMsgSetRequest requestMsgSet)
-        {
-            IItemInventoryAdd itemInventoryAddRq = requestMsgSet.AppendItemInventoryAddRq();
-            DataRow row = topLevelTbl.Rows[0];
-            itemInventoryAddRq.Name.SetValue(row[0].ToString());
-            itemInventoryAddRq.SalesDesc.SetValue(row[1].ToString());
-            itemInventoryAddRq.PurchaseDesc.SetValue(row[1].ToString());
-            //itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(row[3].ToString());
-            //itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(row[4].ToString());
-            //itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(row[5].ToString());
-            itemInventoryAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccount);
-            itemInventoryAddRq.COGSAccountRef.ListID.SetValue(COGSAccount);
-            itemInventoryAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
-
-        }
+       
 
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
@@ -1326,15 +1301,6 @@ where a.itemcode =25000000*/
                     itemSequence = (string)itemRet.ItemOtherChargeRet.EditSequence.GetValue();
                     itemName = (string)itemRet.ItemOtherChargeRet.Name.GetValue();
                 }
-                //else if ((itemRet.ItemInventoryAssemblyRet == null) && (itemRet.ItemInventoryRet == null) &&
-                //         (itemRet.ItemNonInventoryRet == null) && (itemRet.ItemSubtotalRet == null)
-                //         && (itemRet.ItemDiscountRet == null) && (itemRet.ItemPaymentRet == null) &&
-                //         (itemRet.ItemSalesTaxRet == null) && (itemRet.ItemSalesTaxGroupRet == null)
-                //         && (itemRet.ItemGroupRet == null) && (itemRet.ItemServiceRet == null) &&
-                //         (itemRet.ItemOtherChargeRet == null))
-                //{
-                //    tbProgramLog.AppendText(Environment.NewLine + "THERE IS NO EDITSEQUENCE/LISTID FOR THE PROVIDED ITEMCODE");
-                //}
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
