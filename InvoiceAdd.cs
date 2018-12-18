@@ -613,6 +613,7 @@ where a.itemcode =25000000*/
                 bool qtyTest = Regex.IsMatch(qtyGiven, qty);
                 if (numberTest == false)
                 {
+                    //tbProgramLog.AppendText("ERROR: " + numberTest);
                     checkBox10.Checked = true;
                     error = true;
                 }
@@ -796,7 +797,7 @@ where a.itemcode =25000000*/
 
         private void AddThenModify()
         {
-            QBFC_ItemAddAssembly();
+           // QBFC_ItemAddAssembly();
             QBFC_InventoryAssemblyQuery();
             tbProgramLog.AppendText(Environment.NewLine + "END OF PROGRAM");
         }
@@ -940,6 +941,8 @@ where a.itemcode =25000000*/
         {
             IItemInventoryAssemblyQuery itemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
             IListWithClassFilter listWithClassFilter = itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
+            listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcEndsWith);
+            listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
             listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
             itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
         }
@@ -1040,6 +1043,8 @@ where a.itemcode =25000000*/
             {
                 IItemQuery itemQueryRq = requestMsgSet.AppendItemQueryRq();
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+                itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcEndsWith);
+                itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
             }
         }
@@ -1104,14 +1109,13 @@ where a.itemcode =25000000*/
             if (row[2].ToString() == A)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                // QBFC_ItemAddAssembly();
+                //QBFC_ItemAddAssembly();
             }
             else if (row[2].ToString() == P)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                QBFC_ItemAddPart();
+                //QBFC_ItemAddPart();
                 //QBFC_InventoryAssemblyQuery();
-                // QBFC_ItemAddPart()
             }
             else
             {
@@ -1122,8 +1126,7 @@ where a.itemcode =25000000*/
         private void QBFC_ItemAddPart()
         {
             tbProgramLog.AppendText(Environment.NewLine + " a part item will be addded");
-
-
+            
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
@@ -1159,6 +1162,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
+                tbProgramLog.AppendText(Environment.NewLine + e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -1212,17 +1216,13 @@ where a.itemcode =25000000*/
 
         private void WalkItemInventoryRet(IItemInventoryRet itemInventoryRet)
         {
-            tbProgramLog.AppendText(Environment.NewLine + "Before error");
             if (itemInventoryRet == null) return;
-            tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
-            string sequence = (string)itemInventoryRet.EditSequence.GetValue();
-            string listId = (string)itemInventoryRet.ListID.GetValue();
-            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
-            QBFC_ItemQuery(sequence, listId);
+            string PartSequence = (string)itemInventoryRet.EditSequence.GetValue();
+            string PartListId = (string)itemInventoryRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + PartSequence + Environment.NewLine + "List ID: " + PartListId);
+            QBFC_ItemQuery(PartSequence, PartListId);
         }
-
-       
-
+        
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
             tbProgramLog.AppendText(Environment.NewLine + "WalkAllItemsQueryRet method was reached");
@@ -1304,7 +1304,7 @@ where a.itemcode =25000000*/
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
-            QBFC_ItemModify(sequence, listId, itemListId);
+            //QBFC_ItemModify(sequence, listId, itemListId);
         }
 
         private void QBFC_ItemModify(string sequence, string listID, string itemListID)
