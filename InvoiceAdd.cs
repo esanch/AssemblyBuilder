@@ -492,7 +492,7 @@ namespace InvoiceAdd
             checkBox12.Checked = false;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = @"C:\Users\Elizabeth.Earl\source\repos\ConsoleApp2\ConsoleApp2\";
+                //openFileDialog.InitialDirectory = @"C:\Users\Elizabeth.Earl\source\repos\ConsoleApp2\ConsoleApp2\";
                 openFileDialog.Filter = "xml files (*.xml)|*.xml";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
@@ -530,6 +530,10 @@ namespace InvoiceAdd
                     " FROM[dat8121].[dbo].[I_ItemCode]" +
                     " where TRY_CAST(ItemCode as nvarchar) = '" + input +
                     "' OR TRY_CAST(ItemCode as nvarchar) = '" + cut + "'", connectionString);
+                /*select a.ItemCode,a.Description,b.itemcode as QBName from v_ItemCode_qb b
+right join i_itemcode a on a.itemcode=b.ItemCode
+where a.itemcode =25000000*/
+
                 dataAdapter.Fill(topLevelTbl);
                 dtReturnValue = topLevelTbl.Clone();
 
@@ -781,19 +785,20 @@ namespace InvoiceAdd
                         y => y.Value.ToUpper().Contains("PART")).Key
                         ).FirstOrDefault().Attribute("value") ?? "N/A",
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("DES")).Key
-                    ).FirstOrDefault() == null ?
-                    null : (string)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                        y => y.Value.ToUpper().Contains("DES")).Key
-                        ).FirstOrDefault().Attribute("value") ?? "N/A",
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("DES")).Key) == null ?
+                    null : (string)bomrow.Elements("bomcell"
+                        ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                                  y => y.Value.ToUpper().Contains("DES")).Key).Attribute("value") ?? "N/A",
 
-                bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
-                    y => y.Value.ToUpper().Contains("Q")).Key
-                    ).FirstOrDefault() == null ?
+                bomrow.Elements("bomcell"
+                    ).FirstOrDefault(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
+                                              y => y.Value.ToUpper().Contains("Q")).Key) == null ?
                     null : (int?)bomrow.Elements("bomcell").Where(x => (int)x.Attribute("col_no") == openWith.FirstOrDefault(
                         y => y.Value.ToUpper().Contains("Q")).Key
-                        ).FirstOrDefault().Attribute("value") ?? null
+                        ).FirstOrDefault()
+                               ?.Attribute("value") ?? null
                 );
             }
             checkBox9.Checked = true;
@@ -823,9 +828,27 @@ namespace InvoiceAdd
         private void ending(DataTable secondLevelTbl, DataTable topLevelTbl)
         {
             dataGridView1.DataSource = secondLevelTbl;
-            if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
+            if ((checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true) || (checkBox1.Checked == false && checkBox9.Checked == true && checkBox11.Checked == true))
             {
                 dataGridView1.DataSource = secondLevelTbl;
+            }
+            else
+            {
+                tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
+            }
+        }
+
+        private void btn1_Send_Click_1(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
+            {
+                QBFC_InventoryAssemblyQuery();
+            }
+            if (checkBox1.Checked == false && checkBox9.Checked == true && checkBox11.Checked == true)
+            {
+                tbProgramLog.AppendText(Environment.NewLine + "Add Item Method");
+                QBFC_ItemAdd();
+               QBFC_InventoryAssemblyQuery();
             }
             else
             {
@@ -841,21 +864,20 @@ namespace InvoiceAdd
 
             try
             {
-                //Create the session Manager object
                 sessionManager = new QBSessionManager();
-                //Create the message set request object to hold our request
+
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-                queryItemAssembly(requestMsgSet, secondLevelTbl, topLevelTbl);
-                //Connect to QuickBooks and begin a session
+                queryItemAssembly(requestMsgSet, topLevelTbl);
+
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
-                //Send the request and get the response from QuickBooks
+
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-                //End the session and close the connection to QuickBooks
+
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
@@ -875,56 +897,46 @@ namespace InvoiceAdd
                 }
             }
         }
-        
-        void queryItemAssembly(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl)
+
+        void queryItemAssembly(IMsgSetRequest requestMsgSet, DataTable topLevelTbl)
         {
-            
+
             IItemInventoryAssemblyQuery ItemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
             IListWithClassFilter listWithClassFilter = ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
-            //Set field value for MatchCriterion
+
             listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
-            //Set field value for Name
             ItemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
         }
 
         void WalkItemInventoryAssemblyQueryRs(IMsgSetResponse responseMsgSet)
         {
-            if (responseMsgSet == null) return;
-            IResponseList responseList = responseMsgSet.ResponseList;
+            IResponseList responseList = responseMsgSet?.ResponseList;
             if (responseList == null) return;
-            //if we sent only one request, there is only one response, we'll walk the list for this sample
+
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
                 tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
-                //check the status code of the response, 0=ok, >0 is warning
+
                 if (response.StatusCode >= 0)
                 {
-                    if (response.StatusCode == 1)
+                    if (response.StatusCode == 0)
                     {
-                        tbProgramLog.AppendText(Environment.NewLine + "Call add method");
-                        //addItem(requestMsgSet);
-                    }
-                    else if (response.StatusCode == 0)
-                    {
-                        //the request-specific response is in the details, make sure we have some
                         if (response.Detail != null)
                         {
-                            //make sure the response is the type we're expecting
                             ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                             if (responseType == ENResponseType.rtItemInventoryAssemblyQueryRs)
                             {
-                                //upcast to more specific type here, this is safe because we checked with response.Type check above
                                 IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList = (IItemInventoryAssemblyRetList)response.Detail;
-                                WalkItemInventoryAssemblyRet(ItemInventoryAssemblyRetList);
+                                WalkItemInventoryAssemblyRetWITHMOD(ItemInventoryAssemblyRetList);
                             }
                         }
                     }
                 }
             }
         }
-        
-        void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
+
+        void WalkItemInventoryAssemblyRetWITHMOD(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
         {
             if (ItemInventoryAssemblyRetList == null) return;
             string sequence = string.Empty;
@@ -936,11 +948,26 @@ namespace InvoiceAdd
                 listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
             }
-            QBFC_ItemQuery(sequence, listID);
-            // modifyItem(requestMsgSet);
+            QBFC_ItemQueryWITHMOD(sequence, listID);
         }
 
-        private void QBFC_ItemQuery(string sequence, string listID)
+        //void WalkItemInventoryAssemblyRetWITHADD(IItemInventoryAssemblyRetList ItemInventoryAssemblyRetList)
+        //{
+        //    if (ItemInventoryAssemblyRetList != null) return;
+        //    string sequence = string.Empty;
+        //    string listID = string.Empty; ;
+        //    for (int x = 0; x < ItemInventoryAssemblyRetList.Count; x++)
+        //    {
+        //        IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemInventoryAssemblyRetList.GetAt(x);
+        //        sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+        //        listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+        //    }
+        //    QBFC_ItemQueryWITHADD(sequence, listID);
+        //    tbProgramLog.AppendText(Environment.NewLine + "Call add method");
+        //}
+
+        private void QBFC_ItemQueryWITHMOD(string sequence, string listID)
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -948,29 +975,27 @@ namespace InvoiceAdd
 
             try
             {
-                //Create the session Manager object
                 sessionManager = new QBSessionManager();
-                //Create the message set request object to hold our request
+
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
                 queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
 
-                //Connect to QuickBooks and begin a session
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
-                //Send the request and get the response from QuickBooks
+
                 tbProgramLog.AppendText(requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-                //End the session and close the connection to QuickBooks
+
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                WalkAllItemsQueryRs(responseMsgSet, sequence, listID);
+                WalkAllItemsQueryRsWITHMOD(responseMsgSet, sequence, listID);
             }
             catch (Exception e)
             {
@@ -986,6 +1011,50 @@ namespace InvoiceAdd
             }
         }
 
+        //private void QBFC_ItemQueryWITHADD(string sequence, string listID)
+        //{
+        //    bool sessionBegun = false;
+        //    bool connectionOpen = false;
+        //    QBSessionManager sessionManager = null;
+
+        //    try
+        //    {
+        //        sessionManager = new QBSessionManager();
+
+        //        IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+        //        requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+        //        queryAllItems(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID);
+
+        //        sessionManager.OpenConnection("", "Sample Code from OSR");
+        //        connectionOpen = true;
+        //        sessionManager.BeginSession("", ENOpenMode.omDontCare);
+        //        sessionBegun = true;
+
+        //        tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+        //        IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+
+        //        sessionManager.EndSession();
+        //        sessionBegun = false;
+        //        sessionManager.CloseConnection();
+        //        connectionOpen = false;
+
+        //        WalkAllItemsQueryRsWITHADD(responseMsgSet, sequence, listID);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        tbProgramLog.AppendText(e.Message);
+        //        if (sessionBegun)
+        //        {
+        //            sessionManager.EndSession();
+        //        }
+        //        if (connectionOpen)
+        //        {
+        //            sessionManager.CloseConnection();
+        //        }
+        //    }
+        //}
+
         private void queryAllItems(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID)
         {
             IItemQuery ItemQueryRq;
@@ -995,45 +1064,61 @@ namespace InvoiceAdd
                 ItemQueryRq = requestMsgSet.AppendItemQueryRq();
                 ItemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
                 ItemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
-                //ItemQueryRq.IncludeRetElementList.Add("Name");
-                //ItemQueryRq.IncludeRetElementList.Add("SalesDesc");
-                //ItemQueryRq.IncludeRetElementList.Add("PurcDesc");
-                //ItemQueryRq.IncludeRetElementList.Add("EditSequence");
-                ////Set field value for Name
-                //ItemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameRangeFilter.FromName.SetValue(itemCode);
             }
         }
 
-        private void WalkAllItemsQueryRs(IMsgSetResponse responseMsgSet, string sequence, string listID)
+        private void WalkAllItemsQueryRsWITHMOD(IMsgSetResponse responseMsgSet, string sequence, string listID)
         {
             if (responseMsgSet == null) return;
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
-            //if we sent only one request, there is only one response, we'll walk the list for this sample
+
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
                 tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
-                //check the status code of the response, 0=ok, >0 is warning
+
                 if (response.StatusCode >= 0)
                 {
-                    //the request-specific response is in the details, make sure we have some
                     if (response.Detail != null)
                     {
-                        //make sure the response is the type we're expecting
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemQueryRs)
                         {
-                            //upcast to more specific type here, this is safe because we checked with response.Type check above
                             IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
-                            WalkAllItemsQueryRet(ItemRetList, sequence, listID);
+                            WalkAllItemsQueryRetWITHMOD(ItemRetList, sequence, listID);
                         }
                     }
                 }
             }
         }
 
-        private void WalkAllItemsQueryRet(IORItemRetList ItemRetList, string sequence, string listID)
+        //private void WalkAllItemsQueryRsWITHADD(IMsgSetResponse responseMsgSet, string sequence, string listID)
+        //{
+        //    if (responseMsgSet == null) return;
+        //    IResponseList responseList = responseMsgSet.ResponseList;
+        //    if (responseList == null) return;
+        //    for (int i = 0; i < responseList.Count; i++)
+        //    {
+        //        IResponse response = responseList.GetAt(i);
+        //        tbProgramLog.AppendText(response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
+
+        //        if (response.StatusCode >= 0)
+        //        {
+        //            if (response.Detail != null)
+        //            {
+        //                ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+        //                if (responseType == ENResponseType.rtItemQueryRs)
+        //                {
+        //                    IORItemRetList ItemRetList = (IORItemRetList)response.Detail;
+        //                    WalkAllItemsQueryRetWITHADD(ItemRetList, sequence, listID);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+        private void WalkAllItemsQueryRetWITHMOD(IORItemRetList ItemRetList, string sequence, string listID)
         {
             string itemListID = string.Empty;
             string itemName = string.Empty;
@@ -1051,7 +1136,25 @@ namespace InvoiceAdd
             QBFC_ItemModify(sequence, listID, itemListID, itemName);
         }
 
-        private void QBFC_ItemModify(string sequence, string listID, /*List<*/string/*>*/ itemListID, string itemName)
+        //private void WalkAllItemsQueryRetWITHADD(IORItemRetList ItemRetList, string sequence, string listID)
+        //{
+        //    string itemListID = string.Empty;
+        //    string itemName = string.Empty;
+        //    if (ItemRetList == null) return;
+
+        //    for (int y = 0; y < ItemRetList.Count; y++)
+        //    {
+        //        IORItemRet ItemRet = ItemRetList.GetAt(y);
+        //        itemListID = ItemRet.ItemInventoryRet.ListID.GetValue();
+        //        string itemSequence = (string)ItemRet.ItemInventoryRet.EditSequence.GetValue();
+        //        itemName = (string)ItemRet.ItemInventoryRet.Name.GetValue();
+        //        tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListID);
+        //        tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
+        //    }
+        //   // QBFC_ItemAdd(sequence, listID, itemListID, itemName);
+        //}
+
+        private void QBFC_ItemModify(string sequence, string listID, string itemListID, string itemName)
         {
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -1059,23 +1162,21 @@ namespace InvoiceAdd
 
             try
             {
-                //Create the session Manager object
                 sessionManager = new QBSessionManager();
-                //Create the message set request object to hold our request
+
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
                 modifyItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID, itemListID);
 
-                //Connect to QuickBooks and begin a session
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
-                //Send the request and get the response from QuickBooks
+
                 tbProgramLog.AppendText(requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
-                //End the session and close the connection to QuickBooks
+
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
@@ -1097,47 +1198,41 @@ namespace InvoiceAdd
             }
         }
 
-        private void modifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, /*List<*/string/*>*/ itemListID)
+        private void modifyItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, string itemListID)
         {
             IItemInventoryAssemblyMod ItemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
             ItemInventoryAssemblyModRq.ListID.SetValue(listID);
             ItemInventoryAssemblyModRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
             ItemInventoryAssemblyModRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
             ItemInventoryAssemblyModRq.EditSequence.SetValue(sequence);
-            
 
             for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
             {
                 IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyModRq.ORItemInventoryAssemblyLine.ItemInventoryAssemblyLineList.Append();
-                ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(itemListID);
                 ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
                 ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
-
             }
+            tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
         }
-
 
         private void WalkItemsModifyRs(IMsgSetResponse responseMsgSet, string itemListID)
         {
             if (responseMsgSet == null) return;
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
-            //if we sent only one request, there is only one response, we'll walk the list for this sample
+
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
-                //check the status code of the response, 0=ok, >0 is warning
+
                 if (response.StatusCode >= 0)
                 {
-                    //the request-specific response is in the details, make sure we have some
                     if (response.Detail != null)
                     {
-                        //make sure the response is the type we're expecting
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemInventoryAssemblyModRs)
                         {
-                            //upcast to more specific type here, this is safe because we checked with response.Type check above
-                            IItemInventoryAssemblyRetList ItemModifyRet = (IItemInventoryAssemblyRetList)response.Detail;
+                            IItemInventoryAssemblyRet ItemModifyRet = (IItemInventoryAssemblyRet)response.Detail;
                             WalkItemModifyRet(ItemModifyRet, itemListID);
                         }
                     }
@@ -1145,47 +1240,172 @@ namespace InvoiceAdd
             }
         }
 
-        private void WalkItemModifyRet(IItemInventoryAssemblyRetList ItemModifyRet, string itemListID)
+        private void WalkItemModifyRet(IItemInventoryAssemblyRet ItemModifyRet, string itemListID)
         {
             if (ItemModifyRet == null) return;
-            for (int x = 0; x < ItemModifyRet.Count; x++)
-            {
-                IItemInventoryAssemblyRet ItemInventoryAssemblyRet = ItemModifyRet.GetAt(x);
-                string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
-                string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
-            }
-            
+            string sequence = (string)ItemModifyRet.EditSequence.GetValue();
+            string listID = (string)ItemModifyRet.ListID.GetValue();
+            itemListID = ItemModifyRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+            tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListID);
         }
 
-        private void btn1_Send_Click_1(object sender, EventArgs e)
+        //private void QBFC_ItemAdd(string sequence, string listID, string itemListID, string itemName)
+        private void QBFC_ItemAdd()
         {
-            if (checkBox1.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
+            bool sessionBegun = false;
+            bool connectionOpen = false;
+            QBSessionManager sessionManager = null;
+
+            try
             {
-                QBFC_InventoryAssemblyQuery();
+                sessionManager = new QBSessionManager();
+
+                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+                BuildItemInventoryAssemblyAddRq(requestMsgSet);
+                //addItem(requestMsgSet, secondLevelTbl, topLevelTbl, sequence, listID, itemListID);
+
+                sessionManager.OpenConnection("", "Sample Code from OSR");
+                connectionOpen = true;
+                sessionManager.BeginSession("", ENOpenMode.omDontCare);
+                sessionBegun = true;
+                
+                //print xml string
+                
+                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+                tbProgramLog.AppendText(requestMsgSet.ToXMLString());
+                sessionManager.EndSession();
+                sessionBegun = false;
+                sessionManager.CloseConnection();
+                connectionOpen = false;
+
+                tbProgramLog.AppendText(Environment.NewLine + "Before WalkItemInventoryAssemblyAddRs");
+
+                WalkItemInventoryAssemblyAddRs(responseMsgSet);
+                tbProgramLog.AppendText(Environment.NewLine + "After WalkItemInventoryAssemblyAddRs");
+                //QBFC_InventoryAssemblyQuery();
+                //WalkItemsAddRs(responseMsgSet, itemListID);
             }
-            else
+            catch (Exception e)
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
+                tbProgramLog.AppendText(e.Message);
+                if (sessionBegun)
+                {
+                    sessionManager.EndSession();
+                }
+                if (connectionOpen)
+                {
+                    sessionManager.CloseConnection();
+                }
+            }
+
+        }
+
+        private void WalkItemInventoryAssemblyAddRs(IMsgSetResponse responseMsgSet)
+        {
+            if (responseMsgSet == null) return;
+            tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
+            IResponseList responseList = responseMsgSet.ResponseList;
+            if (responseList == null) return;
+
+            //code goes wrong here...
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+
+                if (response.StatusCode >= 0)
+                {
+                    if (response.Detail != null)
+                    {
+                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                        if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
+                        {
+                            IItemInventoryAssemblyRet ItemInventoryAssemblyRet = (IItemInventoryAssemblyRet)response.Detail;
+                            WalkItemInventoryAssemblyRet(ItemInventoryAssemblyRet);
+                        }
+                    }
+                }
             }
         }
 
+        private void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRet ItemInventoryAssemblyRet)
+        {
+            tbProgramLog.AppendText(Environment.NewLine + "Before error");
+            if (ItemInventoryAssemblyRet == null) return;
+            tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
+            //string statusCode = (string)ItemInventoryAssemblyRet.stat
+            string sequence = (string)ItemInventoryAssemblyRet.EditSequence.GetValue();
+            string listID = (string)ItemInventoryAssemblyRet.ListID.GetValue();
+            
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+           
+        }
+
+        private void BuildItemInventoryAssemblyAddRq(IMsgSetRequest requestMsgSet)
+        {
+            string AssetAccountRef = "800001A9-1511318480";
+            string COGSAccountRefListID = "800001E1-1537737142";
+            string IncomeAccountRefListID = "570000-1136323777";
+            IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
+            DataRow row = topLevelTbl.Rows[0];
+            ItemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
+            ItemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
+            ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
+            ItemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(AssetAccountRef);
+            ItemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccountRefListID);
+            ItemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccountRefListID);
+
+
+
+        }
+
+        //private void addItem(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl, string sequence, string listID, string itemListID)
+        //{
+        //    IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
+        //    ItemInventoryAssemblyAddRq.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
+        //    ItemInventoryAssemblyAddRq.SalesDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
+        //    ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
+
+        //    for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
+        //    {
+        //        IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyAddRq.ItemInventoryAssemblyLineList.Append();
+        //        ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(secondLevelTbl.Rows[i][0].ToString());
+        //        ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
+        //        ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
+        //    }
+        //    tbProgramLog.AppendText(Environment.NewLine + "itemListID: " + itemListID);
+        //}
+
+        //private void WalkItemsAddRs(IMsgSetResponse responseMsgSet, string itemListID)
+        //{
+        //    if (responseMsgSet == null) return;
+        //    IResponseList responseList = responseMsgSet.ResponseList;
+        //    if (responseList == null) return;
+        //    for (int i = 0; i < responseList.Count; i++)
+        //    {
+        //        IResponse response = responseList.GetAt(i);
+        //        if (response.StatusCode >= 0)
+        //        {
+        //            ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+        //            if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
+        //            {
+        //                IItemInventoryAssemblyRet ItemAddRet = (IItemInventoryAssemblyRet)response.Detail;
+        //                WalkItemAddRet(ItemAddRet, itemListID);
+        //            }
+        //        }
+        //    }
+        //}
+
+        //private void WalkItemAddRet(IItemInventoryAssemblyRet ItemAddRet, string itemListID)
+        //{
+        //    if (ItemAddRet == null) return;
+        //    string sequence = (string)ItemAddRet.EditSequence.GetValue();
+        //    string listID = (string)ItemAddRet.ListID.GetValue();
+        //    itemListID = ItemAddRet.ListID.GetValue();
+        //    tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listID);
+        //    tbProgramLog.AppendText(Environment.NewLine + "Tester: " + itemListID);
+        //}
     }
 }
-
-//void addItem(IMsgSetRequest requestMsgSet)
-//{
-//    IItemInventoryAssemblyAdd ItemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
-//    ItemInventoryAssemblyAddRq.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
-//    ItemInventoryAssemblyAddRq.SalesDesc.SetValue("Assy, Yoke Arm End Lifting");
-//    ItemInventoryAssemblyAddRq.PurchaseDesc.SetValue(topLevelTbl.Rows[0][1].ToString());
-
-//    for (int i = 0; i < secondLevelTbl.Rows.Count; i++)
-//    {
-//        IItemInventoryAssemblyLine ItemInventoryAssemblyLine1 = ItemInventoryAssemblyAddRq.ItemInventoryAssemblyLineList.Append();
-//        ItemInventoryAssemblyLine1.ItemInventoryRef.ListID.SetValue(secondLevelTbl.Rows[i][0].ToString());
-//        ItemInventoryAssemblyLine1.ItemInventoryRef.FullName.SetValue(secondLevelTbl.Rows[i][1].ToString());
-//        ItemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
-//    }
-
-//}
