@@ -18,7 +18,7 @@ namespace InvoiceAdd
     //    static string const InventoryAssetAccount ="800001A9-1511318480";
     //}
 
-    public class Frm1InvoiceAdd : System.Windows.Forms.Form
+    public class Frm1InvoiceAdd : Form
     {
         private System.ComponentModel.Container components = null;
         private Button btn1_Send;
@@ -142,32 +142,32 @@ namespace InvoiceAdd
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Location = new System.Drawing.Point(7, 124);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.Size = new System.Drawing.Size(563, 483);
             this.dataGridView1.TabIndex = 64;
@@ -512,12 +512,12 @@ where a.itemcode =25000000*/
             Dictionary<int, string> openWith = new Dictionary<int, string>();
             foreach (XElement bom in doc.Descendants("bomcol"))
             {
-                int currentColumn = Int32.Parse(bom.Attribute("col_no")?.Value);
+                int currentColumn = int.Parse(bom.Attribute("col_no")?.Value);
                 string colHeader = bom.Attribute("name")?.Value ?? "n/a";
                 openWith.Add(currentColumn, colHeader);
             }
 
-            var lines = openWith.Select(kv => kv.Key + " " + kv.Value.ToString());
+           // var lines = openWith.Select(kv => kv.Key + " " + kv.Value.ToString());
             string itemNoMatching = @"(?i)ITEM NO*|ITEMNO*|ITMN*|ITM N*";
             string itemCodeMatching = @"(?i)ITEM CO*|ITEMCO*|ITMC*|ITM C*";
             string partNoMatching = @"(?i)PART*|PRT*";
@@ -861,7 +861,7 @@ where a.itemcode =25000000*/
         private void WalkItemInventoryAssemblyAddRs(IMsgSetResponse responseMsgSet)
         {
             if (responseMsgSet == null) return;
-            tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
+            //tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
 
@@ -886,9 +886,9 @@ where a.itemcode =25000000*/
 
         private void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
         {
-            tbProgramLog.AppendText(Environment.NewLine + "Before error");
+           // tbProgramLog.AppendText(Environment.NewLine + "Before error");
             if (itemInventoryAssemblyRet == null) return;
-            tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
+           // tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
             string sequence = (string)itemInventoryAssemblyRet.EditSequence.GetValue();
             string listId = (string)itemInventoryAssemblyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
@@ -955,10 +955,16 @@ where a.itemcode =25000000*/
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
-                tbProgramLog.AppendText(Environment.NewLine + response.StatusCode.ToString() + ": " + response.StatusMessage.ToString());
+                tbProgramLog.AppendText(Environment.NewLine + response.StatusCode + ": " + response.StatusMessage);
 
                 if (response.StatusCode >= 0)
                 {
+                    if (response.StatusCode == 1)
+                    {
+                        tbProgramLog.AppendText(Environment.NewLine + "Item already exists as a Part");
+                       // QBFC_ItemAddAssembly();
+                       // QBFC_InventoryAssemblyQuery();
+                    }
                     if (response.StatusCode == 0)
                     {
                         if (response.Detail != null)
@@ -1086,7 +1092,7 @@ where a.itemcode =25000000*/
             int col = Int32.Parse(itemNoError);
             topLevelTbl = new DataTable();
             string subItem = secondLevelTbl.Rows[col][1].ToString();
-            String connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
+            string connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
             SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.[ItemCode], b.[Description], a.[itemType]" +
                                                             " FROM[PDMengineeringVault].[dbo].[v_Documents] a" +
                                                             " RIGHT JOIN [PDMengineeringVault].[dbo].[v_BOMData] b" +
@@ -1109,13 +1115,13 @@ where a.itemcode =25000000*/
             if (row[2].ToString() == A)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                //QBFC_ItemAddAssembly();
+                QBFC_ItemAddAssembly();
             }
             else if (row[2].ToString() == P)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                //QBFC_ItemAddPart();
-                //QBFC_InventoryAssemblyQuery();
+                QBFC_ItemAddPart();
+                QBFC_InventoryAssemblyQuery();
             }
             else
             {
@@ -1190,7 +1196,7 @@ where a.itemcode =25000000*/
         private void WalkItemInventoryAddRs(IMsgSetResponse responseMsgSet)
         {
             if (responseMsgSet == null) return;
-            tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
+            //tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
 
@@ -1225,7 +1231,7 @@ where a.itemcode =25000000*/
         
         private void WalkAllItemsQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
-            tbProgramLog.AppendText(Environment.NewLine + "WalkAllItemsQueryRet method was reached");
+            //tbProgramLog.AppendText(Environment.NewLine + "WalkAllItemsQueryRet method was reached");
             string itemListId = string.Empty;
             string itemName = string.Empty;
             string itemSequence = string.Empty;
@@ -1304,7 +1310,7 @@ where a.itemcode =25000000*/
                 tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
                 tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
             }
-            //QBFC_ItemModify(sequence, listId, itemListId);
+            QBFC_ItemModify(sequence, listId, itemListId);
         }
 
         private void QBFC_ItemModify(string sequence, string listID, string itemListID)
