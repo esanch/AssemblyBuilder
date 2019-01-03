@@ -795,6 +795,7 @@ where a.itemcode =25000000*/
 
         private void AddThenModify()
         {
+            InventoryAssemblyQuery();
             ItemAddAssembly();
             InventoryAssemblyQuery();
             tbProgramLog.AppendText(Environment.NewLine + "END OF PROGRAM");
@@ -957,12 +958,13 @@ where a.itemcode =25000000*/
 
                 if (response.StatusCode >= 0)
                 {
-                    if (response.StatusCode == 1)
-                    {
-                        tbProgramLog.AppendText(Environment.NewLine + "Item already exists as a Part");
-                        AddThenModify();
-                        // InventoryAssemblyQuery();
-                    }
+                    //if (response.StatusCode == 1)
+                    //{
+                    //    tbProgramLog.AppendText(Environment.NewLine + "Cannot create Item Assembly as it already exists as an Item Part");
+                    //    //ItemAddAssembly();
+                    //    //AddThenModify();
+                    //    //InventoryAssemblyQuery();
+                    //}
                     if (response.StatusCode == 0)
                     {
                         if (response.Detail != null)
