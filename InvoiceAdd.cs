@@ -609,17 +609,19 @@ where a.itemcode =25000000*/
                 bool qtyTest = Regex.IsMatch(qtyGiven, qty);
                 if (numberTest == false)
                 {
-                    //tbProgramLog.AppendText("ERROR: " + numberTest);
+                    tbProgramLog.AppendText(Environment.NewLine + "Error in the following ItemNo provided: " + iNoGiven);
                     checkBox10.Checked = true;
                     error = true;
                 }
                 else if (codeTest == false)
                 {
+                    tbProgramLog.AppendText(Environment.NewLine + "Error in the following ItemCode provided in line " + iNoGiven + ": " + iCodeGiven);
                     checkBox10.Checked = true;
                     error = true;
                 }
                 else if (qtyTest == false)
                 {
+                    tbProgramLog.AppendText(Environment.NewLine + "Error in the following Quantity provided in line " + iNoGiven + ": " + qtyGiven);
                     checkBox10.Checked = true;
                     error = true;
                 }
@@ -938,8 +940,8 @@ where a.itemcode =25000000*/
             IItemInventoryAssemblyQuery itemInventoryAssemblyQueryRq = requestMsgSet.AppendItemInventoryAssemblyQueryRq();
             IListWithClassFilter listWithClassFilter = itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter;
             listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcEndsWith);
-            listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
-            listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
+            //listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+            //listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
             itemInventoryAssemblyQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
         }
 
@@ -1044,9 +1046,9 @@ where a.itemcode =25000000*/
             foreach (string itemCode in itemCodes)
             {
                 IItemQuery itemQueryRq = requestMsgSet.AppendItemQueryRq();
-                itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+                //itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcEndsWith);
-                itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
+                //itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
             }
         }
