@@ -784,7 +784,7 @@ where a.itemcode =25000000*/
                 //else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
                 //{
                 /*ADD regardless if ItemCode exists or not*/
-                tbProgramLog.AppendText("Add then Modify");
+                tbProgramLog.AppendText(Environment.NewLine + "Add then Modify");
                 AddThenModify();
             }
             else
@@ -956,19 +956,19 @@ where a.itemcode =25000000*/
             {
                 IResponse response = responseList.GetAt(i);
                 tbProgramLog.AppendText(Environment.NewLine + response.StatusCode + ": " + response.StatusMessage);
-
+                
                 if (response.StatusCode >= 0)
                 {
                     //if (response.StatusCode == 1)
                     //{
                     //    tbProgramLog.AppendText(Environment.NewLine + "Cannot create Item Assembly as it already exists as an Item Part");
-                    //    break;
-                    //    //ItemAddAssembly();
-                    //    //AddThenModify();
-                    //    //InventoryAssemblyQuery();
+                        //break;
+                        //ItemAddAssembly();
+                        //AddThenModify();
+                        //InventoryAssemblyQuery();
                     //}
-                    if (response.StatusCode == 0)
-                    {
+                    //if (response.StatusCode == 0)
+                    //{
                         if (response.Detail != null)
                         {
                             ENResponseType responseType = (ENResponseType)response.Type.GetValue();
@@ -978,7 +978,7 @@ where a.itemcode =25000000*/
                                 WalkItemInventoryAssemblyRet(itemInventoryAssemblyRetList);
                             }
                         }
-                    }
+                    //}
                 }
             }
         }
@@ -1068,12 +1068,12 @@ where a.itemcode =25000000*/
                 IResponse response = responseList.GetAt(i);
                 if (response.StatusCode >= 0)
                 {
-                    if (response.StatusCode == 1)
+                    if (response.StatusCode.Equals(1))
                     {
                         string itemNoError = response.RequestID;
                         FindTheNeededValues(itemNoError);
                     }
-                    else if (response.StatusCode == 0)
+                    else if (response.StatusCode.Equals(0))
                     {
                         if (response.Detail != null)
                         {
@@ -1096,7 +1096,7 @@ where a.itemcode =25000000*/
             string subItem = secondLevelTbl.Rows[col][1].ToString();
             string connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
             SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.[ItemCode], b.[Description], a.[itemType]" +
-                                                            " FROM[PDMengineeringVault].[dbo].[v_Documents] a" +
+                                                            " FROM [PDMengineeringVault].[dbo].[v_Documents] a" +
                                                             " RIGHT JOIN [PDMengineeringVault].[dbo].[v_BOMData] b" +
                                                             " ON a.[Itemcode] = b.[ItemCode]" +
                                                             " WHERE (a.[ItemType] LIKE 'ass%' OR a.[ItemType] LIKE 'par%')" +
@@ -1127,7 +1127,7 @@ where a.itemcode =25000000*/
             }
             else
             {
-                tbProgramLog.AppendText("Check the itemType");
+                tbProgramLog.AppendText(Environment.NewLine + "Check the itemType");
             }
         }
 
