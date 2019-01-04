@@ -784,7 +784,7 @@ where a.itemcode =25000000*/
                 //else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
                 //{
                 /*ADD regardless if ItemCode exists or not*/
-                tbProgramLog.AppendText(Environment.NewLine + "Add then Modify the Item");
+                tbProgramLog.AppendText("Add then Modify");
                 AddThenModify();
             }
             else
@@ -797,6 +797,7 @@ where a.itemcode =25000000*/
         {
             InventoryAssemblyQuery();
             ItemAddAssembly();
+            tbProgramLog.AppendText(Environment.NewLine + Environment.NewLine + "Query assembly again");
             InventoryAssemblyQuery();
             tbProgramLog.AppendText(Environment.NewLine + "END OF PROGRAM");
         }
@@ -823,7 +824,7 @@ where a.itemcode =25000000*/
 
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
                 //print xml string
-                tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD ASSEMBLY: " + requestMsgSet.ToXMLString());
+                //tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD ASSEMBLY: " + requestMsgSet.ToXMLString());
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
@@ -913,7 +914,7 @@ where a.itemcode =25000000*/
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
 
-                tbProgramLog.AppendText(Environment.NewLine + "INVENTORY ASSEMBLY QUERY: " + requestMsgSet.ToXMLString());
+                //tbProgramLog.AppendText(Environment.NewLine + "INVENTORY ASSEMBLY QUERY: " + requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 sessionManager.EndSession();
@@ -961,6 +962,7 @@ where a.itemcode =25000000*/
                     //if (response.StatusCode == 1)
                     //{
                     //    tbProgramLog.AppendText(Environment.NewLine + "Cannot create Item Assembly as it already exists as an Item Part");
+                    //    break;
                     //    //ItemAddAssembly();
                     //    //AddThenModify();
                     //    //InventoryAssemblyQuery();
@@ -991,8 +993,8 @@ where a.itemcode =25000000*/
                 IItemInventoryAssemblyRet itemInventoryAssemblyRet = itemInventoryAssemblyRetList.GetAt(x);
                 sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
                 listId = itemInventoryAssemblyRet.ListID.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
-                tbProgramLog.AppendText(Environment.NewLine + "End of Assembly query");
+                tbProgramLog.AppendText(Environment.NewLine + "Assembly:" + Environment.NewLine + "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
+                tbProgramLog.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
             }
             ItemQuery(sequence, listId);
         }
@@ -1018,7 +1020,7 @@ where a.itemcode =25000000*/
                 sessionBegun = true;
 
                 //this is the xml that already has the 1/0 values
-                tbProgramLog.AppendText(Environment.NewLine + "ITEM QUERY: " + requestMsgSet.ToXMLString());
+                //tbProgramLog.AppendText(Environment.NewLine + "ITEM QUERY: " + requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
                 
                 sessionManager.EndSession();
@@ -1306,15 +1308,15 @@ where a.itemcode =25000000*/
                     itemSequence = itemRet.ItemOtherChargeRet.EditSequence.GetValue();
                     itemName = itemRet.ItemOtherChargeRet.Name.GetValue();
                 }
-                tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
-                tbProgramLog.AppendText(Environment.NewLine + "Name: " + itemName);
+                tbProgramLog.AppendText(Environment.NewLine + "Lower level edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
+                tbProgramLog.AppendText(Environment.NewLine + "Item Modified: " + itemName);
             }
             ItemModify(sequence, listId);//, itemListId);
         }
 
         private void ItemModify(string sequence, string listId)//, string itemListID)
         {
-            tbProgramLog.AppendText(Environment.NewLine + "ItemModify method was reached");
+            tbProgramLog.AppendText(Environment.NewLine + "Item was modified" + Environment.NewLine);
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
@@ -1333,7 +1335,7 @@ where a.itemcode =25000000*/
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
 
-               // tbProgramLog.AppendText(Environment.NewLine + "ITEM MODIFY: " + requestMsgSet.ToXMLString());
+                //tbProgramLog.AppendText(Environment.NewLine + "ITEM MODIFY: " + requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 sessionManager.EndSession();
@@ -1402,7 +1404,7 @@ where a.itemcode =25000000*/
             if (itemModifyRet == null) return;
             string sequence = itemModifyRet.EditSequence.GetValue();
             string listId = itemModifyRet.ListID.GetValue();
-            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
+            tbProgramLog.AppendText(Environment.NewLine + "Top level edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
         }
 
     }
