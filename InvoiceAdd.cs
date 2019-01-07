@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 
 namespace InvoiceAdd
 {
@@ -51,6 +52,7 @@ namespace InvoiceAdd
         private TextBox textBox1;
         private Label label5;
         private TextBox tbProgramLog;
+        private TextBox txtBox;
         bool ifError;
 
         private Frm1InvoiceAdd()
@@ -70,33 +72,33 @@ namespace InvoiceAdd
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            this.btn1_Send = new Button();
-            this.btn2_Exit = new Button();
-            //this.saveFileDialog1 = new SaveFileDialog();
-            this.btnOpenFile_Reset = new Button();
-            this.dataGridView1 = new DataGridView();
-            this.checkBox1 = new CheckBox();
-            this.checkBox2 = new CheckBox();
-            this.checkBox3 = new CheckBox();
-            this.checkBox4 = new CheckBox();
-            this.checkBox5 = new CheckBox();
-            this.checkBox6 = new CheckBox();
-            this.checkBox7 = new CheckBox();
-            this.checkBox9 = new CheckBox();
-            this.checkBox10 = new CheckBox();
-            this.checkBox11 = new CheckBox();
-            this.checkBox12 = new CheckBox();
-            this.checkBox8 = new CheckBox();
-            this.label1 = new Label();
-            this.label2 = new Label();
-            this.label3 = new Label();
-            this.label4 = new Label();
-            this.textBox1 = new TextBox();
-            this.label5 = new Label();
-            this.tbProgramLog = new TextBox();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.btn1_Send = new System.Windows.Forms.Button();
+            this.btn2_Exit = new System.Windows.Forms.Button();
+            this.btnOpenFile_Reset = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
+            this.checkBox11 = new System.Windows.Forms.CheckBox();
+            this.checkBox12 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbProgramLog = new System.Windows.Forms.TextBox();
+            this.txtBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -138,33 +140,33 @@ namespace InvoiceAdd
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridView1.Location = new System.Drawing.Point(7, 124);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dataGridView1.Size = new System.Drawing.Size(563, 483);
             this.dataGridView1.TabIndex = 64;
             // 
@@ -341,17 +343,26 @@ namespace InvoiceAdd
             // 
             // tbProgramLog
             // 
-            this.tbProgramLog.Location = new System.Drawing.Point(587, 40);
+            this.tbProgramLog.Location = new System.Drawing.Point(587, 67);
             this.tbProgramLog.Multiline = true;
             this.tbProgramLog.Name = "tbProgramLog";
-            this.tbProgramLog.Size = new System.Drawing.Size(483, 709);
+            this.tbProgramLog.Size = new System.Drawing.Size(483, 316);
             this.tbProgramLog.TabIndex = 85;
+            // 
+            // txtBox
+            // 
+            this.txtBox.Location = new System.Drawing.Point(587, 433);
+            this.txtBox.Multiline = true;
+            this.txtBox.Name = "txtBox";
+            this.txtBox.Size = new System.Drawing.Size(483, 316);
+            this.txtBox.TabIndex = 87;
             // 
             // Frm1InvoiceAdd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1082, 755);
+            this.Controls.Add(this.txtBox);
             this.Controls.Add(this.tbProgramLog);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox1);
@@ -397,6 +408,8 @@ namespace InvoiceAdd
 
         private void BtnOpenFile_Reset_Click(object sender, EventArgs e)
         {
+            tbProgramLog.Clear();
+            txtBox.Clear();
             checkBox1.Checked = false;
             checkBox2.Checked = false;
             checkBox3.Checked = false;
@@ -417,7 +430,19 @@ namespace InvoiceAdd
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     fileName = openFileDialog.FileName;
-                    StartErrorChecking();
+                    try
+                    {
+                        StartErrorChecking();
+                    }
+                    catch(System.Xml.XmlException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                        
+                    }
+                    
                 }
             }
         }
@@ -426,6 +451,7 @@ namespace InvoiceAdd
         {
             secondLevelTbl = new DataTable();
             topLevelTbl = new DataTable();
+         
             XDocument doc = XDocument.Load(fileName);
             string matchFirst = @"^[1-2][0-9][0-9][0-9][0-9][0-9]00";
             foreach (XElement bom in doc.Descendants("bom"))
@@ -770,7 +796,7 @@ where a.itemcode =25000000*/
             }
             else
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Table contains errors!");
+                txtBox.AppendText(Environment.NewLine + "Table contains errors!");
             }
         }
 
@@ -779,31 +805,153 @@ where a.itemcode =25000000*/
             if (checkBox1.Checked && checkBox9.Checked && checkBox11.Checked)
             //  || (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true))
             {
-                //    InventoryAssemblyQuery();
-                //}
-                //else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
-                //{
-                /*ADD regardless if ItemCode exists or not*/
-                tbProgramLog.AppendText(Environment.NewLine + "Add then Modify");
-                AddThenModify();
+                txtBox.AppendText(Environment.NewLine + "START OF PROGRAM...");
+                ItemQuery();
+            }
+            else if (checkBox3.Checked && checkBox9.Checked && checkBox11.Checked)
+            {
+                txtBox.AppendText(Environment.NewLine + "ItemCode Not Found");
+                //AddThenModify();
             }
             else
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
+                txtBox.AppendText(Environment.NewLine + "Cannot import a table with errors!");
+            }
+        }
+
+        private void ItemQuery()
+        {
+            bool sessionBegun = false;
+            bool connectionOpen = false;
+            QBSessionManager sessionManager = null;
+
+            try
+            {
+                sessionManager = new QBSessionManager();
+                
+                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+                BuildItemQueryRq(requestMsgSet);
+                
+                sessionManager.OpenConnection("", "Sample Code from OSR");
+                connectionOpen = true;
+                sessionManager.BeginSession("", ENOpenMode.omDontCare);
+                sessionBegun = true;
+                
+                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+                
+                sessionManager.EndSession();
+                sessionBegun = false;
+                sessionManager.CloseConnection();
+                connectionOpen = false;
+
+                WalkItemQueryRs(responseMsgSet);
+            }
+            catch (Exception e)
+            {
+                txtBox.AppendText(Environment.NewLine + e.Message);
+                if (sessionBegun)
+                {
+                    sessionManager.EndSession();
+                }
+                if (connectionOpen)
+                {
+                    sessionManager.CloseConnection();
+                }
+            }
+        }
+        private void BuildItemQueryRq(IMsgSetRequest requestMsgSet)
+        {
+            IItemQuery itemQueryRq = requestMsgSet.AppendItemQueryRq();
+            itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcEndsWith);
+            //itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+            //itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
+            itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
+        }
+        private void WalkItemQueryRs(IMsgSetResponse responseMsgSet)
+        {
+            if (responseMsgSet == null) return;
+            IResponseList responseList = responseMsgSet.ResponseList;
+            if (responseList == null) return;
+
+            
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+                txtBox.AppendText(Environment.NewLine + "Checking if ItemCode Exists..." );
+                //txtBox.AppendText(Environment.NewLine + response.StatusCode + ": " + response.StatusMessage);
+                if (response.StatusCode >= 0)
+                {
+                    if (response.StatusCode.Equals(1))
+                    {
+                        txtBox.AppendText(Environment.NewLine + "Item does not exist" + Environment.NewLine);
+                        string itemNoError = response.RequestID;
+                        FindTheNeededValues(itemNoError);
+                    }
+                    else if (response.StatusCode.Equals(0))
+                    {
+                        txtBox.AppendText(Environment.NewLine + "Item exists" + Environment.NewLine);
+                        if (response.Detail != null)
+                        {
+                            ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                            if (responseType == ENResponseType.rtItemQueryRs)
+                            {
+                                IORItemRetList itemRetList = (IORItemRetList)response.Detail;
+                                WalkOR(itemRetList);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void WalkOR(IORItemRetList itemRetList)
+        {
+            txtBox.AppendText(Environment.NewLine + "Checking if item is a Part or Assembly...");
+            if (itemRetList == null) return;
+            string sequence = string.Empty;
+            string listId = string.Empty;
+            for (int y = 0; y < itemRetList.Count; y++)
+            {
+                IORItemRet itemRet = itemRetList.GetAt(y);
+                if (itemRet.ItemInventoryAssemblyRet != null)
+                {
+                    listId = itemRet.ItemInventoryAssemblyRet.ListID.GetValue();
+                    sequence = itemRet.ItemInventoryAssemblyRet.EditSequence.GetValue();
+                    tbProgramLog.AppendText(Environment.NewLine +
+                                            "Assembly:" + Environment.NewLine + 
+                                            "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
+                    tbProgramLog.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
+                    txtBox.AppendText(Environment.NewLine + "Item exists as an Assembly" + Environment.NewLine);
+                    AddThenModify();
+                }
+                else if (itemRet.ItemInventoryRet != null)
+                {
+                    sequence = itemRet.ItemInventoryRet.EditSequence.GetValue();
+                    listId = itemRet.ItemInventoryRet.ListID.GetValue();
+                    tbProgramLog.AppendText(Environment.NewLine +
+                                        "Part:" + Environment.NewLine + 
+                                        "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
+                    tbProgramLog.AppendText(Environment.NewLine + "End of Part query" + Environment.NewLine);
+                    txtBox.AppendText(Environment.NewLine + "Item exists as a Part" 
+                                      + Environment.NewLine + "Cannot continue with program" + Environment.NewLine);
+                }
             }
         }
 
         private void AddThenModify()
         {
-            InventoryAssemblyQuery();
+            //InventoryAssemblyQuery();
             ItemAddAssembly();
-            tbProgramLog.AppendText(Environment.NewLine + Environment.NewLine + "Query assembly again");
+            //txtBox.AppendText(Environment.NewLine +  "Query assembly again" +Environment.NewLine );
             InventoryAssemblyQuery();
-            tbProgramLog.AppendText(Environment.NewLine + "END OF PROGRAM");
+            txtBox.AppendText(Environment.NewLine + "END OF PROGRAM");
         }
 
         private void ItemAddAssembly()
         {
+            //txtBox.AppendText(Environment.NewLine + Environment.NewLine + "Adding Item as an Assembly");
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
@@ -834,7 +982,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(Environment.NewLine + e.Message);
+                txtBox.AppendText(Environment.NewLine + e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -896,6 +1044,7 @@ where a.itemcode =25000000*/
 
         private void InventoryAssemblyQuery()
         {
+            txtBox.AppendText(Environment.NewLine + "Querying Item Assembly...");
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
@@ -925,7 +1074,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(Environment.NewLine + e.Message);
+                txtBox.AppendText(Environment.NewLine + e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -955,13 +1104,14 @@ where a.itemcode =25000000*/
             for (int i = 0; i < responseList.Count; i++)
             {
                 IResponse response = responseList.GetAt(i);
-                tbProgramLog.AppendText(Environment.NewLine + response.StatusCode + ": " + response.StatusMessage);
-                
+                    //txtBox.AppendText(Environment.NewLine + response.StatusCode + ": " + response.StatusMessage);
+
                 if (response.StatusCode >= 0)
                 {
                     //if (response.StatusCode == 1)
                     //{
-                    //    tbProgramLog.AppendText(Environment.NewLine + "Cannot create Item Assembly as it already exists as an Item Part");
+                    //    txtBox.AppendText(Environment.NewLine +"Item already exists");
+                        //    tbProgramLog.AppendText(Environment.NewLine + "Cannot create Item Assembly as it already exists as an Item Part");
                         //break;
                         //ItemAddAssembly();
                         //AddThenModify();
@@ -969,7 +1119,7 @@ where a.itemcode =25000000*/
                     //}
                     //if (response.StatusCode == 0)
                     //{
-                        if (response.Detail != null)
+                    if (response.Detail != null)
                         {
                             ENResponseType responseType = (ENResponseType)response.Type.GetValue();
                             if (responseType == ENResponseType.rtItemInventoryAssemblyQueryRs)
@@ -993,14 +1143,15 @@ where a.itemcode =25000000*/
                 IItemInventoryAssemblyRet itemInventoryAssemblyRet = itemInventoryAssemblyRetList.GetAt(x);
                 sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
                 listId = itemInventoryAssemblyRet.ListID.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Assembly:" + Environment.NewLine + "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
-                tbProgramLog.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
+                tbProgramLog.AppendText(Environment.NewLine + "Assembly:" + Environment.NewLine + "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId+ Environment.NewLine);
+                txtBox.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
             }
             ItemQuery(sequence, listId);
         }
 
         private void ItemQuery(string sequence, string listId)
         {
+            txtBox.AppendText(Environment.NewLine + "Querying SubItems...");
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
@@ -1032,7 +1183,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(Environment.NewLine + e.Message);
+                txtBox.AppendText(Environment.NewLine + e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -1091,10 +1242,12 @@ where a.itemcode =25000000*/
 
         private void FindTheNeededValues(string itemNoError)
         {
+            txtBox.AppendText(Environment.NewLine + "Adding the Item to QB");
             int col = Int32.Parse(itemNoError);
             topLevelTbl = new DataTable();
             string subItem = secondLevelTbl.Rows[col][1].ToString();
             string connectionString = @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
+            txtBox.AppendText(Environment.NewLine + "Please wait...");
             SqlDataAdapter dataAdapter = new SqlDataAdapter("SELECT a.[ItemCode], b.[Description], a.[itemType]" +
                                                             " FROM [PDMengineeringVault].[dbo].[v_Documents] a" +
                                                             " RIGHT JOIN [PDMengineeringVault].[dbo].[v_BOMData] b" +
@@ -1106,28 +1259,31 @@ where a.itemcode =25000000*/
             topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
             topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
             topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
-            tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
+            //tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
             DataRow row = topLevelTbl.Rows[0];
             row[3] = IncomeAccount;
             row[4] = COGSAccount;
             row[5] = InventoryAssetAccount;
-            tbProgramLog.AppendText(Environment.NewLine + "item in the query: " + subItem);
+            tbProgramLog.AppendText(Environment.NewLine + "Item to Add: " + subItem);
             string A = "Assembly";
             string P = "Part";
             if (row[2].ToString() == A)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
+                txtBox.AppendText(Environment.NewLine + "Adding item as an assembly...");
                 ItemAddAssembly();
             }
             else if (row[2].ToString() == P)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
+                txtBox.AppendText(Environment.NewLine + "Adding item as a part...");
                 ItemAddPart();
                 InventoryAssemblyQuery();
             }
             else
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Check the itemType");
+                txtBox.AppendText(Environment.NewLine + "Cannot continue" + 
+                                  Environment.NewLine + "Check the itemType");
             }
         }
 
@@ -1170,7 +1326,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(Environment.NewLine + e.Message);
+                txtBox.AppendText(Environment.NewLine + e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
@@ -1347,7 +1503,7 @@ where a.itemcode =25000000*/
             }
             catch (Exception e)
             {
-                tbProgramLog.AppendText(Environment.NewLine + e.Message);
+                txtBox.AppendText(Environment.NewLine + e.Message);
                 if (sessionBegun)
                 {
                     sessionManager.EndSession();
