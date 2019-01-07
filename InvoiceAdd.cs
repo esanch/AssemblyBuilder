@@ -886,8 +886,11 @@ where a.itemcode =25000000*/
                     if (response.StatusCode.Equals(1))
                     {
                         txtBox.AppendText(Environment.NewLine + "Item does not exist" + Environment.NewLine);
-                        string itemNoError = response.RequestID;
-                        FindTheNeededValues(itemNoError);
+                        // string itemNoError = response.RequestID;
+                        // topLevelTbl.Rows[0][1]
+                        InventoryAssemblyQuery();
+                        AddThenModify();
+                        //FindTheNeededValues(itemNoError);
                     }
                     else if (response.StatusCode.Equals(0))
                     {
