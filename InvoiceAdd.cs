@@ -20,6 +20,10 @@ namespace InvoiceAdd
 
     public class Frm1InvoiceAdd : Form
     {
+        private string assemblySequence = string.Empty;
+        private string sequence = string.Empty;
+        private string assemblyListId = string.Empty;
+        private string listId = string.Empty;
         private System.ComponentModel.Container components = null;
         private Button btn1_Send;
         private Button btn2_Exit;
