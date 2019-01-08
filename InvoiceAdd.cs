@@ -20,10 +20,6 @@ namespace InvoiceAdd
 
     public class Frm1InvoiceAdd : Form
     {
-        private string assemblySequence = string.Empty;
-        private string sequence = string.Empty;
-        private string assemblyListId = string.Empty;
-        private string listId = string.Empty;
         private System.ComponentModel.Container components = null;
         private Button btn1_Send;
         private Button btn2_Exit;
@@ -810,8 +806,7 @@ where a.itemcode =25000000*/
             //  || (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true))
             {
                 txtBox.AppendText(Environment.NewLine + "START OF PROGRAM...");
-                //ItemQuery();
-                AddThenModify();
+                ItemQuery();
             }
             else if (checkBox3.Checked && checkBox9.Checked && checkBox11.Checked)
             {
@@ -950,7 +945,7 @@ where a.itemcode =25000000*/
 
         private void AddThenModify()
         {
-            InventoryAssemblyQuery();
+            //InventoryAssemblyQuery();
             ItemAddAssembly();
             //txtBox.AppendText(Environment.NewLine +  "Query assembly again" +Environment.NewLine );
             InventoryAssemblyQuery();
@@ -1045,9 +1040,9 @@ where a.itemcode =25000000*/
             // tbProgramLog.AppendText(Environment.NewLine + "Before error");
             if (itemInventoryAssemblyRet == null) return;
             // tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
-            string assemblySequence = itemInventoryAssemblyRet.EditSequence.GetValue();
-            string assemblyListId = itemInventoryAssemblyRet.ListID.GetValue();
-            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + assemblySequence + Environment.NewLine + "List ID: " + assemblyListId);
+            string sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
+            string listId = itemInventoryAssemblyRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
         }
 
         private void InventoryAssemblyQuery()
@@ -1144,17 +1139,17 @@ where a.itemcode =25000000*/
         void WalkItemInventoryAssemblyRet(IItemInventoryAssemblyRetList itemInventoryAssemblyRetList)
         {
             if (itemInventoryAssemblyRetList == null) return;
-            string assemblySequence = string.Empty;
-            string assemblyListId = string.Empty;
+            string sequence = string.Empty;
+            string listId = string.Empty;
             for (int x = 0; x < itemInventoryAssemblyRetList.Count; x++)
             {
                 IItemInventoryAssemblyRet itemInventoryAssemblyRet = itemInventoryAssemblyRetList.GetAt(x);
-                assemblySequence = itemInventoryAssemblyRet.EditSequence.GetValue();
-                assemblyListId = itemInventoryAssemblyRet.ListID.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Assembly:" + Environment.NewLine + "Edit Sequence: " + assemblySequence + Environment.NewLine + "List ID: " + assemblyListId + Environment.NewLine);
+                sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
+                listId = itemInventoryAssemblyRet.ListID.GetValue();
+                tbProgramLog.AppendText(Environment.NewLine + "Assembly:" + Environment.NewLine + "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId + Environment.NewLine);
                 txtBox.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
             }
-            ItemQuery(assemblySequence, assemblyListId);
+            ItemQuery(sequence, listId);
         }
 
         private void ItemQuery(string sequence, string listId)
