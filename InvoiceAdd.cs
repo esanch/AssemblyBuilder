@@ -429,7 +429,6 @@ namespace InvoiceAdd
             checkBox9.Checked = false;
             checkBox10.Checked = false;
             checkBox11.Checked = false;
-            checkBox12.Checked = false;
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = @"xml files (*.xml)|*.xml";
@@ -438,7 +437,17 @@ namespace InvoiceAdd
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     fileName = openFileDialog.FileName;
-                    StartErrorChecking();
+                    try
+                    {
+                        StartErrorChecking();
+                    }
+                    catch (System.Xml.XmlException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    finally
+                    {
+                    }
                 }
             }
         }
