@@ -51,6 +51,7 @@ namespace InvoiceAdd
         private TextBox textBox1;
         private Label label5;
         private TextBox tbProgramLog;
+        private TextBox txtBox;
         bool ifError;
 
         private Frm1InvoiceAdd()
@@ -75,7 +76,6 @@ namespace InvoiceAdd
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             this.btn1_Send = new Button();
             this.btn2_Exit = new Button();
-            //this.saveFileDialog1 = new SaveFileDialog();
             this.btnOpenFile_Reset = new Button();
             this.dataGridView1 = new DataGridView();
             this.checkBox1 = new CheckBox();
@@ -97,6 +97,7 @@ namespace InvoiceAdd
             this.textBox1 = new TextBox();
             this.label5 = new Label();
             this.tbProgramLog = new TextBox();
+            this.txtBox = new TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -110,7 +111,7 @@ namespace InvoiceAdd
             this.btn1_Send.TabIndex = 57;
             this.btn1_Send.Text = "Send";
             this.btn1_Send.UseVisualStyleBackColor = false;
-            this.btn1_Send.Click += new System.EventHandler(this.Btn1_Send_Click_1);
+            this.btn1_Send.Click += new EventHandler(this.Btn1_Send_Click_1);
             // 
             // btn2_Exit
             // 
@@ -122,7 +123,7 @@ namespace InvoiceAdd
             this.btn2_Exit.TabIndex = 58;
             this.btn2_Exit.Text = "Exit";
             this.btn2_Exit.UseVisualStyleBackColor = false;
-            this.btn2_Exit.Click += new System.EventHandler(this.Btn2_Exit_Click);
+            this.btn2_Exit.Click += new EventHandler(this.Btn2_Exit_Click);
             // 
             // btnOpenFile_Reset
             // 
@@ -134,7 +135,7 @@ namespace InvoiceAdd
             this.btnOpenFile_Reset.TabIndex = 63;
             this.btnOpenFile_Reset.Text = "Open File";
             this.btnOpenFile_Reset.UseVisualStyleBackColor = false;
-            this.btnOpenFile_Reset.Click += new System.EventHandler(this.BtnOpenFile_Reset_Click);
+            this.btnOpenFile_Reset.Click += new EventHandler(this.BtnOpenFile_Reset_Click);
             // 
             // dataGridView1
             // 
@@ -344,14 +345,23 @@ namespace InvoiceAdd
             this.tbProgramLog.Location = new System.Drawing.Point(587, 40);
             this.tbProgramLog.Multiline = true;
             this.tbProgramLog.Name = "tbProgramLog";
-            this.tbProgramLog.Size = new System.Drawing.Size(483, 709);
+            this.tbProgramLog.Size = new System.Drawing.Size(483, 332);
             this.tbProgramLog.TabIndex = 85;
+            // 
+            // txtBox
+            // 
+            this.txtBox.Location = new System.Drawing.Point(587, 400);
+            this.txtBox.Multiline = true;
+            this.txtBox.Name = "txtBox";
+            this.txtBox.Size = new System.Drawing.Size(483, 332);
+            this.txtBox.TabIndex = 87;
             // 
             // Frm1InvoiceAdd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.ClientSize = new System.Drawing.Size(1082, 755);
+            this.Controls.Add(this.txtBox);
             this.Controls.Add(this.tbProgramLog);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox1);
@@ -609,19 +619,19 @@ where a.itemcode =25000000*/
                 bool qtyTest = Regex.IsMatch(qtyGiven, qty);
                 if (numberTest == false)
                 {
-                    tbProgramLog.AppendText(Environment.NewLine + "Error in the following ItemNo provided: " + iNoGiven);
+                    txtBox.AppendText(Environment.NewLine + "Error in the following ItemNo provided: " + iNoGiven);
                     checkBox10.Checked = true;
                     error = true;
                 }
                 else if (codeTest == false)
                 {
-                    tbProgramLog.AppendText(Environment.NewLine + "Error in the following ItemCode provided in line " + iNoGiven + ": " + iCodeGiven);
+                    txtBox.AppendText(Environment.NewLine + "Error in the following ItemCode provided in line " + iNoGiven + ": " + iCodeGiven);
                     checkBox10.Checked = true;
                     error = true;
                 }
                 else if (qtyTest == false)
                 {
-                    tbProgramLog.AppendText(Environment.NewLine + "Error in the following Quantity provided in line " + iNoGiven + ": " + qtyGiven);
+                    txtBox.AppendText(Environment.NewLine + "Error in the following Quantity provided in line " + iNoGiven + ": " + qtyGiven);
                     checkBox10.Checked = true;
                     error = true;
                 }
@@ -770,7 +780,7 @@ where a.itemcode =25000000*/
             }
             else
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Table contains errors!");
+                txtBox.AppendText(Environment.NewLine + "Table contains errors!");
             }
         }
 
@@ -784,12 +794,16 @@ where a.itemcode =25000000*/
                 //else if (checkBox3.Checked == true && checkBox9.Checked == true && checkBox11.Checked == true)
                 //{
                 /*ADD regardless if ItemCode exists or not*/
-                tbProgramLog.AppendText(Environment.NewLine + "Add then Modify");
+                txtBox.AppendText(Environment.NewLine + "START OF PROGRAM"+ Environment.NewLine);
+
+                // tbProgramLog.AppendText(Environment.NewLine + "Add then Modify");
+                //DoesItemExist();
                 AddThenModify();
+
             }
             else
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Cannot import a table with errors!");
+                txtBox.AppendText(Environment.NewLine + "Cannot import a table with errors!");
             }
         }
 
@@ -797,10 +811,149 @@ where a.itemcode =25000000*/
         {
             InventoryAssemblyQuery();
             ItemAddAssembly();
-            tbProgramLog.AppendText(Environment.NewLine + Environment.NewLine + "Query assembly again");
+            tbProgramLog.AppendText(Environment.NewLine);
+            txtBox.AppendText(Environment.NewLine);
+            txtBox.AppendText(Environment.NewLine + "Query assembly again");
             InventoryAssemblyQuery();
-            tbProgramLog.AppendText(Environment.NewLine + "END OF PROGRAM");
+            //InventoryAssemblyQuery();
+            //InventoryAssemblyQuery();
+            txtBox.AppendText(Environment.NewLine + "END OF PROGRAM");
         }
+
+        private void DoesItemExist()
+        {
+            bool sessionBegun = false;
+            bool connectionOpen = false;
+            QBSessionManager sessionManager = null;
+
+            try
+            {
+                sessionManager = new QBSessionManager();
+
+                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+                DoesItemAssemblyExistParameters(requestMsgSet);
+
+                sessionManager.OpenConnection("", "Sample Code from OSR");
+                connectionOpen = true;
+                sessionManager.BeginSession("", ENOpenMode.omDontCare);
+                sessionBegun = true;
+
+                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+
+                sessionManager.EndSession();
+                sessionBegun = false;
+                sessionManager.CloseConnection();
+                connectionOpen = false;
+
+                DoesItemAssemblyExistResponse(responseMsgSet);
+            }
+            catch (Exception e)
+            {
+                txtBox.AppendText(Environment.NewLine + e.Message);
+                if (sessionBegun)
+                {
+                    sessionManager.EndSession();
+                }
+
+                if (connectionOpen)
+                {
+                    sessionManager.CloseConnection();
+                }
+            }
+        }
+
+        private void DoesItemAssemblyExistParameters(IMsgSetRequest requestMsgSet)
+        {
+            IItemQuery itemQueryRq = requestMsgSet.AppendItemQueryRq();
+            itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion
+                .mcEndsWith);
+            //itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+            //itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
+            itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
+        }
+
+        private void DoesItemAssemblyExistResponse(IMsgSetResponse responseMsgSet)
+        {
+            if (responseMsgSet == null) return;
+            IResponseList responseList = responseMsgSet.ResponseList;
+            if (responseList == null) return;
+
+
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+                txtBox.AppendText(Environment.NewLine + "Checking if ItemCode Exists...");
+                //txtBox.AppendText(Environment.NewLine + response.StatusCode + ": " + response.StatusMessage);
+                if (response.StatusCode >= 0)
+                {
+                    if (response.StatusCode.Equals(1))
+                    {
+                        txtBox.AppendText(Environment.NewLine + "Item does not exist" + Environment.NewLine);
+                        // string itemNoError = response.RequestID;
+                        // topLevelTbl.Rows[0][1]
+                        txtBox.AppendText(Environment.NewLine + "Attempting to add Item as an Assembly");
+                        AddThenModify();
+                    }
+                    else if (response.StatusCode.Equals(0))
+                    {
+                        txtBox.AppendText(Environment.NewLine + "Item exists" + Environment.NewLine);
+                        if (response.Detail != null)
+                        {
+                            ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                            if (responseType == ENResponseType.rtItemQueryRs)
+                            {
+                                IORItemRetList itemRetList = (IORItemRetList)response.Detail;
+                                ItemExistsAsPartOrAssembly(itemRetList);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        private void ItemExistsAsPartOrAssembly(IORItemRetList itemRetList)
+        {
+            txtBox.AppendText(Environment.NewLine + "Checking if Item exists as an Assembly or a Part...");
+            if (itemRetList == null) return;
+            string topLevelSequence = string.Empty;
+            string topLevelListId = string.Empty;
+            for (int y = 0; y < itemRetList.Count; y++)
+            {
+                IORItemRet itemRet = itemRetList.GetAt(y);
+                if (itemRet.ItemInventoryAssemblyRet != null)
+                {
+                    topLevelListId = itemRet.ItemInventoryAssemblyRet.ListID.GetValue();
+                    topLevelSequence = itemRet.ItemInventoryAssemblyRet.EditSequence.GetValue();
+                    tbProgramLog.AppendText(Environment.NewLine +
+                                            "Assembly:" + Environment.NewLine +
+                                            "Edit Sequence: " + topLevelSequence + Environment.NewLine + "List ID: " +
+                                            topLevelListId);
+                    tbProgramLog.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
+                    txtBox.AppendText(Environment.NewLine + "Item exists as an Assembly" + Environment.NewLine);
+                    AddThenModify();
+                }
+                else if (itemRet.ItemInventoryRet != null)
+                {
+                    topLevelSequence = itemRet.ItemInventoryRet.EditSequence.GetValue();
+                    topLevelListId = itemRet.ItemInventoryRet.ListID.GetValue();
+                    tbProgramLog.AppendText(Environment.NewLine +
+                                            "Part:" + Environment.NewLine +
+                                            "Edit Sequence: " + topLevelSequence + Environment.NewLine + "List ID: " +
+                                            topLevelListId);
+                    tbProgramLog.AppendText(Environment.NewLine + "End of Part query" + Environment.NewLine);
+                    txtBox.AppendText(Environment.NewLine + "Item exists as a Part"
+                                                          + Environment.NewLine + "Cannot continue with program" +
+                                                          Environment.NewLine);
+                }
+            }
+
+        }
+
+
+
 
         private void ItemAddAssembly()
         {
@@ -959,16 +1112,6 @@ where a.itemcode =25000000*/
 
                 if (response.StatusCode >= 0)
                 {
-                    //if (response.StatusCode == 1)
-                    //{
-                    //    tbProgramLog.AppendText(Environment.NewLine + "Cannot create Item Assembly as it already exists as an Item Part");
-                    //break;
-                    //ItemAddAssembly();
-                    //AddThenModify();
-                    //InventoryAssemblyQuery();
-                    //}
-                    //if (response.StatusCode == 0)
-                    //{
                     if (response.Detail != null)
                     {
                         ENResponseType responseType = (ENResponseType)response.Type.GetValue();
@@ -978,7 +1121,6 @@ where a.itemcode =25000000*/
                             WalkItemInventoryAssemblyRet(itemInventoryAssemblyRetList);
                         }
                     }
-                    //}
                 }
             }
         }
@@ -993,8 +1135,8 @@ where a.itemcode =25000000*/
                 IItemInventoryAssemblyRet itemInventoryAssemblyRet = itemInventoryAssemblyRetList.GetAt(x);
                 sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
                 listId = itemInventoryAssemblyRet.ListID.GetValue();
-                tbProgramLog.AppendText(Environment.NewLine + "Assembly:" + Environment.NewLine + "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId);
-                tbProgramLog.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
+                tbProgramLog.AppendText(Environment.NewLine + "Assembly:" + Environment.NewLine + "Edit Sequence: " + sequence + Environment.NewLine + "List ID: " + listId+ Environment.NewLine);
+                txtBox.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
             }
             ItemQuery(sequence, listId);
         }
@@ -1106,7 +1248,7 @@ where a.itemcode =25000000*/
             topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
             topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
             topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
-            tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
+            //tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
             DataRow row = topLevelTbl.Rows[0];
             row[3] = IncomeAccount;
             row[4] = COGSAccount;
@@ -1123,17 +1265,19 @@ where a.itemcode =25000000*/
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " + row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
                 ItemAddPart();
-                InventoryAssemblyQuery();
+                //InventoryAssemblyQuery();
+               // AddThenModify();
             }
             else
             {
-                tbProgramLog.AppendText(Environment.NewLine + "Check the itemType");
+                txtBox.AppendText(Environment.NewLine + "Cannot continue"
+                                    + Environment.NewLine + "Check the itemType");
             }
         }
 
         private void ItemAddPart()
         {
-            tbProgramLog.AppendText(Environment.NewLine + " A part item will be added");
+            txtBox.AppendText(Environment.NewLine + " A part item will be added");
 
             bool sessionBegun = false;
             bool connectionOpen = false;
@@ -1157,7 +1301,7 @@ where a.itemcode =25000000*/
                 sessionBegun = true;
 
                 //Send the request and get the response from QuickBooks
-                tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD PART: " + requestMsgSet.ToXMLString());
+                tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD PART: " + Environment.NewLine + requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
                 //End the session and close the connection to QuickBooks
@@ -1308,15 +1452,16 @@ where a.itemcode =25000000*/
                     itemSequence = itemRet.ItemOtherChargeRet.EditSequence.GetValue();
                     itemName = itemRet.ItemOtherChargeRet.Name.GetValue();
                 }
-                tbProgramLog.AppendText(Environment.NewLine + "Lower level edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId);
-                tbProgramLog.AppendText(Environment.NewLine + "Item Modified: " + itemName);
+                tbProgramLog.AppendText(Environment.NewLine + "Lower level edit sequence: " + itemSequence + Environment.NewLine + "List ID: " + itemListId+ Environment.NewLine);
+                //tbProgramLog.AppendText(Environment.NewLine + "Item Modified: " + itemName);
+                txtBox.AppendText(Environment.NewLine + "Item " +itemName + " will be modified");
             }
             ItemModify(sequence, listId);//, itemListId);
         }
 
         private void ItemModify(string sequence, string listId)//, string itemListID)
         {
-            tbProgramLog.AppendText(Environment.NewLine + "Item was modified" + Environment.NewLine);
+            //tbProgramLog.AppendText(Environment.NewLine + "Item was modified" + Environment.NewLine);
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
