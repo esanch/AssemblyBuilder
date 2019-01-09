@@ -445,9 +445,6 @@ namespace InvoiceAdd
                     {
                         MessageBox.Show(ex.Message);
                     }
-                    finally
-                    {
-                    }
                 }
             }
         }
