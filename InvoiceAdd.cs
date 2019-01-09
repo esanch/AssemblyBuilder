@@ -1,4 +1,12 @@
-﻿using System;
+﻿/*************************************************************************
+ * 
+ * Elizabeth Earl
+ * __________________
+ * 
+ *  [2018] - [2019] 
+ * 
+ ************************************************************************/
+using System;
 using System.Windows.Forms;
 using System.Data;
 using Interop.QBFC13;
@@ -72,7 +80,6 @@ namespace InvoiceAdd
         }
 
         #region Windows Form Designer generated code
-
         private void InitializeComponent()
         {
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
@@ -402,7 +409,6 @@ namespace InvoiceAdd
             this.PerformLayout();
 
         }
-
         #endregion
 
         [STAThread]
