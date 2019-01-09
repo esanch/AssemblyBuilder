@@ -932,7 +932,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void DoesItemAssemblyExistParameters(IMsgSetRequest requestMsgSet)
         {
             IItemQuery itemQueryRq = requestMsgSet.AppendItemQueryRq();
@@ -942,7 +941,6 @@ where a.itemcode =25000000*/
             //itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
             itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
         }
-
         void DoesItemAssemblyExistResponse(IMsgSetResponse responseMsgSet)
         {
             if (responseMsgSet == null) return;
@@ -981,7 +979,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void ItemExistsAsPartOrAssembly(IORItemRetList itemRetList)
         {
             txtBox.AppendText(Environment.NewLine + "Checking if Item exists as an Assembly or a Part...");
@@ -1063,7 +1060,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void BuildAssemblyQuery(IMsgSetRequest requestMsgSet, DataTable topLevelTbl)
         {
             IItemInventoryAssemblyQuery itemInventoryAssemblyQueryRq =
@@ -1075,7 +1071,6 @@ where a.itemcode =25000000*/
             //listWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcContains);
             listWithClassFilter.ORNameFilter.NameFilter.Name.SetValue(topLevelTbl.Rows[0][0].ToString());
         }
-
         void WalkItemAssemblyQueryRs(IMsgSetResponse responseMsgSet)
         {
             IResponseList responseList = responseMsgSet?.ResponseList;
@@ -1106,7 +1101,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void WalkItemAssemblyQueryRet(IItemInventoryAssemblyRetList itemInventoryAssemblyRetList)
         {
             if (itemInventoryAssemblyRetList == null) return;
@@ -1170,7 +1164,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void BuildItemQuery(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl)
         {
             List<string> itemCodes = secondLevelTbl.AsEnumerable().Select(r => r.Field<string>("ItemCode")).ToList();
@@ -1184,7 +1177,6 @@ where a.itemcode =25000000*/
                 itemQueryRq.ORListQuery.ListFilter.ORNameFilter.NameFilter.Name.SetValue(itemCode);
             }
         }
-
         void WalkItemQueryRs(IMsgSetResponse responseMsgSet, string sequence, string listId)
         {
             if (responseMsgSet == null) return;
@@ -1216,7 +1208,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void WalkItemQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
             //tbProgramLog.AppendText(Environment.NewLine + "WalkAllItemsQueryRet method was reached");
@@ -1350,9 +1341,7 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
-        void BuildItemModify(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl,
-            string sequence, string listId)
+        void BuildItemModify(IMsgSetRequest requestMsgSet, DataTable secondLevelTbl, DataTable topLevelTbl,string sequence, string listId)
         {
             IItemInventoryAssemblyMod itemInventoryAssemblyModRq = requestMsgSet.AppendItemInventoryAssemblyModRq();
             itemInventoryAssemblyModRq.ListID.SetValue(listId);
@@ -1368,7 +1357,6 @@ where a.itemcode =25000000*/
                 itemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
             }
         }
-
         void WalkItemModifyRs(IMsgSetResponse responseMsgSet) //, string itemListId)
         {
             IResponseList responseList = responseMsgSet?.ResponseList;
@@ -1392,7 +1380,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void WalkItemModifyRet(IItemInventoryAssemblyRet itemModifyRet)
         {
             if (itemModifyRet == null) return;
@@ -1494,7 +1481,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void BuildItemAssemblyAddRq(IMsgSetRequest requestMsgSet)
         {
             IItemInventoryAssemblyAdd itemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
@@ -1506,7 +1492,6 @@ where a.itemcode =25000000*/
             itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccount);
             itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
         }
-
         void WalkItemAssemblyAddRs(IMsgSetResponse responseMsgSet)
         {
             if (responseMsgSet == null) return;
@@ -1533,7 +1518,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void WalkItemAssemblyAddRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
         {
             // tbProgramLog.AppendText(Environment.NewLine + "Before error");
@@ -1543,7 +1527,7 @@ where a.itemcode =25000000*/
             string listId = itemInventoryAssemblyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine +
                                     "List ID: " + listId);
-            InventoryAssemblyQuery();
+            //InventoryAssemblyQuery();
         }
 
         private void ItemAddPart()
@@ -1598,7 +1582,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void BuildItemPartAddRq(IMsgSetRequest requestMsgSet)
         {
             IItemInventoryAdd itemInventoryAddRq = requestMsgSet.AppendItemInventoryAddRq();
@@ -1611,7 +1594,6 @@ where a.itemcode =25000000*/
             itemInventoryAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
 
         }
-
         void WalkItemPartAddRs(IMsgSetResponse responseMsgSet)
         {
             //tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
@@ -1637,7 +1619,6 @@ where a.itemcode =25000000*/
                 }
             }
         }
-
         void WalkItemPartAddRet(IItemInventoryRet itemInventoryRet)
         {
             if (itemInventoryRet == null) return;
@@ -1646,7 +1627,7 @@ where a.itemcode =25000000*/
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + partSequence + Environment.NewLine +
                                     "List ID: " + partListId);
             //ItemQuery(partSequence, partListId);
-            InventoryAssemblyQuery();
+            //InventoryAssemblyQuery();
         }
     }
 }
