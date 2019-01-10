@@ -877,10 +877,10 @@ where a.itemcode =25000000*/
             {
 
                 txtBox.AppendText(Environment.NewLine + "START OF PROGRAM" + Environment.NewLine);
-                txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
+                //txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
                 //txtBox.AppendText(Environment.NewLine + "The top level table is " + subAssembly.Rows[0][0]);
-                //DoesItemExist();
-                AddThenModify();
+                DoesItemExist();
+                //AddThenModify();
 
             }
             else
@@ -891,20 +891,12 @@ where a.itemcode =25000000*/
 
         private void AddThenModify()
         {
-            string topAssembly = topLevelTbl.Rows[0][0].ToString();
             InventoryAssemblyQuery();
             ItemAddAssembly();
             tbProgramLog.AppendText(Environment.NewLine);
             txtBox.AppendText(Environment.NewLine);
-           txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
-           // txtBox.AppendText(Environment.NewLine + "The top level table is " + subAssembly.Rows[0][0]);
+            //txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
             txtBox.AppendText(Environment.NewLine + "Query assembly again");
-            //Query top assembly rather than newly added item
-            InventoryAssemblyQuery();
-            //InventoryAssemblyQuery();
-            //InventoryAssemblyQuery();
-            txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
-            txtBox.AppendText(Environment.NewLine + "The subassembly table is " + subAssembly.Rows[0][0]);
             InventoryAssemblyQuery();
             txtBox.AppendText(Environment.NewLine + "END OF PROGRAM");
         }
@@ -1442,12 +1434,14 @@ where a.itemcode =25000000*/
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " +
                                         row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
                 ItemAddSubAssembly();
+                txtBox.AppendText(Environment.NewLine + " An Assembly item was added");
             }
             else if (row[2].ToString() == P)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " +
                                         row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
                 ItemAddPart();
+                txtBox.AppendText(Environment.NewLine + " A part item was added");
                 //InventoryAssemblyQuery();
                 // AddThenModify();
             }
@@ -1598,7 +1592,7 @@ where a.itemcode =25000000*/
         void BuildItemSubAssemblyAddRq(IMsgSetRequest requestMsgSet)
         {
             IItemInventoryAssemblyAdd itemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
-            DataRow row = topLevelTbl.Rows[0];
+            DataRow row = subAssembly.Rows[0];
             itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
             itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
             itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
@@ -1641,14 +1635,12 @@ where a.itemcode =25000000*/
             string listId = itemInventoryAssemblyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine +
                                     "List ID: " + listId);
-            //InventoryAssemblyQuery();
+            InventoryAssemblyQuery();
         }
 
 
         private void ItemAddPart()
         {
-            txtBox.AppendText(Environment.NewLine + " A part item will be added");
-
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
@@ -1742,7 +1734,7 @@ where a.itemcode =25000000*/
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + partSequence + Environment.NewLine +
                                     "List ID: " + partListId);
             //ItemQuery(partSequence, partListId);
-            //InventoryAssemblyQuery();
+            InventoryAssemblyQuery();
         }
     }
 }
