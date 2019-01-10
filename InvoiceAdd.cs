@@ -41,6 +41,7 @@ namespace InvoiceAdd
         string InventoryAssetAccount = "800001A9-1511318480";
         DataTable secondLevelTbl = new DataTable();
         DataTable topLevelTbl = new DataTable();
+        DataTable subAssembly = new DataTable();
         string fileName = string.Empty;
         private CheckBox checkBox1;
         private CheckBox checkBox2;
@@ -876,6 +877,8 @@ where a.itemcode =25000000*/
             {
 
                 txtBox.AppendText(Environment.NewLine + "START OF PROGRAM" + Environment.NewLine);
+                txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
+                //txtBox.AppendText(Environment.NewLine + "The top level table is " + subAssembly.Rows[0][0]);
                 //DoesItemExist();
                 AddThenModify();
 
@@ -888,14 +891,21 @@ where a.itemcode =25000000*/
 
         private void AddThenModify()
         {
+            string topAssembly = topLevelTbl.Rows[0][0].ToString();
             InventoryAssemblyQuery();
             ItemAddAssembly();
             tbProgramLog.AppendText(Environment.NewLine);
             txtBox.AppendText(Environment.NewLine);
+           txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
+           // txtBox.AppendText(Environment.NewLine + "The top level table is " + subAssembly.Rows[0][0]);
             txtBox.AppendText(Environment.NewLine + "Query assembly again");
+            //Query top assembly rather than newly added item
             InventoryAssemblyQuery();
             //InventoryAssemblyQuery();
             //InventoryAssemblyQuery();
+            txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
+            txtBox.AppendText(Environment.NewLine + "The subassembly table is " + subAssembly.Rows[0][0]);
+            InventoryAssemblyQuery();
             txtBox.AppendText(Environment.NewLine + "END OF PROGRAM");
         }
 
@@ -1402,7 +1412,8 @@ where a.itemcode =25000000*/
         private void FindTheNeededValues(string itemNoError)
         {
             int col = Int32.Parse(itemNoError);
-            topLevelTbl = new DataTable();
+            subAssembly = new DataTable();
+            //topLevelTbl = new DataTable();
             string subItem = secondLevelTbl.Rows[col][1].ToString();
             string connectionString =
                 @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
@@ -1414,12 +1425,12 @@ where a.itemcode =25000000*/
                                                             " AND(a.[Itemcode] = '" + subItem +
                                                             "' OR b.[ItemCode] = '" + subItem + "')"
                 , connectionString);
-            dataAdapter.Fill(topLevelTbl);
-            topLevelTbl.Columns.Add("IncomeAccountRef", typeof(string));
-            topLevelTbl.Columns.Add("COGSAccountRef", typeof(string));
-            topLevelTbl.Columns.Add("AssetAccountRef", typeof(string));
+            dataAdapter.Fill(subAssembly);
+            subAssembly.Columns.Add("IncomeAccountRef", typeof(string));
+            subAssembly.Columns.Add("COGSAccountRef", typeof(string));
+            subAssembly.Columns.Add("AssetAccountRef", typeof(string));
             //tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
-            DataRow row = topLevelTbl.Rows[0];
+            DataRow row = subAssembly.Rows[0];
             row[3] = IncomeAccount;
             row[4] = COGSAccount;
             row[5] = InventoryAssetAccount;
@@ -1430,7 +1441,7 @@ where a.itemcode =25000000*/
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " +
                                         row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
-                ItemAddAssembly();
+                ItemAddSubAssembly();
             }
             else if (row[2].ToString() == P)
             {
@@ -1540,6 +1551,100 @@ where a.itemcode =25000000*/
             //InventoryAssemblyQuery();
         }
 
+        private void ItemAddSubAssembly()
+        {
+            bool sessionBegun = false;
+            bool connectionOpen = false;
+            QBSessionManager sessionManager = null;
+
+            try
+            {
+                sessionManager = new QBSessionManager();
+
+                IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
+                requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+
+                BuildItemSubAssemblyAddRq(requestMsgSet);
+
+                sessionManager.OpenConnection("", "Sample Code from OSR");
+                connectionOpen = true;
+                sessionManager.BeginSession("", ENOpenMode.omDontCare);
+                sessionBegun = true;
+
+                IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+                //print xml string
+                //tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD ASSEMBLY: " + requestMsgSet.ToXMLString());
+                sessionManager.EndSession();
+                sessionBegun = false;
+                sessionManager.CloseConnection();
+                connectionOpen = false;
+
+                WalkItemSubAssemblyAddRs(responseMsgSet);
+            }
+            catch (Exception e)
+            {
+                tbProgramLog.AppendText(Environment.NewLine + e.Message);
+                if (sessionBegun)
+                {
+                    sessionManager.EndSession();
+                }
+
+                if (connectionOpen)
+                {
+                    sessionManager.CloseConnection();
+                }
+            }
+        }
+        void BuildItemSubAssemblyAddRq(IMsgSetRequest requestMsgSet)
+        {
+            IItemInventoryAssemblyAdd itemInventoryAssemblyAddRq = requestMsgSet.AppendItemInventoryAssemblyAddRq();
+            DataRow row = topLevelTbl.Rows[0];
+            itemInventoryAssemblyAddRq.Name.SetValue(row[0].ToString());
+            itemInventoryAssemblyAddRq.SalesDesc.SetValue(row[1].ToString());
+            itemInventoryAssemblyAddRq.PurchaseDesc.SetValue(row[1].ToString());
+            itemInventoryAssemblyAddRq.IncomeAccountRef.ListID.SetValue(IncomeAccount);
+            itemInventoryAssemblyAddRq.COGSAccountRef.ListID.SetValue(COGSAccount);
+            itemInventoryAssemblyAddRq.AssetAccountRef.ListID.SetValue(InventoryAssetAccount);
+        }
+        void WalkItemSubAssemblyAddRs(IMsgSetResponse responseMsgSet)
+        {
+            if (responseMsgSet == null) return;
+            //tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
+            IResponseList responseList = responseMsgSet.ResponseList;
+            if (responseList == null) return;
+
+            for (int i = 0; i < responseList.Count; i++)
+            {
+                IResponse response = responseList.GetAt(i);
+
+                if (response.StatusCode >= 0)
+                {
+                    if (response.Detail != null)
+                    {
+                        ENResponseType responseType = (ENResponseType)response.Type.GetValue();
+                        if (responseType == ENResponseType.rtItemInventoryAssemblyAddRs)
+                        {
+                            IItemInventoryAssemblyRet itemInventoryAssemblyRet =
+                                (IItemInventoryAssemblyRet)response.Detail;
+                            WalkItemSubAssemblyAddRet(itemInventoryAssemblyRet);
+                        }
+                    }
+                }
+            }
+        }
+        void WalkItemSubAssemblyAddRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
+        {
+            // tbProgramLog.AppendText(Environment.NewLine + "Before error");
+            if (itemInventoryAssemblyRet == null) return;
+            // tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
+            string sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
+            string listId = itemInventoryAssemblyRet.ListID.GetValue();
+            tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine +
+                                    "List ID: " + listId);
+            //InventoryAssemblyQuery();
+        }
+
+
         private void ItemAddPart()
         {
             txtBox.AppendText(Environment.NewLine + " A part item will be added");
@@ -1595,7 +1700,7 @@ where a.itemcode =25000000*/
         void BuildItemPartAddRq(IMsgSetRequest requestMsgSet)
         {
             IItemInventoryAdd itemInventoryAddRq = requestMsgSet.AppendItemInventoryAddRq();
-            DataRow row = topLevelTbl.Rows[0];
+            DataRow row = subAssembly.Rows[0];
             itemInventoryAddRq.Name.SetValue(row[0].ToString());
             itemInventoryAddRq.SalesDesc.SetValue(row[1].ToString());
             itemInventoryAddRq.PurchaseDesc.SetValue(row[1].ToString());
