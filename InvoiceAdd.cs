@@ -1635,7 +1635,7 @@ where a.itemcode =25000000*/
             string listId = itemInventoryAssemblyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine +
                                     "List ID: " + listId);
-            InventoryAssemblyQuery();
+            //InventoryAssemblyQuery();
         }
 
 
