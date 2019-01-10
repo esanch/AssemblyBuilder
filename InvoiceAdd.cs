@@ -435,6 +435,8 @@ namespace InvoiceAdd
             checkBox9.Checked = false;
             checkBox10.Checked = false;
             checkBox11.Checked = false;
+            tbProgramLog.Clear();
+            txtBox.Clear();
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = @"xml files (*.xml)|*.xml";
@@ -868,6 +870,8 @@ where a.itemcode =25000000*/
 
         private void Btn1_Send_Click_1(object sender, EventArgs e)
         {
+            tbProgramLog.Clear();
+            txtBox.Clear();
             if (checkBox1.Checked && checkBox9.Checked && checkBox11.Checked)
             {
 
