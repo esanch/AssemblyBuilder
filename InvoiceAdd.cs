@@ -1095,11 +1095,6 @@ where a.itemcode =25000000*/
 
                 if (response.StatusCode >= 0)
                 {
-                    if (response.StatusCode == 1)
-                    {
-                        txtBox.AppendText(Environment.NewLine + "the code ends here?");
-                    }
-
                     if (response.Detail != null)
                     {
                         ENResponseType responseType = (ENResponseType) response.Type.GetValue();
@@ -1434,14 +1429,16 @@ where a.itemcode =25000000*/
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " +
                                         row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
                 ItemAddSubAssembly();
-                txtBox.AppendText(Environment.NewLine + " An Assembly item was added");
+                InventoryAssemblyQuery();
+                //txtBox.AppendText(Environment.NewLine + " An Assembly item was added");
             }
             else if (row[2].ToString() == P)
             {
                 tbProgramLog.AppendText(Environment.NewLine + "col1: " + row[0] + " col2: " + row[1] + " col3: " +
                                         row[2] + " col4: " + row[3] + " col5: " + row[4] + " col6: " + row[5]);
                 ItemAddPart();
-                txtBox.AppendText(Environment.NewLine + " A part item was added");
+                InventoryAssemblyQuery();
+                //txtBox.AppendText(Environment.NewLine + " A part item was added");
                 //InventoryAssemblyQuery();
                 // AddThenModify();
             }
