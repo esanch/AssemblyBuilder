@@ -877,8 +877,6 @@ where a.itemcode =25000000*/
             {
 
                 txtBox.AppendText(Environment.NewLine + "START OF PROGRAM" + Environment.NewLine);
-                //txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
-                //txtBox.AppendText(Environment.NewLine + "The top level table is " + subAssembly.Rows[0][0]);
                 DoesItemExist();
                 //AddThenModify();
 
@@ -895,7 +893,6 @@ where a.itemcode =25000000*/
             ItemAddAssembly();
             tbProgramLog.AppendText(Environment.NewLine);
             txtBox.AppendText(Environment.NewLine);
-            //txtBox.AppendText(Environment.NewLine + "The top level table is " + topLevelTbl.Rows[0][0]);
             txtBox.AppendText(Environment.NewLine + "Query assembly again");
             InventoryAssemblyQuery();
             txtBox.AppendText(Environment.NewLine + "END OF PROGRAM");
@@ -970,8 +967,6 @@ where a.itemcode =25000000*/
                     if (response.StatusCode.Equals(1))
                     {
                         txtBox.AppendText(Environment.NewLine + "Item does not exist" + Environment.NewLine);
-                        // string itemNoError = response.RequestID;
-                        // topLevelTbl.Rows[0][1]
                         txtBox.AppendText(Environment.NewLine + "Attempting to add Item as an Assembly");
                         AddThenModify();
                     }
@@ -1026,7 +1021,6 @@ where a.itemcode =25000000*/
                                                           Environment.NewLine);
                 }
             }
-
         }
 
         private void InventoryAssemblyQuery()
@@ -1122,7 +1116,6 @@ where a.itemcode =25000000*/
                                         sequence + Environment.NewLine + "List ID: " + listId + Environment.NewLine);
                 txtBox.AppendText(Environment.NewLine + "End of Assembly query" + Environment.NewLine);
             }
-
             ItemQuery(sequence, listId);
         }
 
@@ -1217,13 +1210,10 @@ where a.itemcode =25000000*/
         }
         void WalkItemQueryRet(IORItemRetList itemRetList, string sequence, string listId)
         {
-            //tbProgramLog.AppendText(Environment.NewLine + "WalkAllItemsQueryRet method was reached");
             string itemListId = string.Empty;
             string itemName = string.Empty;
             string itemSequence = string.Empty;
-            if (itemRetList == null) return; //{
-            //    ItemAdd();
-            //}
+            if (itemRetList == null) return; 
             for (int y = 0; y < itemRetList.Count; y++)
             {
                 IORItemRet itemRet = itemRetList.GetAt(y);
@@ -1293,19 +1283,16 @@ where a.itemcode =25000000*/
                     itemSequence = itemRet.ItemOtherChargeRet.EditSequence.GetValue();
                     itemName = itemRet.ItemOtherChargeRet.Name.GetValue();
                 }
-
                 tbProgramLog.AppendText(Environment.NewLine + "Lower level edit sequence: " + itemSequence +
                                         Environment.NewLine + "List ID: " + itemListId + Environment.NewLine);
-                //tbProgramLog.AppendText(Environment.NewLine + "Item Modified: " + itemName);
                 txtBox.AppendText(Environment.NewLine + "Item " + itemName + " will be modified");
             }
 
             ItemModify(sequence, listId); //, itemListId);
         }
 
-        private void ItemModify(string sequence, string listId) //, string itemListID)
+        private void ItemModify(string sequence, string listId) 
         {
-            //tbProgramLog.AppendText(Environment.NewLine + "Item was modified" + Environment.NewLine);
             bool sessionBegun = false;
             bool connectionOpen = false;
             QBSessionManager sessionManager = null;
@@ -1332,7 +1319,7 @@ where a.itemcode =25000000*/
                 sessionManager.CloseConnection();
                 connectionOpen = false;
 
-                WalkItemModifyRs(responseMsgSet); //, itemListID);
+                WalkItemModifyRs(responseMsgSet); 
             }
             catch (Exception e)
             {
@@ -1364,7 +1351,7 @@ where a.itemcode =25000000*/
                 itemInventoryAssemblyLine1.Quantity.SetValue(Convert.ToDouble(secondLevelTbl.Rows[i][4]));
             }
         }
-        void WalkItemModifyRs(IMsgSetResponse responseMsgSet) //, string itemListId)
+        void WalkItemModifyRs(IMsgSetResponse responseMsgSet)
         {
             IResponseList responseList = responseMsgSet?.ResponseList;
             if (responseList == null) return;
@@ -1400,7 +1387,6 @@ where a.itemcode =25000000*/
         {
             int col = Int32.Parse(itemNoError);
             subAssembly = new DataTable();
-            //topLevelTbl = new DataTable();
             string subItem = secondLevelTbl.Rows[col][1].ToString();
             string connectionString =
                 @"Data Source=SQLSERVER\ITEMCODE;Initial Catalog=dat8121;Integrated Security=True";
@@ -1416,7 +1402,6 @@ where a.itemcode =25000000*/
             subAssembly.Columns.Add("IncomeAccountRef", typeof(string));
             subAssembly.Columns.Add("COGSAccountRef", typeof(string));
             subAssembly.Columns.Add("AssetAccountRef", typeof(string));
-            //tbProgramLog.AppendText(Environment.NewLine + "Line Reached");
             DataRow row = subAssembly.Rows[0];
             row[3] = IncomeAccount;
             row[4] = COGSAccount;
@@ -1431,6 +1416,7 @@ where a.itemcode =25000000*/
                 ItemAddSubAssembly();
                 InventoryAssemblyQuery();
                 //txtBox.AppendText(Environment.NewLine + " An Assembly item was added");
+                //InventoryAssemblyQuery();
             }
             else if (row[2].ToString() == P)
             {
@@ -1440,7 +1426,6 @@ where a.itemcode =25000000*/
                 InventoryAssemblyQuery();
                 //txtBox.AppendText(Environment.NewLine + " A part item was added");
                 //InventoryAssemblyQuery();
-                // AddThenModify();
             }
             else
             {
@@ -1507,7 +1492,6 @@ where a.itemcode =25000000*/
         void WalkItemAssemblyAddRs(IMsgSetResponse responseMsgSet)
         {
             if (responseMsgSet == null) return;
-            //tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
 
@@ -1532,9 +1516,7 @@ where a.itemcode =25000000*/
         }
         void WalkItemAssemblyAddRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
         {
-            // tbProgramLog.AppendText(Environment.NewLine + "Before error");
             if (itemInventoryAssemblyRet == null) return;
-            // tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
             string sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
             string listId = itemInventoryAssemblyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine +
@@ -1564,7 +1546,7 @@ where a.itemcode =25000000*/
 
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
                 //print xml string
-                //tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD ASSEMBLY: " + requestMsgSet.ToXMLString());
+                //tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD ASSEMBLY: " + Environment.NewLine + requestMsgSet.ToXMLString());
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
@@ -1600,7 +1582,6 @@ where a.itemcode =25000000*/
         void WalkItemSubAssemblyAddRs(IMsgSetResponse responseMsgSet)
         {
             if (responseMsgSet == null) return;
-            //tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet.ResponseList;
             if (responseList == null) return;
 
@@ -1625,9 +1606,7 @@ where a.itemcode =25000000*/
         }
         void WalkItemSubAssemblyAddRet(IItemInventoryAssemblyRet itemInventoryAssemblyRet)
         {
-            // tbProgramLog.AppendText(Environment.NewLine + "Before error");
             if (itemInventoryAssemblyRet == null) return;
-            // tbProgramLog.AppendText(Environment.NewLine + "Error fixed");
             string sequence = itemInventoryAssemblyRet.EditSequence.GetValue();
             string listId = itemInventoryAssemblyRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + sequence + Environment.NewLine +
@@ -1644,27 +1623,21 @@ where a.itemcode =25000000*/
 
             try
             {
-                //Create the session Manager object
                 sessionManager = new QBSessionManager();
 
-                //Create the message set request object to hold our request
                 IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US", 13, 0);
                 requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
                 BuildItemPartAddRq(requestMsgSet);
 
-                //Connect to QuickBooks and begin a session
                 sessionManager.OpenConnection("", "Sample Code from OSR");
                 connectionOpen = true;
                 sessionManager.BeginSession("", ENOpenMode.omDontCare);
                 sessionBegun = true;
 
-                //Send the request and get the response from QuickBooks
-                tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD PART: " + Environment.NewLine +
-                                        requestMsgSet.ToXMLString());
+               // tbProgramLog.AppendText(Environment.NewLine + "ITEM ADD PART: " + Environment.NewLine + requestMsgSet.ToXMLString());
                 IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
 
-                //End the session and close the connection to QuickBooks
                 sessionManager.EndSession();
                 sessionBegun = false;
                 sessionManager.CloseConnection();
@@ -1700,7 +1673,6 @@ where a.itemcode =25000000*/
         }
         void WalkItemPartAddRs(IMsgSetResponse responseMsgSet)
         {
-            //tbProgramLog.AppendText(Environment.NewLine + "before loop in walkiteminventoryassemblyaddrs");
             IResponseList responseList = responseMsgSet?.ResponseList;
             if (responseList == null) return;
 
@@ -1715,7 +1687,6 @@ where a.itemcode =25000000*/
                         ENResponseType responseType = (ENResponseType) response.Type.GetValue();
                         if (responseType == ENResponseType.rtItemInventoryAddRs)
                         {
-                            //upcast to more specific type here, this is safe because we checked with response.Type check above
                             IItemInventoryRet itemInventoryRet = (IItemInventoryRet) response.Detail;
                             WalkItemPartAddRet(itemInventoryRet);
                         }
@@ -1730,8 +1701,7 @@ where a.itemcode =25000000*/
             string partListId = itemInventoryRet.ListID.GetValue();
             tbProgramLog.AppendText(Environment.NewLine + "Edit sequence: " + partSequence + Environment.NewLine +
                                     "List ID: " + partListId);
-            //ItemQuery(partSequence, partListId);
-            InventoryAssemblyQuery();
+            //InventoryAssemblyQuery();
         }
     }
 }
