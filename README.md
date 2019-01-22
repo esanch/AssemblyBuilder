@@ -26,9 +26,7 @@ Few things you can do using Assembly Builder:
 * [QuickBooks](https://quickbooks.intuit.com/)
 
 ### Installing 
-1. [Download](https://github.com/esanch/QBInvoiceAdd) Assembly Builder project<br />
-	*\*Note URL might differ\**<br />
-<img src="https://cdn.elegantthemes.com/blog/wp-content/uploads/2017/07/006-Clone-a-Git-Repo-10.10.32-AM.jpg" alt="BrowserStack Logo" width="400" height="200"><br />
+1. [Download](https://github.com/esanch/AssemblyBuilder/archive/v1.0.zip) Assembly Builder project<br />
 2. Extract ZIP files and save on your computer<br />
 
 ### Running
@@ -46,7 +44,7 @@ Few things you can do using Assembly Builder:
 
 ## Versions
 >**Assembly Builder** 
->>1.0  (01/22/2019)
+>>[v1.0](https://github.com/esanch/AssemblyBuilder/releases/tag/v1.0)  (01/22/2019)
 
 ## Built With
 * IDE - [Visual Studio](https://visualstudio.microsoft.com/vs/)
