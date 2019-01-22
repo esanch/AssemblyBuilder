@@ -13,7 +13,6 @@ using Interop.QBFC13;
 using System.Xml.Linq;
 using System.Data.SqlClient;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -433,26 +432,10 @@ namespace InvoiceAdd
             checkBox11.Checked = false;
             tbProgramLog.Clear();
             txtBox.Clear();
-             fileName = @"\\SQLSERVER\bom\24902200-20180907.xml";
-            //string iCodeFileEnding = @"^[1-2][0-9][0-9][0-9][0-9][0-9]00";
-            //string  iCode = Regex.Match(iCodeFileEnding, fileName).Value;
-            //Regex matchSynt = new Regex(@"^[1-2][0-9][0-9][0-9][0-9][0-9]00");
-            //var fileName = Directory.GetFiles(@"\\SQLSERVER\bom\", "*.xml")
-            //    .Where(path => matchSynt.IsMatch(path)).ToList();
-            //foreach (string file in doesMatch) { }
-            //    MessageBox.Show("This is a match");
-           // fileName = @"\\SQLSERVER\bom\" + iCodeFileEnding;
-           //fileName = @"C:\Users\Elizabeth.Earl\source\repos\ConsoleApp2\ConsoleApp2\new.xml";
-
-           // Work with each file individually
-           //foreach (var filePath in filePaths)
-           //{
-           //    using (FileStream stream = File.Open(filePath, FileMode.Open))
-           //    {
-           //        DataTable tblVehicles = new DataTable();
-           //        DataView dv = new DataView(tblVehicles);
-           //        // Do whatever you need to do with the data from this one file, then move on....
-           //        {
+           /*
+            fileName = @"\\SQLSERVER\bom\24902200-20180907.xml";
+           
+            
                        try
                        {
                            StartErrorChecking();
@@ -461,35 +444,28 @@ namespace InvoiceAdd
                        {
                            MessageBox.Show(ex.Message);
                        }
-           //        }
-           //    }
-           //}
+ */
 
-
-
-
-           //using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            //{
-            //    //openFileDialog.FilterIndex = 2;
-            //    openFileDialog.FileName = @"C:\Users\Elizabeth.Earl\source\repos\ConsoleApp2\ConsoleApp2\perf.xml";
-            //    openFileDialog.DefaultExt = ".xml"; // Default file extension 
-            //    openFileDialog.Filter = "Text documents (.xml)|*.xml"; // Filter files by extension 
-            //    //openFileDialog.RestoreDirectory = true;
-            //    //openFileDialog.Multiselect = true;
-            //    if (openFileDialog.ShowDialog() == DialogResult.OK)
-            //    {
-            //        fileName = openFileDialog.FileName;
-            //        try
-            //        {
-            //            //MessageBox.Show("FileName is:" + fileName);
-            //            StartErrorChecking();
-            //        }
-            //        catch (System.Xml.XmlException ex)
-            //        {
-            //            MessageBox.Show(ex.Message);
-            //        }
-            //    }
-            //}
+            ///*
+              using (OpenFileDialog openFileDialog = new OpenFileDialog())
+             {
+                 openFileDialog.Filter = @"xml files (*.xml)|*.xml";
+                 openFileDialog.FilterIndex = 2;
+                 openFileDialog.RestoreDirectory = true;
+                 if (openFileDialog.ShowDialog() == DialogResult.OK)
+                 {
+                     fileName = openFileDialog.FileName;
+                     try
+                     {
+                         StartErrorChecking();
+                     }
+                     catch (System.Xml.XmlException ex)
+                     {
+                         MessageBox.Show(ex.Message);
+                     }
+                 }
+             }
+            // */
         }
 
         private void StartErrorChecking()
