@@ -17,7 +17,7 @@ Few things you can do using Assembly Builder:
 * Open ready to upload Item Assemblies in a user-friendly view
 * Identify errors that might exists in pre-built assemblies
   * *i.e. wrong ItemCode as a sub assembly/part*
-* Add Assemblies with approriate sub Assemblies/Part regardless if sub Items exists
+* Add Assemblies with approriate sub Assemblies/Part regardless if sub Items exist
 * Modify pre-existsing Assemblies with up-to-date sub Items
 
 ## Getting Started
@@ -33,13 +33,13 @@ Few things you can do using Assembly Builder:
 
 ### Running
 *\*Refer to [Installing](#installing) prior to running program\**
-1. Once program files are dounloaded, double-Click and run **StartUp.exe** file <br />
+1. Once program files are downloaded, double-click and run **StartUp.exe** file <br />
 	*\*An interactive dialog window will appear\**<br />
-2. On the interactive window locate and click on **"Open File"**
+2. On the interactive window locate and click **"Open File"**
 	*\*This will open a dialog box\**
 3. Select the .xml file of the Assembly you wish to add/modify
-4. Once the Assembly loads in the pane check the bottom right textbox for an error in the Assembly
-5. If no errors exists send the Assembly to QuickBooks by simply clicking **"Send"** <br />
+4. Once the Assembly loads in the pane check the bottom right textbox if an error exists in the Assembly
+5. If no errors exist send the Assembly to QuickBooks by simply clicking **"Send"** <br />
 	*\*Note: This might take longer than a couple seconds depending on the size of your assembly\**
 6. Repeat steps 2-5 if you wish to add another Assembly
 7. To close the program simply click **"Exit"**
