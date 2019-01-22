@@ -44,7 +44,7 @@ Few things you can do using Assembly Builder:
 
 ## Versions
 >**Assembly Builder** 
->>[v1.0](https://github.com/esanch/AssemblyBuilder/releases/tag/v1.0)  (01/22/2019)
+>>[v1.0](https://github.com/esanch/AssemblyBuilder/tree/v1.0)  (01/22/2019)
 
 ## Built With
 * IDE - [Visual Studio](https://visualstudio.microsoft.com/vs/)
