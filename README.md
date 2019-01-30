@@ -24,6 +24,7 @@ Few things you can do using Assembly Builder:
 
 ### Prerequisites
 * [QuickBooks](https://quickbooks.intuit.com/)
+* [SDK Installer](https://developer.intuit.com/downloads/restricted?filename=qbsdk130.exe&download=true)
 
 ### Installing 
 1. [Download](https://github.com/esanch/AssemblyBuilder/archive/v1.0.1.zip) Assembly Builder project<br />
