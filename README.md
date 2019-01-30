@@ -26,7 +26,7 @@ Few things you can do using Assembly Builder:
 * [QuickBooks](https://quickbooks.intuit.com/)
 
 ### Installing 
-1. [Download](https://github.com/esanch/AssemblyBuilder/archive/v1.0.zip) Assembly Builder project<br />
+1. [Download](https://github.com/esanch/AssemblyBuilder/archive/v1.0.1.zip) Assembly Builder project<br />
 2. Extract ZIP files and save on your computer<br />
 
 ### Running
