@@ -54,9 +54,10 @@ namespace InvoiceAdd
         private Label label3;
         private Label label4;
         private RichTextBox textBox1;
-        private Label label5;
         private RichTextBox tbProgramLog;
         private RichTextBox txtBox;
+        private Label label6;
+        private PictureBox pictureBox1;
         bool ifError;
 
         private Frm1InvoiceAdd()
@@ -77,105 +78,102 @@ namespace InvoiceAdd
         #region Windows Form Designer generated code
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            this.btn1_Send = new Button();
-            this.btn2_Exit = new Button();
-            this.btnOpenFile_Reset = new Button();
-            this.dataGridView1 = new DataGridView();
-            this.checkBox1 = new CheckBox();
-            this.checkBox2 = new CheckBox();
-            this.checkBox3 = new CheckBox();
-            this.checkBox4 = new CheckBox();
-            this.checkBox5 = new CheckBox();
-            this.checkBox6 = new CheckBox();
-            this.checkBox7 = new CheckBox();
-            this.checkBox9 = new CheckBox();
-            this.checkBox10 = new CheckBox();
-            this.checkBox11 = new CheckBox();
-            this.checkBox12 = new CheckBox();
-            this.checkBox8 = new CheckBox();
-            this.label1 = new Label();
-            this.label2 = new Label();
-            this.label3 = new Label();
-            this.label4 = new Label();
-            this.textBox1 = new RichTextBox();
-            this.label5 = new Label();
-            this.tbProgramLog = new RichTextBox();
-            this.txtBox = new RichTextBox();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.btn1_Send = new System.Windows.Forms.Button();
+            this.btn2_Exit = new System.Windows.Forms.Button();
+            this.btnOpenFile_Reset = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
+            this.checkBox11 = new System.Windows.Forms.CheckBox();
+            this.checkBox12 = new System.Windows.Forms.CheckBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.RichTextBox();
+            this.tbProgramLog = new System.Windows.Forms.RichTextBox();
+            this.txtBox = new System.Windows.Forms.RichTextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btn1_Send
             // 
             this.btn1_Send.BackColor = System.Drawing.SystemColors.Control;
             this.btn1_Send.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.btn1_Send.Location = new System.Drawing.Point(394, 717);
+            this.btn1_Send.Location = new System.Drawing.Point(399, 683);
             this.btn1_Send.Name = "btn1_Send";
             this.btn1_Send.Size = new System.Drawing.Size(80, 32);
             this.btn1_Send.TabIndex = 57;
             this.btn1_Send.Text = "Send";
             this.btn1_Send.UseVisualStyleBackColor = false;
-            this.btn1_Send.Click += new EventHandler(this.Btn1_Send_Click_1);
+            this.btn1_Send.Click += new System.EventHandler(this.Btn1_Send_Click_1);
             // 
             // btn2_Exit
             // 
             this.btn2_Exit.BackColor = System.Drawing.SystemColors.Control;
-            this.btn2_Exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F,
-                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn2_Exit.Location = new System.Drawing.Point(482, 717);
+            this.btn2_Exit.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn2_Exit.Location = new System.Drawing.Point(487, 683);
             this.btn2_Exit.Name = "btn2_Exit";
             this.btn2_Exit.Size = new System.Drawing.Size(75, 32);
             this.btn2_Exit.TabIndex = 58;
             this.btn2_Exit.Text = "Exit";
             this.btn2_Exit.UseVisualStyleBackColor = false;
-            this.btn2_Exit.Click += new EventHandler(this.Btn2_Exit_Click);
+            this.btn2_Exit.Click += new System.EventHandler(this.Btn2_Exit_Click);
             // 
             // btnOpenFile_Reset
             // 
             this.btnOpenFile_Reset.BackColor = System.Drawing.SystemColors.Control;
-            this.btnOpenFile_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F,
-                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenFile_Reset.Location = new System.Drawing.Point(441, 676);
+            this.btnOpenFile_Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenFile_Reset.Location = new System.Drawing.Point(446, 642);
             this.btnOpenFile_Reset.Name = "btnOpenFile_Reset";
             this.btnOpenFile_Reset.Size = new System.Drawing.Size(80, 32);
             this.btnOpenFile_Reset.TabIndex = 63;
             this.btnOpenFile_Reset.Text = "Open File";
             this.btnOpenFile_Reset.UseVisualStyleBackColor = false;
-            this.btnOpenFile_Reset.Click += new EventHandler(this.BtnOpenFile_Reset_Click);
+            this.btnOpenFile_Reset.Click += new System.EventHandler(this.BtnOpenFile_Reset_Click);
             // 
             // dataGridView1
             // 
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F,
-                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F,
-                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.False;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.Location = new System.Drawing.Point(7, 124);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 90);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F,
-                System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.Size = new System.Drawing.Size(563, 483);
             this.dataGridView1.TabIndex = 64;
@@ -183,7 +181,7 @@ namespace InvoiceAdd
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(135, 627);
+            this.checkBox1.Location = new System.Drawing.Point(140, 593);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(44, 17);
             this.checkBox1.TabIndex = 65;
@@ -193,7 +191,7 @@ namespace InvoiceAdd
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(244, 627);
+            this.checkBox2.Location = new System.Drawing.Point(249, 593);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(40, 17);
             this.checkBox2.TabIndex = 66;
@@ -203,7 +201,7 @@ namespace InvoiceAdd
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(330, 627);
+            this.checkBox3.Location = new System.Drawing.Point(335, 593);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(119, 17);
             this.checkBox3.TabIndex = 67;
@@ -213,7 +211,7 @@ namespace InvoiceAdd
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(135, 650);
+            this.checkBox4.Location = new System.Drawing.Point(140, 616);
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(86, 17);
             this.checkBox4.TabIndex = 68;
@@ -223,7 +221,7 @@ namespace InvoiceAdd
             // checkBox5
             // 
             this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(244, 650);
+            this.checkBox5.Location = new System.Drawing.Point(249, 616);
             this.checkBox5.Name = "checkBox5";
             this.checkBox5.Size = new System.Drawing.Size(71, 17);
             this.checkBox5.TabIndex = 69;
@@ -233,7 +231,7 @@ namespace InvoiceAdd
             // checkBox6
             // 
             this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(330, 650);
+            this.checkBox6.Location = new System.Drawing.Point(335, 616);
             this.checkBox6.Name = "checkBox6";
             this.checkBox6.Size = new System.Drawing.Size(85, 17);
             this.checkBox6.TabIndex = 70;
@@ -243,7 +241,7 @@ namespace InvoiceAdd
             // checkBox7
             // 
             this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(416, 650);
+            this.checkBox7.Location = new System.Drawing.Point(421, 616);
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(79, 17);
             this.checkBox7.TabIndex = 71;
@@ -253,7 +251,7 @@ namespace InvoiceAdd
             // checkBox9
             // 
             this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(135, 673);
+            this.checkBox9.Location = new System.Drawing.Point(140, 639);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(44, 17);
             this.checkBox9.TabIndex = 73;
@@ -263,7 +261,7 @@ namespace InvoiceAdd
             // checkBox10
             // 
             this.checkBox10.AutoSize = true;
-            this.checkBox10.Location = new System.Drawing.Point(244, 673);
+            this.checkBox10.Location = new System.Drawing.Point(249, 639);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(40, 17);
             this.checkBox10.TabIndex = 74;
@@ -273,7 +271,7 @@ namespace InvoiceAdd
             // checkBox11
             // 
             this.checkBox11.AutoSize = true;
-            this.checkBox11.Location = new System.Drawing.Point(135, 698);
+            this.checkBox11.Location = new System.Drawing.Point(140, 664);
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(44, 17);
             this.checkBox11.TabIndex = 75;
@@ -283,7 +281,7 @@ namespace InvoiceAdd
             // checkBox12
             // 
             this.checkBox12.AutoSize = true;
-            this.checkBox12.Location = new System.Drawing.Point(244, 698);
+            this.checkBox12.Location = new System.Drawing.Point(249, 664);
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(40, 17);
             this.checkBox12.TabIndex = 76;
@@ -293,7 +291,7 @@ namespace InvoiceAdd
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(502, 650);
+            this.checkBox8.Location = new System.Drawing.Point(507, 616);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(65, 17);
             this.checkBox8.TabIndex = 72;
@@ -303,7 +301,7 @@ namespace InvoiceAdd
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 631);
+            this.label1.Location = new System.Drawing.Point(9, 597);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 13);
             this.label1.TabIndex = 77;
@@ -312,7 +310,7 @@ namespace InvoiceAdd
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 654);
+            this.label2.Location = new System.Drawing.Point(9, 620);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(124, 13);
             this.label2.TabIndex = 78;
@@ -321,7 +319,7 @@ namespace InvoiceAdd
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 676);
+            this.label3.Location = new System.Drawing.Point(9, 642);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 13);
             this.label3.TabIndex = 79;
@@ -330,7 +328,7 @@ namespace InvoiceAdd
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(4, 701);
+            this.label4.Location = new System.Drawing.Point(9, 667);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(98, 13);
             this.label4.TabIndex = 80;
@@ -338,44 +336,59 @@ namespace InvoiceAdd
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(7, 40);
-            this.textBox1.Multiline = true;
+            this.textBox1.Location = new System.Drawing.Point(113, 6);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(563, 78);
+            this.textBox1.Size = new System.Drawing.Size(462, 78);
             this.textBox1.TabIndex = 83;
-            // 
-            // label5
-            // 
-            this.label5.Location = new System.Drawing.Point(0, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(100, 23);
-            this.label5.TabIndex = 86;
+            this.textBox1.Text = "";
             // 
             // tbProgramLog
             // 
-            this.tbProgramLog.Location = new System.Drawing.Point(587, 40);
-            this.tbProgramLog.Multiline = true;
+            this.tbProgramLog.Location = new System.Drawing.Point(592, 6);
             this.tbProgramLog.Name = "tbProgramLog";
             this.tbProgramLog.Size = new System.Drawing.Size(483, 332);
             this.tbProgramLog.TabIndex = 85;
+            this.tbProgramLog.Text = "";
             // 
             // txtBox
             // 
-            this.txtBox.Location = new System.Drawing.Point(587, 400);
-            this.txtBox.Multiline = true;
+            this.txtBox.Location = new System.Drawing.Point(592, 366);
             this.txtBox.Name = "txtBox";
             this.txtBox.Size = new System.Drawing.Size(483, 332);
             this.txtBox.TabIndex = 87;
+            this.txtBox.Text = "";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.ForeColor = System.Drawing.Color.Transparent;
+            this.label6.Location = new System.Drawing.Point(1031, 702);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(44, 13);
+            this.label6.TabIndex = 88;
+            this.label6.Text = "E.Earl©";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.ErrorImage = global::InvoiceAdd.Properties.Resources.UBELogo;
+            this.pictureBox1.Image = global::InvoiceAdd.Properties.Resources.UBELogo;
+            this.pictureBox1.InitialImage = global::InvoiceAdd.Properties.Resources.UBELogo;
+            this.pictureBox1.Location = new System.Drawing.Point(12, 6);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(95, 78);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 89;
+            this.pictureBox1.TabStop = false;
             // 
             // Frm1InvoiceAdd
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))),
-                ((int)(((byte)(224)))));
-            this.ClientSize = new System.Drawing.Size(1082, 755);
+            this.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.ClientSize = new System.Drawing.Size(1082, 728);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.txtBox);
             this.Controls.Add(this.tbProgramLog);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -400,6 +413,7 @@ namespace InvoiceAdd
             this.Name = "Frm1InvoiceAdd";
             this.Text = "Add an Item Inventory to QuickBooks";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
