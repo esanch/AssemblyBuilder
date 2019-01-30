@@ -1,0 +1,29 @@
+<xml>
+    <transactions>
+        <transaction date="1535757545" type="export_bom_spreadsheet" vaultname="engineeringVault">
+            <bom document_id="98928" document_path="\STANDARD PARTS\BLADES\HINGE SLICER\13201900.SLDDRW" id="98938" name="13201900.SLDDRW: Bill of Materials1" path="\STANDARD PARTS\BLADES\HINGE SLICER\" type="3">
+                <bomheader>
+                    <bomcol alignment="center" col_no="0" name="ITEM NO."/>
+                    <bomcol alignment="center" col_no="1" name="ITEMCODE"/>
+                    <bomcol alignment="center" col_no="2" name="PARTNUMBER"/>
+                    <bomcol alignment="center" col_no="3" name="DESCRIPTION"/>
+                    <bomcol alignment="center" col_no="4" name=" QTY."/>
+                </bomheader>
+                <bomrow document_id="49841" path="\STANDARD PARTS\BLADES\HINGE SLICER\13456100.SLDPRT" row_no="0">
+                    <bomcell col_no="0" value="1"/>
+                    <bomcell col_no="1" value="13456100"/>
+                    <bomcell col_no="2" value="BLADE-H-7"/>
+                    <bomcell col_no="3" value="HINGE SLICER BLADE, 7&quot; DIAMETER, SINGLE BEVEL, STANDARD TEETH"/>
+                    <bomcell col_no="4" value="1"/>
+                </bomrow>
+                <bomrow document_id="10472" path="\STANDARD PARTS\BLADES\HINGE SLICER\BLADE SHAFTS\23690000.SLDASM" row_no="1">
+                    <bomcell col_no="0" value="2"/>
+                    <bomcell col_no="1" value="23690000"/>
+                    <bomcell col_no="2" value="BLADE-H-L"/>
+                    <bomcell col_no="3" value="BLADE SHAFT"/>
+                    <bomcell col_no="4" value="1"/>
+                </bomrow>
+            </bom>
+        </transaction>
+    </transactions>
+</xml>
