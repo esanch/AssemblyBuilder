@@ -139,7 +139,7 @@
   <ItemGroup>
     <Reference Include="Interop.QBFC13">
       <Name>Interop.QBFC13</Name>
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Common Files\Intuit\QuickBooks\Interop.QBFC13.dll</HintPath>
+      <HintPath>.\Interop.QBFC13.dll</HintPath>
       <AssemblyFolderKey>hklm\dn\intuit developer network</AssemblyFolderKey>
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <CopyLocal>True</CopyLocal>
