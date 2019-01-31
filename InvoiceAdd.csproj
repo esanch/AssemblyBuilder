@@ -130,6 +130,9 @@
       <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files\Common Files\Intuit\QuickBooks\Interop.QBFC13.dll</HintPath>
       <AssemblyFolderKey>hklm\dn\intuit developer network</AssemblyFolderKey>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -179,6 +182,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\UBELogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
