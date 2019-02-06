@@ -67,6 +67,7 @@ namespace InvoiceAdd
         private CheckBox checkBox17;
         private DataGridView dataGridView2;
         private Label label9;
+
         bool ifError;
 
         private Frm1InvoiceAdd()
@@ -529,7 +530,7 @@ namespace InvoiceAdd
             this.tbProgramLog.Text = "";
             // 
             // txtBox
-            // 
+            //
             this.txtBox.Location = new System.Drawing.Point(609, 5);
             this.txtBox.Name = "txtBox";
             this.txtBox.Size = new System.Drawing.Size(466, 348);
@@ -645,6 +646,21 @@ namespace InvoiceAdd
             textBox1.Clear();
             tbProgramLog.Clear();
             txtBox.Clear();
+            /*
+             fileName = @"\\SQLSERVER\bom\24902200-20180907.xml";
+
+
+                        try
+                        {
+                            StartErrorChecking();
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
+  */
+
+            ///*
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = @"xml files (*.xml)|*.xml";
@@ -663,6 +679,7 @@ namespace InvoiceAdd
                     }
                 }
             }
+            // */
         }
 
         private void StartErrorChecking()
