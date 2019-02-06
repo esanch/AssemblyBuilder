@@ -27,7 +27,7 @@ Few things you can do using Assembly Builder:
 * [SDK Installer](https://developer.intuit.com/downloads/restricted?filename=qbsdk130.exe&download=true)
 
 ### Installing 
-1. [Download](https://github.com/esanch/AssemblyBuilder/archive/v1.0.1.zip) Assembly Builder project<br />
+1. [Download](https://github.com/esanch/AssemblyBuilder/archive/v2.0.zip) Assembly Builder project<br />
 2. Extract ZIP files and save on your computer<br />
 
 ### Running
@@ -46,7 +46,8 @@ Few things you can do using Assembly Builder:
 ## Versions
 >**Assembly Builder** 
 >>[v1.0](https://github.com/esanch/AssemblyBuilder/tree/v1.0)  (01/22/2019) <br />
->>[v1.0.1](https://github.com/esanch/AssemblyBuilder/archive/v1.0.1.zip) 01/30/2019
+>>[v1.0.1](https://github.com/esanch/AssemblyBuilder/archive/v1.0.1.zip) (01/30/2019) <br />
+>>[v2.0](https://github.com/esanch/AssemblyBuilder/archive/v2.0.zip) (02/06/2019) <br />
 
 ## Built With
 * IDE - [Visual Studio](https://visualstudio.microsoft.com/vs/)
