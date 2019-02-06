@@ -161,6 +161,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Content Include="App.ico" />
+    <None Include="Resources\UBELogo.png" />
     <EmbeddedResource Include="InputItem.resx">
       <DependentUpon>InputItem.cs</DependentUpon>
     </EmbeddedResource>
