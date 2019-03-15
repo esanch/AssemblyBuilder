@@ -12,7 +12,7 @@ Enter non-existent Item Assemblies and modify existing Item Assemblies with up-t
 	* [BOM Viewer](#bom)
 * [Parameters](#parameters)
   * [Checked Boxes](#checked)
-  * [Error Messages](#errors
+  * [Error Messages](#errors)
 * [Versions](#versions)
 * [Built With](#built-with)
 * [Authors](#authors)
